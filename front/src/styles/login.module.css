@@ -1,0 +1,474 @@
+/* Базовые стили */
+.loginContainer {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    height: 100vh;
+}
+
+/* Анимированный фон с градиентными blob-эффектами */
+.loginBackground {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.gradientBlob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.1;
+    animation: float 15s ease-in-out infinite;
+}
+
+.blob1 {
+    width: 600px;
+    height: 600px;
+    background: linear-gradient(45deg, #3b82f6, #06b6d4);
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.blob2 {
+    width: 500px;
+    height: 500px;
+    background: linear-gradient(45deg, #6366f1, #8b5cf6);
+    top: 60%;
+    right: 10%;
+    animation-delay: -5s;
+}
+
+.blob3 {
+    width: 550px;
+    height: 550px;
+    background: linear-gradient(45deg, #06b6d4, #10b981);
+    bottom: 10%;
+    left: 20%;
+    animation-delay: -10s;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1) rotate(0deg);
+    }
+
+    33% {
+        transform: translateY(-30px) scale(1.05) rotate(1deg);
+    }
+
+    66% {
+        transform: translateY(15px) scale(0.98) rotate(-1deg);
+    }
+}
+
+/* Карточка входа */
+.loginCard {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(30px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 24px;
+    padding: 3rem 3rem;
+    box-shadow:
+        0 40px 80px -20px rgba(0, 0, 0, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    width: 100%;
+    max-width: 480px;
+    position: relative;
+    z-index: 10;
+    transition: all 0.4s ease;
+    margin: 2rem;
+}
+
+.loginCard:hover {
+    box-shadow:
+        0 50px 100px -25px rgba(0, 0, 0, 0.35),
+        0 0 0 1px rgba(255, 255, 255, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* Заголовок */
+.textCenter {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.bankLogo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.logoIcon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    padding: 0.5rem;
+    box-shadow: 0 8px 20px -4px rgba(59, 130, 246, 0.4);
+}
+
+.bankName {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #1e40af, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.025em;
+    margin: 0;
+}
+
+.loginSubtitle {
+    color: #64748b;
+    font-size: 1.125rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* Форма */
+.loginForm {
+    margin-top: 2rem;
+}
+
+.formGroup {
+    margin-bottom: 1.5rem;
+}
+
+.formLabel {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #374151;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.inputContainer {
+    position: relative;
+}
+
+.formInput {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+    color: #1f2937;
+    height: 52px;
+    box-sizing: border-box;
+}
+
+.formInput:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    transform: translateY(-2px);
+}
+
+.formInput::placeholder {
+    color: #9ca3af;
+}
+
+.inputIcon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* Flex между чекбоксом и ссылкой */
+.flexBetween {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+/* Чекбокс */
+.checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+}
+
+.checkboxInput {
+    display: none;
+}
+
+.checkboxCustom {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid #d1d5db;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.checkboxInput:checked+.checkboxCustom {
+    background: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.checkboxInput:checked+.checkboxCustom::after {
+    content: '✓';
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.checkboxText {
+    color: #374151;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.forgotLink {
+    color: #3b82f6;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.forgotLink:hover {
+    color: #2563eb;
+}
+
+/* Кнопка входа */
+.loginButton {
+    width: 100%;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    height: 52px;
+    box-sizing: border-box;
+}
+
+.loginButton::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.loginButton:hover::before {
+    left: 100%;
+}
+
+.loginButton:hover {
+    box-shadow: 0 12px 25px -8px rgba(59, 130, 246, 0.5);
+}
+
+.buttonIcon {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* Футер */
+.loginFooter {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.footerText {
+    color: #64748b;
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.footerLink {
+    color: #3b82f6;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footerLink:hover {
+    color: #2563eb;
+    text-decoration: underline;
+}
+
+.securityBadge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #10b981;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    background: rgba(16, 185, 129, 0.1);
+    border-radius: 16px;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.securityIcon {
+    width: 0.875rem;
+    height: 0.875rem;
+}
+
+/* Адаптивность для больших экранов */
+@media (min-width: 1920px) {
+    .loginCard {
+        max-width: 500px;
+        padding: 3.5rem 3rem;
+    }
+
+    .gradientBlob {
+        filter: blur(100px);
+    }
+
+    .blob1 {
+        width: 700px;
+        height: 700px;
+    }
+
+    .blob2 {
+        width: 600px;
+        height: 600px;
+    }
+
+    .blob3 {
+        width: 650px;
+        height: 650px;
+    }
+}
+
+@media (max-width: 768px) {
+    .loginContainer {
+        padding: 1rem;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .loginCard {
+        margin: 1rem;
+        padding: 2.5rem 2rem;
+        max-width: 400px;
+    }
+
+    .bankName {
+        font-size: 2.25rem;
+    }
+
+    .gradientBlob {
+        filter: blur(50px);
+    }
+
+    .blob1 {
+        width: 350px;
+        height: 350px;
+    }
+
+    .blob2 {
+        width: 300px;
+        height: 300px;
+    }
+
+    .blob3 {
+        width: 320px;
+        height: 320px;
+    }
+
+    .flexBetween {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .loginCard {
+        padding: 2rem 1.5rem;
+        margin: 0.5rem;
+    }
+
+    .formInput {
+        padding: 0.875rem 0.875rem 0.875rem 2.5rem;
+        height: 48px;
+    }
+
+    .inputIcon {
+        left: 0.875rem;
+    }
+
+    .loginButton {
+        height: 48px;
+    }
+}
+
+/* Темная тема поддержка */
+@media (prefers-color-scheme: dark) {
+    .loginCard {
+        background: rgba(15, 23, 42, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: white;
+    }
+
+    .formInput {
+        background: #1e293b;
+        border-color: #334155;
+        color: white;
+    }
+
+    .formLabel {
+        color: #cbd5e1;
+    }
+
+    .checkboxText {
+        color: #cbd5e1;
+    }
+
+    .footerText {
+        color: #94a3b8;
+    }
+
+    .loginSubtitle {
+        color: #cbd5e1;
+    }
+}
