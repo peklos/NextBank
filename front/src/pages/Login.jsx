@@ -1,15 +1,48 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from '../styles/login.module.css';
 import { NavLink } from 'react-router-dom';
+import { loginClient } from '../api/clients'
+import { useSelector, useDispatch } from 'react-redux'
+import { setUser } from '../features/auth/authSlice'
 
 export default function Login() {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
+    const [error, setError] = useState('')
+    const dispatch = useDispatch()
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Здесь будет логика входа
+
+        setError('')
+
+        if (!email || !password) {
+            setError('Заполните все поля')
+            return
+        }
+
+        // EmailStr как в Pydantic на бэкенде
+        const emailRegex =
+            /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z]{2,})+$/
+
+        if (!emailRegex.test(email)) {
+            setError('Некорректный email')
+            return
+        }
+
+        const res = await loginClient(email, password)
+
+        if (res.data != null) {
+            dispatch(setUser({
+                full_name: res.data.full_name,
+                email: res.data.email,
+                access_token: res.data.access_token,
+                created_at: res.data.created_at
+            }))
+        } else {
+            setError(res.error)
+        }
     };
 
     return (
@@ -38,17 +71,17 @@ export default function Login() {
                 {/* Форма входа */}
                 <form onSubmit={handleSubmit} className={styles.loginForm}>
                     <div className={styles.formGroup}>
-                        <label htmlFor="username" className={styles.formLabel}>
-                            Логин или ID
+                        <label htmlFor="email" className={styles.formLabel}>
+                            EMAIL
                         </label>
                         <div className={styles.inputContainer}>
                             <input
-                                type="text"
-                                id="username"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
+                                type="email"
+                                id="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 className={styles.formInput}
-                                placeholder="Введите ваш логин"
+                                placeholder="Введите вашу почту"
                             />
                             <div className={styles.inputIcon}>
                                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -98,12 +131,20 @@ export default function Login() {
                         </a>
                     </div>
 
-                    <button type="submit" className={styles.loginButton}>
+                    <button type="submit" onClick={e => handleSubmit(e)} className={styles.loginButton}>
                         Войти в систему
                         <svg className={styles.buttonIcon} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" />
                         </svg>
                     </button>
+
+                    {/* Блок ошибки */}
+                    {error && (
+                        <div className={styles.errorContainer}>
+                            <p className={styles.errorMessage}>{error}</p>
+                        </div>
+                    )}
+
                 </form>
 
                 {/* Дополнительные ссылки */}

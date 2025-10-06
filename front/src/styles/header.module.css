@@ -1,0 +1,496 @@
+/* Хедер */
+.header {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem 2rem;
+    position: relative;
+    z-index: 1000;
+    width: 100%;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+}
+
+/* Фиксируем body когда меню открыто */
+body.menu-open {
+    overflow: hidden;
+}
+
+.headerContent {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.bankLogo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    z-index: 1001;
+}
+
+.logoIcon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    padding: 0.4rem;
+    transition: all 0.3s ease;
+}
+
+.bankLogo:hover .logoIcon {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px -4px rgba(59, 130, 246, 0.4);
+}
+
+.bankName {
+    font-size: 1.75rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #3b82f6, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.025em;
+    margin: 0;
+    transition: all 0.3s ease;
+}
+
+.bankLogo:hover .bankName {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Навигация для десктопа */
+.nav {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Базовый стиль для всех ссылок */
+.navLink {
+    color: #cbd5e1;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid transparent;
+    background: transparent;
+    white-space: nowrap;
+}
+
+.navLink::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: right 0.5s;
+}
+
+.navLink:hover::before {
+    right: 100%;
+}
+
+.navLink:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Активный стиль - переопределяет базовый */
+.navActive {
+    color: white !important;
+    border: 1px solid rgba(59, 130, 246, 0.3) !important;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2) !important;
+}
+
+.navActive::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 2px;
+    background: #3b82f6;
+    border-radius: 1px;
+}
+
+/* Убираем hover эффекты для активной ссылки */
+.navActive:hover::before {
+    display: none;
+}
+
+.navActive:hover {
+    transform: none;
+}
+
+/* Кнопка бургер-меню */
+.menuToggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1001;
+    position: relative;
+}
+
+.menuToggle span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background: #cbd5e1;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+.menuToggleActive span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+    background: white;
+}
+
+.menuToggleActive span:nth-child(2) {
+    opacity: 0;
+    transform: scale(0);
+}
+
+.menuToggleActive span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+    background: white;
+}
+
+/* Overlay для мобильного меню - УБИРАЕМ, т.к. меню на весь экран */
+.overlay {
+    display: none;
+}
+
+/* ===== АДАПТИВНОСТЬ ===== */
+
+/* Большие планшеты (769px - 1024px) */
+@media (max-width: 1024px) {
+    .header {
+        padding: 1rem 1.5rem;
+    }
+
+    .nav {
+        gap: 1rem;
+    }
+
+    .navLink {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .bankName {
+        font-size: 1.6rem;
+    }
+
+    .logoIcon {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+/* Планшеты и маленькие ноутбуки (601px - 768px) */
+@media (max-width: 768px) {
+    .header {
+        padding: 0.875rem 1.25rem;
+    }
+
+    .menuToggle {
+        display: flex;
+    }
+
+    .nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        /* Меняем с right на right для полного экрана */
+        width: 100vw;
+        /* На весь экран по ширине */
+        height: 100vh;
+        /* На весь экран по высоте */
+        background: #0f172a;
+        /* Полностью непрозрачный фон */
+        flex-direction: column;
+        justify-content: center;
+        /* Центрируем по вертикали */
+        align-items: center;
+        /* Центрируем по горизонтали */
+        padding: 2rem;
+        gap: 1.5rem;
+        /* Увеличиваем расстояние между ссылками */
+        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 999;
+        /* Убираем все эффекты прозрачности */
+        backdrop-filter: none;
+        border: none;
+    }
+
+    .navActive {
+        right: 0;
+        /* Показываем меню */
+    }
+
+    .navLink {
+        padding: 1.5rem 2rem;
+        /* Увеличиваем размер кнопок */
+        font-size: 1.2rem;
+        /* Увеличиваем шрифт */
+        border-radius: 16px;
+        text-align: center;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        margin-bottom: 0;
+        transform: translateX(-30px);
+        opacity: 0;
+        animation: slideInright 0.4s ease forwards;
+        background: rgba(255, 255, 255, 0.05);
+        width: 250px;
+        /* Фиксированная ширина для кнопок */
+        max-width: 80%;
+        /* Ограничиваем максимальную ширину */
+    }
+
+    .navLink:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .navLink:nth-child(2) {
+        animation-delay: 0.15s;
+    }
+
+    .navLink:nth-child(3) {
+        animation-delay: 0.2s;
+    }
+
+    .navLink:nth-child(4) {
+        animation-delay: 0.25s;
+    }
+
+    .navActive .navLink:hover {
+        transform: translateX(0) translateY(-3px);
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .bankName {
+        font-size: 1.5rem;
+    }
+
+    .logoIcon {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+/* Большие мобильные (426px - 600px) */
+@media (max-width: 600px) {
+    .header {
+        padding: 0.75rem 1rem;
+    }
+
+    .navLink {
+        padding: 1.25rem 1.75rem;
+        font-size: 1.1rem;
+        width: 220px;
+    }
+
+    .bankName {
+        font-size: 1.4rem;
+    }
+
+    .logoIcon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .menuToggle {
+        width: 28px;
+        height: 20px;
+    }
+}
+
+/* Средние мобильные (376px - 425px) */
+@media (max-width: 425px) {
+    .header {
+        padding: 0.625rem 0.875rem;
+    }
+
+    .navLink {
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+        width: 200px;
+    }
+
+    .bankLogo {
+        gap: 0.625rem;
+    }
+
+    .bankName {
+        font-size: 1.3rem;
+    }
+
+    .logoIcon {
+        width: 30px;
+        height: 30px;
+        padding: 0.35rem;
+    }
+
+    .menuToggle {
+        width: 26px;
+        height: 18px;
+    }
+}
+
+/* Маленькие мобильные (до 375px) */
+@media (max-width: 375px) {
+    .header {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .bankName {
+        font-size: 1.25rem;
+    }
+
+    .logoIcon {
+        width: 28px;
+        height: 28px;
+    }
+
+    .navLink {
+        padding: 0.875rem 1.25rem;
+        font-size: 0.95rem;
+        width: 180px;
+    }
+
+    .menuToggle {
+        width: 24px;
+        height: 17px;
+    }
+}
+
+/* Портретная ориентация и маленькая высота */
+@media (max-height: 600px) and (max-width: 768px) {
+    .nav {
+        justify-content: flex-start;
+        padding-top: 6rem;
+    }
+
+    .navLink {
+        padding: 1rem 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Анимации */
+@keyframes slideInright {
+    from {
+        transform: translateX(-30px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Темная тема поддержка */
+@media (prefers-color-scheme: dark) {
+    .header {
+        background: rgba(15, 23, 42, 0.95);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .navLink {
+        color: #cbd5e1;
+    }
+
+    .navLink:hover {
+        color: white;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .navActive {
+        color: white !important;
+        border: 1px solid rgba(59, 130, 246, 0.3) !important;
+    }
+}
+
+/* Поддержка reduced-motion для доступности */
+@media (prefers-reduced-motion: reduce) {
+
+    .navLink,
+    .menuToggle span,
+    .logoIcon,
+    .bankName {
+        transition: none;
+    }
+
+    .nav {
+        transition: right 0.12s ease;
+    }
+
+    @keyframes slideInright {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+}
+
+/* Ховер эффекты только для устройств с ховером */
+@media (hover: hover) and (pointer: fine) {
+    .navLink:hover {
+        transform: translateY(-2px);
+    }
+
+    .bankLogo:hover .logoIcon {
+        transform: scale(1.05);
+    }
+}
+
+/* Фикс для скролла на мобильных */
+@media (max-width: 768px) {
+
+    html,
+    body {
+        overflow-x: hidden;
+        width: 100%;
+        position: relative;
+    }
+
+    .header {
+        width: 100vw;
+    }
+
+    .headerContent {
+        width: 100%;
+    }
+}

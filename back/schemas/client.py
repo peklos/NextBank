@@ -35,11 +35,3 @@ class ClientLoginSchema(BaseModel):
     email: EmailStr
     password: str
 
-    @field_validator('password')
-    @classmethod
-    def validate_password(cls, v: str) -> str:
-        if len(v) < 6:
-            raise ValueError('Пароль должен быть не менее 6 символов')
-        if not any(char.isdigit() for char in v):
-            raise ValueError('Пароль должен содержать хотя бы одну цифру')
-        return v

@@ -1,6 +1,8 @@
-
+import React from 'react';
 import styles from '../styles/profile.module.css';
-export default function Transfers() {
+import { NavLink } from 'react-router-dom';
+
+const Profile = () => {
     // Моковые данные пользователя
     const userData = {
         fullName: 'Иванов Иван Иванович',
@@ -142,3 +144,5 @@ export default function Transfers() {
         </div>
     );
 };
+
+export default Profile;

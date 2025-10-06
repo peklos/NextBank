@@ -32,8 +32,6 @@ router = APIRouter(
 
 
 def verify_password(plain_pass, hashed_pass):
-    print("ФВЫВЫФЫФВЫФВФЫВФЫВФЫВ321123213321312213231plain_pass:", plain_pass)
-    print("hashed_pass:", hashed_pass)
     return pwd_context.verify(plain_pass, hashed_pass)
 
 
