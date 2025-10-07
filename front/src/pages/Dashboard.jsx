@@ -1,144 +1,342 @@
+import React, { useState } from 'react';
+import styles from '../styles/dashboard.module.css';
 
-import styles from '../styles/profile.module.css';
-export default function dashboard() {
-    // Моковые данные пользователя
+const Dashboard = () => {
+    const [quickAmount, setQuickAmount] = useState('');
+    const [activeCard, setActiveCard] = useState(0);
+
+    // Моковые данные
     const userData = {
-        fullName: 'Иванов Иван Иванович',
-        email: 'ivanov@example.com',
-        phone: '+7 (999) 999-99-99',
-        joinDate: '15 января 2024',
-        accountNumber: '40817810099910004321',
-        accountType: 'Премиум'
+        name: 'Александр',
+        totalBalance: '2 421 350 ₽',
+        monthlyIncome: '185 000 ₽',
+        monthlyExpenses: '134 560 ₽',
+        savings: '50 440 ₽'
     };
 
-    const handleLogout = () => {
-        // Здесь будет логика выхода
-        console.log('Выход из системы');
-    };
+    const cards = [
+        {
+            id: 1,
+            number: '5536 9142 6743 4321',
+            holder: 'ALEXANDER PETROV',
+            expiry: '12/25',
+            balance: '245 670 ₽',
+            type: 'visa',
+            color: '#3b82f6'
+        },
+        {
+            id: 2,
+            number: '4478 2345 6789 7821',
+            holder: 'ALEXANDER PETROV',
+            expiry: '09/26',
+            balance: '1 250 340 ₽',
+            type: 'mastercard',
+            color: '#10b981'
+        }
+    ];
+
+    const quickActions = [
+        { id: 1, icon: '🔄', label: 'Перевод', description: 'Между счетами' },
+        { id: 2, icon: '💳', label: 'Платеж', description: 'Оплатить услуги' },
+        { id: 3, icon: '📱', label: 'QR-платеж', description: 'Быстрая оплата' },
+        { id: 4, icon: '📄', label: 'Выписка', description: 'История операций' }
+    ];
+
+    const recentTransactions = [
+        {
+            id: 1,
+            name: 'Супермаркет "Пятерочка"',
+            amount: '-3 450 ₽',
+            time: '18:45',
+            icon: '🛒',
+            type: 'outcome'
+        },
+        {
+            id: 2,
+            name: 'Перевод от А.С. Петров',
+            amount: '+25 000 ₽',
+            time: '14:30',
+            icon: '💸',
+            type: 'income'
+        },
+        {
+            id: 3,
+            name: 'YouTube Premium',
+            amount: '-459 ₽',
+            time: '09:00',
+            icon: '🎬',
+            type: 'outcome'
+        },
+        {
+            id: 4,
+            name: 'Зарплата',
+            amount: '+85 000 ₽',
+            time: '08:00',
+            icon: '💰',
+            type: 'income'
+        }
+    ];
+
+    const stats = [
+        { label: 'Доходы за месяц', value: '185 000 ₽', change: '+12%', trend: 'up' },
+        { label: 'Расходы за месяц', value: '134 560 ₽', change: '+5%', trend: 'up' },
+        { label: 'Экономия', value: '50 440 ₽', change: '+8%', trend: 'up' },
+        { label: 'Кэшбэк', value: '3 245 ₽', change: '+15%', trend: 'up' }
+    ];
+
+    const quickAmounts = ['500', '1000', '2000', '5000'];
 
     return (
-        <div className={styles.profileContainer}>
-            <div className={styles.profileBackground}>
-                <div className={`${styles.gradientBlob} ${styles.blob1}`}></div>
-                <div className={`${styles.gradientBlob} ${styles.blob2}`}></div>
-                <div className={`${styles.gradientBlob} ${styles.blob3}`}></div>
+        <div className={styles.dashboardContainer}>
+            {/* Анимированный фон */}
+            <div className={styles.background}>
+                <div className={styles.gradientBlob}></div>
+                <div className={styles.gradientBlob}></div>
+                <div className={styles.gradientBlob}></div>
             </div>
 
-            <div className={styles.profileCard}>
-                {/* Заголовок */}
-                <div className={styles.profileHeader}>
-                    <div className={styles.bankLogo}>
-                        <div className={styles.logoIcon}>
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2L3 7V21H21V7L12 2Z" stroke="currentColor" strokeWidth="2" />
-                                <path d="M12 16V12M8 12H16" stroke="currentColor" strokeWidth="2" />
-                                <path d="M8 16H16" stroke="currentColor" strokeWidth="2" />
-                            </svg>
+            <div className={styles.dashboardContent}>
+                {/* Хедер */}
+                <header className={styles.dashboardHeader}>
+                    <div className={styles.headerMain}>
+                        <div className={styles.welcomeSection}>
+                            <h1 className={styles.welcomeTitle}>
+                                Добро пожаловать, <span className={styles.userName}>{userData.name}</span>!
+                            </h1>
+                            <p className={styles.welcomeSubtitle}>
+                                Вот обзор ваших финансов на сегодня
+                            </p>
                         </div>
-                        <h1 className={styles.bankName}>NEXT</h1>
-                    </div>
-                    <p className={styles.profileSubtitle}>Личный кабинет</p>
-                </div>
-
-                {/* Аватар и основная информация */}
-                <div className={styles.profileMain}>
-                    <div className={styles.avatarSection}>
-                        <div className={styles.avatar}>
-                            <span className={styles.avatarText}>
-                                {userData.fullName.split(' ').map(n => n[0]).join('')}
-                            </span>
-                        </div>
-                        <div className={styles.userStatus}>
-                            <span className={styles.statusBadge}>
-                                {userData.accountType}
-                            </span>
-                        </div>
-                    </div>
-
-                    {/* Карточка с информацией */}
-                    <div className={styles.infoCard}>
-                        <div className={styles.infoSection}>
-                            <h3 className={styles.infoTitle}>Основная информация</h3>
-                            <div className={styles.infoGrid}>
-                                <div className={styles.infoItem}>
-                                    <span className={styles.infoLabel}>ФИО</span>
-                                    <span className={styles.infoValue}>{userData.fullName}</span>
-                                </div>
-                                <div className={styles.infoItem}>
-                                    <span className={styles.infoLabel}>Email</span>
-                                    <span className={styles.infoValue}>{userData.email}</span>
-                                </div>
-                                <div className={styles.infoItem}>
-                                    <span className={styles.infoLabel}>Телефон</span>
-                                    <span className={styles.infoValue}>{userData.phone}</span>
-                                </div>
-                                <div className={styles.infoItem}>
-                                    <span className={styles.infoLabel}>Дата регистрации</span>
-                                    <span className={styles.infoValue}>{userData.joinDate}</span>
-                                </div>
+                        <div className={styles.dateSection}>
+                            <div className={styles.currentDate}>
+                                {new Date().toLocaleDateString('ru-RU', {
+                                    weekday: 'long',
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric'
+                                })}
                             </div>
-                        </div>
-
-                        <div className={styles.infoSection}>
-                            <h3 className={styles.infoTitle}>Банковские реквизиты</h3>
-                            <div className={styles.infoGrid}>
-                                <div className={styles.infoItem}>
-                                    <span className={styles.infoLabel}>Номер счета</span>
-                                    <span className={styles.infoValue}>{userData.accountNumber}</span>
-                                </div>
-                                <div className={styles.infoItem}>
-                                    <span className={styles.infoLabel}>Тип счета</span>
-                                    <span className={styles.infoValue}>{userData.accountType}</span>
-                                </div>
-                            </div>
+                            <div className={styles.notificationBell}>🔔</div>
                         </div>
                     </div>
-                </div>
+                </header>
 
-                {/* Действия */}
-                <div className={styles.actionsSection}>
-                    <div className={styles.actionButtons}>
-                        <button className={styles.editButton}>
-                            <svg className={styles.buttonIcon} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" strokeWidth="2" />
-                                <path d="M18.5 2.5C18.8978 2.10217 19.4374 1.87868 20 1.87868C20.5626 1.87868 21.1022 2.10217 21.5 2.5C21.8978 2.89782 22.1213 3.43739 22.1213 4C22.1213 4.56261 21.8978 5.10217 21.5 5.5L12 15L8 16L9 12L18.5 2.5Z" stroke="currentColor" strokeWidth="2" />
-                            </svg>
-                            Редактировать профиль
-                        </button>
+                {/* Основной контент */}
+                <main className={styles.dashboardMain}>
+                    <div className={styles.contentGrid}>
+                        {/* Левая колонка - Баланс и карты */}
+                        <div className={styles.leftColumn}>
+                            {/* Общий баланс */}
+                            <section className={styles.balanceCard}>
+                                <div className={styles.balanceHeader}>
+                                    <h2 className={styles.balanceTitle}>Общий баланс</h2>
+                                    <div className={styles.balanceTrend}>+5.2% за месяц</div>
+                                </div>
+                                <div className={styles.balanceAmount}>
+                                    {userData.totalBalance}
+                                </div>
+                                <div className={styles.balanceStats}>
+                                    <div className={styles.balanceStat}>
+                                        <span className={styles.statLabel}>Доходы</span>
+                                        <span className={styles.statValue}>{userData.monthlyIncome}</span>
+                                    </div>
+                                    <div className={styles.balanceStat}>
+                                        <span className={styles.statLabel}>Расходы</span>
+                                        <span className={styles.statValue}>{userData.monthlyExpenses}</span>
+                                    </div>
+                                    <div className={styles.balanceStat}>
+                                        <span className={styles.statLabel}>Экономия</span>
+                                        <span className={styles.statValue}>{userData.savings}</span>
+                                    </div>
+                                </div>
+                            </section>
 
-                        <button className={styles.securityButton}>
-                            <svg className={styles.buttonIcon} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" stroke="currentColor" strokeWidth="2" />
-                                <path d="M9 12L11 14L15 10" stroke="currentColor" strokeWidth="2" />
-                            </svg>
-                            Безопасность
-                        </button>
+                            {/* Карты */}
+                            <section className={styles.cardsSection}>
+                                <div className={styles.sectionHeader}>
+                                    <h2 className={styles.sectionTitle}>Мои карты</h2>
+                                    <button className={styles.addCardButton}>+ Добавить карту</button>
+                                </div>
+                                <div className={styles.cardsContainer}>
+                                    {cards.map((card, index) => (
+                                        <div
+                                            key={card.id}
+                                            className={`${styles.cardItem} ${index === activeCard ? styles.cardActive : ''}`}
+                                            onClick={() => setActiveCard(index)}
+                                        >
+                                            <div className={styles.cardBackground} style={{ background: card.color }}>
+                                                <div className={styles.cardContent}>
+                                                    <div className={styles.cardHeader}>
+                                                        <div className={styles.cardType}>
+                                                            {card.type === 'visa' ? 'VISA' : 'MasterCard'}
+                                                        </div>
+                                                        <div className={styles.cardChip}>◘◘◘◘</div>
+                                                    </div>
+                                                    <div className={styles.cardNumber}>
+                                                        {card.number}
+                                                    </div>
+                                                    <div className={styles.cardFooter}>
+                                                        <div className={styles.cardHolder}>
+                                                            <div className={styles.holderLabel}>Владелец</div>
+                                                            <div className={styles.holderName}>{card.holder}</div>
+                                                        </div>
+                                                        <div className={styles.cardExpiry}>
+                                                            <div className={styles.expiryLabel}>Срок действия</div>
+                                                            <div className={styles.expiryDate}>{card.expiry}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className={styles.cardBalance}>
+                                                Баланс: {card.balance}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+                        </div>
+
+                        {/* Центральная колонка - Быстрые действия и статистика */}
+                        <div className={styles.centerColumn}>
+                            {/* Быстрые действия */}
+                            <section className={styles.quickActions}>
+                                <h2 className={styles.sectionTitle}>Быстрые действия</h2>
+                                <div className={styles.actionsGrid}>
+                                    {quickActions.map((action) => (
+                                        <button key={action.id} className={styles.actionButton}>
+                                            <div className={styles.actionIcon}>{action.icon}</div>
+                                            <div className={styles.actionInfo}>
+                                                <div className={styles.actionLabel}>{action.label}</div>
+                                                <div className={styles.actionDescription}>{action.description}</div>
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </section>
+
+                            {/* Быстрый перевод */}
+                            <section className={styles.quickTransfer}>
+                                <h2 className={styles.sectionTitle}>Быстрый перевод</h2>
+                                <div className={styles.transferCard}>
+                                    <div className={styles.transferHeader}>
+                                        <div className={styles.contactAvatar}>AP</div>
+                                        <div className={styles.contactInfo}>
+                                            <div className={styles.contactName}>Анна Петрова</div>
+                                            <div className={styles.contactBank}>Тинькофф •• 7845</div>
+                                        </div>
+                                    </div>
+                                    <div className={styles.amountSection}>
+                                        <label className={styles.amountLabel}>Сумма перевода</label>
+                                        <div className={styles.amountInputWrapper}>
+                                            <input
+                                                type="text"
+                                                value={quickAmount}
+                                                onChange={(e) => setQuickAmount(e.target.value)}
+                                                placeholder="0"
+                                                className={styles.amountInput}
+                                            />
+                                            <span className={styles.currency}>₽</span>
+                                        </div>
+                                        <div className={styles.quickAmounts}>
+                                            {quickAmounts.map((amount) => (
+                                                <button
+                                                    key={amount}
+                                                    className={styles.quickAmountButton}
+                                                    onClick={() => setQuickAmount(amount)}
+                                                >
+                                                    {amount} ₽
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <button className={styles.transferButton}>
+                                        Перевести деньги
+                                    </button>
+                                </div>
+                            </section>
+                        </div>
+
+                        {/* Правая колонка - Статистика и транзакции */}
+                        <div className={styles.rightColumn}>
+                            {/* Статистика */}
+                            <section className={styles.statsSection}>
+                                <h2 className={styles.sectionTitle}>Финансовая статистика</h2>
+                                <div className={styles.statsGrid}>
+                                    {stats.map((stat, index) => (
+                                        <div key={index} className={styles.statCard}>
+                                            <div className={styles.statHeader}>
+                                                <span className={styles.statLabel}>{stat.label}</span>
+                                                <span className={`${styles.statChange} ${styles[stat.trend]}`}>
+                                                    {stat.change}
+                                                </span>
+                                            </div>
+                                            <div className={styles.statValue}>{stat.value}</div>
+                                            <div className={styles.statChart}>
+                                                <div className={styles.chartBar} style={{ height: `${70 + index * 10}%` }}></div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+
+                            {/* Последние транзакции */}
+                            <section className={styles.transactionsSection}>
+                                <div className={styles.sectionHeader}>
+                                    <h2 className={styles.sectionTitle}>Последние операции</h2>
+                                    <button className={styles.viewAllButton}>Все операции →</button>
+                                </div>
+                                <div className={styles.transactionsList}>
+                                    {recentTransactions.map((transaction) => (
+                                        <div key={transaction.id} className={styles.transactionItem}>
+                                            <div className={styles.transactionIcon}>
+                                                <span>{transaction.icon}</span>
+                                            </div>
+                                            <div className={styles.transactionInfo}>
+                                                <div className={styles.transactionName}>
+                                                    {transaction.name}
+                                                </div>
+                                                <div className={styles.transactionTime}>
+                                                    {transaction.time}
+                                                </div>
+                                            </div>
+                                            <div className={styles.transactionAmount}>
+                                                <span className={`${styles.amount} ${transaction.type === 'income' ? styles.income : styles.outcome}`}>
+                                                    {transaction.amount}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+
+                            {/* Ближайшие платежи */}
+                            <section className={styles.paymentsSection}>
+                                <h2 className={styles.sectionTitle}>Ближайшие платежи</h2>
+                                <div className={styles.paymentsList}>
+                                    <div className={styles.paymentItem}>
+                                        <div className={styles.paymentIcon}>🏠</div>
+                                        <div className={styles.paymentInfo}>
+                                            <div className={styles.paymentName}>Аренда квартиры</div>
+                                            <div className={styles.paymentDate}>Завтра, 10:00</div>
+                                        </div>
+                                        <div className={styles.paymentAmount}>-45 000 ₽</div>
+                                    </div>
+                                    <div className={styles.paymentItem}>
+                                        <div className={styles.paymentIcon}>📡</div>
+                                        <div className={styles.paymentInfo}>
+                                            <div className={styles.paymentName}>Интернет</div>
+                                            <div className={styles.paymentDate}>15 дек</div>
+                                        </div>
+                                        <div className={styles.paymentAmount}>-1 200 ₽</div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
                     </div>
-
-                    <button
-                        className={styles.logoutButton}
-                        onClick={handleLogout}
-                    >
-                        <svg className={styles.buttonIcon} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" strokeWidth="2" />
-                            <path d="M16 17L21 12L16 7" stroke="currentColor" strokeWidth="2" />
-                            <path d="M21 12H9" stroke="currentColor" strokeWidth="2" />
-                        </svg>
-                        Выйти из системы
-                    </button>
-                </div>
-
-                {/* Футер */}
-                <div className={styles.profileFooter}>
-                    <div className={styles.securityBadge}>
-                        <svg className={styles.securityIcon} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 22C12 22 20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" stroke="currentColor" strokeWidth="2" />
-                            <path d="M9 12L11 14L15 10" stroke="currentColor" strokeWidth="2" />
-                        </svg>
-                        <span>Защищено SSL-шифрованием</span>
-                    </div>
-                </div>
+                </main>
             </div>
         </div>
     );
 };
+
+export default Dashboard;

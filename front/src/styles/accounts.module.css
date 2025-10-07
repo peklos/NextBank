@@ -1,0 +1,773 @@
+/* Базовые стили */
+.accountsContainer {
+    min-height: 100vh;
+    padding: 2rem;
+    position: relative;
+    overflow-x: hidden;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+/* Анимированный фон */
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.gradientBlob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.08;
+    animation: float 20s ease-in-out infinite;
+}
+
+.gradientBlob:nth-child(1) {
+    width: 600px;
+    height: 600px;
+    background: linear-gradient(45deg, #3b82f6, #06b6d4);
+    top: 10%;
+    left: 5%;
+    animation-delay: 0s;
+}
+
+.gradientBlob:nth-child(2) {
+    width: 500px;
+    height: 500px;
+    background: linear-gradient(45deg, #6366f1, #8b5cf6);
+    top: 60%;
+    right: 5%;
+    animation-delay: -7s;
+}
+
+.gradientBlob:nth-child(3) {
+    width: 550px;
+    height: 550px;
+    background: linear-gradient(45deg, #06b6d4, #10b981);
+    bottom: 10%;
+    left: 20%;
+    animation-delay: -14s;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1) rotate(0deg);
+    }
+
+    33% {
+        transform: translateY(-20px) scale(1.05) rotate(2deg);
+    }
+
+    66% {
+        transform: translateY(10px) scale(0.95) rotate(-2deg);
+    }
+}
+
+/* Основной контент */
+.accountsContent {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+}
+
+/* Хедер страницы */
+.pageHeader {
+    margin-bottom: 3rem;
+}
+
+.headerMain {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+.titleSection {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.pageTitle {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff, #cbd5e1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.titleIcon {
+    font-size: 2.5rem;
+}
+
+.pageSubtitle {
+    color: #94a3b8;
+    font-size: 1.1rem;
+    margin: 0;
+    font-weight: 500;
+}
+
+.headerStats {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.statCard {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    min-width: 140px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.statLabel {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    word-break: break-word;
+}
+
+.statValue {
+    color: #f1f5f9;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* Основной контент */
+.accountsMain {
+    margin-bottom: 2rem;
+}
+
+.contentGrid {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+/* Карточки */
+.filtersCard,
+.actionsCard,
+.statsCard {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.2);
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.cardTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #f1f5f9;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.cardIcon {
+    font-size: 1.5rem;
+}
+
+/* Фильтры */
+.filtersGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.filterSection {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.filterTitle {
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0;
+}
+
+.filterButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.filterBtn {
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.filterBtn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.filterBtnActive {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.4);
+    color: #3b82f6;
+}
+
+/* Быстрые действия */
+.actionsList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.actionButton {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.actionButton:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.actionIcon {
+    font-size: 1.25rem;
+    width: 24px;
+    text-align: center;
+}
+
+.actionText {
+    flex: 1;
+}
+
+/* Статистика */
+.statsList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.statItem {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.statIcon {
+    font-size: 1.5rem;
+    width: 40px;
+    text-align: center;
+}
+
+.statInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+}
+
+.statName {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.statValue.income {
+    color: #10b981;
+}
+
+.statValue.outcome {
+    color: #ef4444;
+}
+
+/* Правая колонка */
+.accountsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.sectionTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #f1f5f9;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.accountsCount {
+    color: #94a3b8;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.searchBox {
+    position: relative;
+    width: 300px;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #f1f5f9;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.searchInput:focus {
+    outline: none;
+    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.searchInput::placeholder {
+    color: #94a3b8;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 1rem;
+}
+
+/* Сетка счетов */
+.accountsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.accountCard {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.accountCard:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.accountCardSelected {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.accountHeader {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.accountIcon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.accountInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.accountName {
+    color: #f1f5f9;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.accountNumber {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.accountStatus {
+    display: flex;
+    align-items: center;
+}
+
+.statusBadge {
+    padding: 0.25rem 0.75rem;
+    background: rgba(16, 185, 129, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    border-radius: 20px;
+    color: #10b981;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.accountBalance {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.balance {
+    color: #f1f5f9;
+    font-size: 1.75rem;
+    font-weight: 800;
+}
+
+.negativeBalance {
+    color: #ef4444;
+}
+
+.currency {
+    color: #94a3b8;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.accountRate {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 1rem;
+}
+
+.rateLabel {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.rateValue {
+    color: #10b981;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.cardInfo {
+    padding: 0.75rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 1rem;
+}
+
+.cardNumber {
+    color: #f1f5f9;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.cardExpiry {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.creditInfo {
+    padding: 0.75rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 1rem;
+}
+
+.limitBar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    margin-bottom: 0.5rem;
+    overflow: hidden;
+}
+
+.limitProgress {
+    height: 100%;
+    background: linear-gradient(90deg, #f59e0b, #f97316);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+.limitText {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.accountFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.transactionsInfo {
+    display: flex;
+    align-items: center;
+}
+
+.transactionsText {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.accountActions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.actionBtn {
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #cbd5e1;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.actionBtn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* Кнопка добавления счета */
+.addAccountSection {
+    display: flex;
+    justify-content: center;
+}
+
+.addAccountButton {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #cbd5e1;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.addAccountButton:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.addIcon {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* Адаптивность */
+@media (max-width: 1200px) {
+    .contentGrid {
+        grid-template-columns: 300px 1fr;
+        gap: 1.5rem;
+    }
+
+    .accountsGrid {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+}
+
+@media (max-width: 1024px) {
+    .contentGrid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .headerMain {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+
+    .headerStats {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 768px) {
+    .accountsContainer {
+        padding: 1rem;
+    }
+
+    .pageTitle {
+        font-size: 2rem;
+    }
+
+    .titleIcon {
+        font-size: 2rem;
+    }
+
+    .headerStats {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .statCard {
+        flex: 1;
+        min-width: 140px;
+    }
+
+    .accountsHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .searchBox {
+        width: 100%;
+    }
+
+    .accountsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .accountFooter {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .accountActions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .actionBtn {
+        flex: 1;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .accountsContainer {
+        padding: 0.5rem;
+    }
+
+    .filtersCard,
+    .actionsCard,
+    .statsCard,
+    .accountCard {
+        padding: 1.25rem;
+    }
+
+    .pageTitle {
+        font-size: 1.75rem;
+    }
+
+    .statCard {
+        min-width: 100px;
+        padding: 1rem;
+    }
+
+    .statValue {
+        font-size: 1.25rem;
+    }
+
+    .gradientBlob:nth-child(1) {
+        width: 300px;
+        height: 300px;
+    }
+
+    .gradientBlob:nth-child(2) {
+        width: 250px;
+        height: 250px;
+    }
+
+    .gradientBlob:nth-child(3) {
+        width: 280px;
+        height: 280px;
+    }
+}
+
+/* Темная тема поддержка */
+@media (prefers-color-scheme: dark) {
+    .accountsContainer {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+}

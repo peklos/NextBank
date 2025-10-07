@@ -1,0 +1,853 @@
+/* Базовые стили */
+.dashboardContainer {
+    min-height: 100vh;
+    padding: 2rem;
+    position: relative;
+    overflow-x: hidden;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+/* Анимированный фон */
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.gradientBlob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.08;
+    animation: float 20s ease-in-out infinite;
+}
+
+.gradientBlob:nth-child(1) {
+    width: 600px;
+    height: 600px;
+    background: linear-gradient(45deg, #3b82f6, #06b6d4);
+    top: 10%;
+    left: 5%;
+    animation-delay: 0s;
+}
+
+.gradientBlob:nth-child(2) {
+    width: 500px;
+    height: 500px;
+    background: linear-gradient(45deg, #6366f1, #8b5cf6);
+    top: 60%;
+    right: 5%;
+    animation-delay: -7s;
+}
+
+.gradientBlob:nth-child(3) {
+    width: 550px;
+    height: 550px;
+    background: linear-gradient(45deg, #06b6d4, #10b981);
+    bottom: 10%;
+    left: 20%;
+    animation-delay: -14s;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1) rotate(0deg);
+    }
+
+    33% {
+        transform: translateY(-20px) scale(1.05) rotate(2deg);
+    }
+
+    66% {
+        transform: translateY(10px) scale(0.95) rotate(-2deg);
+    }
+}
+
+/* Основной контент */
+.dashboardContent {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+}
+
+/* Хедер */
+.dashboardHeader {
+    margin-bottom: 3rem;
+}
+
+.headerMain {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+.welcomeSection {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.welcomeTitle {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff, #cbd5e1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.userName {
+    color: #3b82f6;
+}
+
+.welcomeSubtitle {
+    color: #94a3b8;
+    font-size: 1.1rem;
+    margin: 0;
+    font-weight: 500;
+}
+
+.dateSection {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.currentDate {
+    color: #cbd5e1;
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: right;
+}
+
+.notificationBell {
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.notificationBell:hover {
+    transform: scale(1.1);
+}
+
+/* Основной контент */
+.dashboardMain {
+    margin-bottom: 2rem;
+}
+
+.contentGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+/* Карточки общие стили */
+.balanceCard,
+.cardsSection,
+.quickActions,
+.quickTransfer,
+.statsSection,
+.transactionsSection,
+.paymentsSection {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.2);
+}
+
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.sectionTitle {
+    color: #f1f5f9;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+/* Карточка баланса */
+.balanceHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.balanceTitle {
+    color: #f1f5f9;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.balanceTrend {
+    color: #10b981;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.25rem 0.75rem;
+    background: rgba(16, 185, 129, 0.2);
+    border-radius: 12px;
+}
+
+.balanceAmount {
+    color: #f1f5f9;
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+}
+
+.balanceStats {
+    display: flex;
+    gap: 1rem;
+}
+
+.balanceStat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+}
+
+.statLabel {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.statValue {
+    color: #f1f5f9;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+/* Карты */
+.addCardButton {
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.addCardButton:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.cardsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.cardItem {
+    cursor: pointer;
+}
+
+.cardActive .cardBackground {
+    transform: scale(1.02);
+}
+
+.cardBackground {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 0.75rem;
+    transition: transform 0.3s ease;
+}
+
+.cardContent {
+    color: white;
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.cardType {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.cardChip {
+    font-size: 1.5rem;
+}
+
+.cardNumber {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.cardFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.holderLabel,
+.expiryLabel {
+    font-size: 0.7rem;
+    opacity: 0.8;
+    margin-bottom: 0.25rem;
+}
+
+.holderName,
+.expiryDate {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.cardBalance {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* Быстрые действия */
+.actionsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.actionButton {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    color: #cbd5e1;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.actionButton:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.actionIcon {
+    font-size: 1.5rem;
+    width: 40px;
+    text-align: center;
+}
+
+.actionInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.actionLabel {
+    color: #f1f5f9;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.actionDescription {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Быстрый перевод */
+.transferCard {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 1.5rem;
+}
+
+.transferHeader {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.contactAvatar {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.contactInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.contactName {
+    color: #f1f5f9;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.contactBank {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.amountSection {
+    margin-bottom: 1.5rem;
+}
+
+.amountLabel {
+    display: block;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+}
+
+.amountInputWrapper {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.amountInput {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #f1f5f9;
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.amountInput:focus {
+    outline: none;
+    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.currency {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.quickAmounts {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.quickAmountButton {
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.quickAmountButton:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.transferButton {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.transferButton:hover {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    transform: translateY(-1px);
+}
+
+/* Статистика */
+.statsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.statCard {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1.25rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.statHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.statChange {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 8px;
+}
+
+.statChange.up {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+}
+
+.statValue {
+    color: #f1f5f9;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.statChart {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.chartBar {
+    background: linear-gradient(90deg, #3b82f6, #06b6d4);
+    border-radius: 0 2px 2px 0;
+    transition: width 0.3s ease;
+}
+
+/* Транзакции */
+.viewAllButton {
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.viewAllButton:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.transactionsList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.transactionItem {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.transactionItem:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.transactionIcon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.transactionInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.transactionName {
+    color: #f1f5f9;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.transactionTime {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.transactionAmount {
+    display: flex;
+    align-items: center;
+}
+
+.amount {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.amount.income {
+    color: #10b981;
+}
+
+.amount.outcome {
+    color: #ef4444;
+}
+
+/* Платежи */
+.paymentsList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.paymentItem {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+}
+
+.paymentIcon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.paymentInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.paymentName {
+    color: #f1f5f9;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.paymentDate {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.paymentAmount {
+    color: #ef4444;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+/* Адаптивность */
+@media (max-width: 1200px) {
+    .contentGrid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .rightColumn {
+        grid-column: 1 / -1;
+    }
+
+    .statsGrid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 1024px) {
+    .contentGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .headerMain {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+
+    .dateSection {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .statsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboardContainer {
+        padding: 1rem;
+    }
+
+    .welcomeTitle {
+        font-size: 2rem;
+    }
+
+    .balanceAmount {
+        font-size: 2rem;
+    }
+
+    .actionsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .statsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .balanceStats {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .quickAmounts {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboardContainer {
+        padding: 0.5rem;
+    }
+
+    .balanceCard,
+    .cardsSection,
+    .quickActions,
+    .quickTransfer,
+    .statsSection,
+    .transactionsSection,
+    .paymentsSection {
+        padding: 1.25rem;
+    }
+
+    .welcomeTitle {
+        font-size: 1.75rem;
+    }
+
+    .cardBackground {
+        padding: 1rem;
+    }
+
+    .cardNumber {
+        font-size: 1rem;
+    }
+
+    .gradientBlob:nth-child(1) {
+        width: 300px;
+        height: 300px;
+    }
+
+    .gradientBlob:nth-child(2) {
+        width: 250px;
+        height: 250px;
+    }
+
+    .gradientBlob:nth-child(3) {
+        width: 280px;
+        height: 280px;
+    }
+}
+
+/* Темная тема поддержка */
+@media (prefers-color-scheme: dark) {
+    .dashboardContainer {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+}
+
+/* Кастомный скроллбар */
+.transactionsList::-webkit-scrollbar {
+    width: 4px;
+}
+
+.transactionsList::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+}
+
+.transactionsList::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+}
+
+.transactionsList::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}

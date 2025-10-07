@@ -1,15 +1,14 @@
-/* Базовые стили - полноэкранная страница */
+/* Базовые стили */
 .profileContainer {
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    padding: 2rem;
     position: relative;
     overflow-x: hidden;
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
 }
 
 /* Анимированный фон */
-.profileBackground {
+.background {
     position: fixed;
     top: 0;
     left: 0;
@@ -21,36 +20,36 @@
 .gradientBlob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(100px);
+    filter: blur(80px);
     opacity: 0.08;
-    animation: float 25s ease-in-out infinite;
+    animation: float 20s ease-in-out infinite;
 }
 
-.blob1 {
-    width: 800px;
-    height: 800px;
+.gradientBlob:nth-child(1) {
+    width: 600px;
+    height: 600px;
     background: linear-gradient(45deg, #3b82f6, #06b6d4);
     top: 10%;
     left: 5%;
     animation-delay: 0s;
 }
 
-.blob2 {
-    width: 700px;
-    height: 700px;
+.gradientBlob:nth-child(2) {
+    width: 500px;
+    height: 500px;
     background: linear-gradient(45deg, #6366f1, #8b5cf6);
     top: 60%;
     right: 5%;
-    animation-delay: -8s;
+    animation-delay: -7s;
 }
 
-.blob3 {
-    width: 750px;
-    height: 750px;
+.gradientBlob:nth-child(3) {
+    width: 550px;
+    height: 550px;
     background: linear-gradient(45deg, #06b6d4, #10b981);
     bottom: 10%;
-    left: 15%;
-    animation-delay: -16s;
+    left: 20%;
+    animation-delay: -14s;
 }
 
 @keyframes float {
@@ -61,121 +60,38 @@
     }
 
     33% {
-        transform: translateY(-30px) scale(1.05) rotate(1deg);
+        transform: translateY(-20px) scale(1.05) rotate(2deg);
     }
 
     66% {
-        transform: translateY(15px) scale(0.95) rotate(-1deg);
+        transform: translateY(10px) scale(0.95) rotate(-2deg);
     }
 }
 
-/* Хедер */
-.header {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 1rem 2rem;
+/* Основной контент */
+.profileContent {
+    max-width: 1200px;
+    margin: 0 auto;
     position: relative;
     z-index: 10;
 }
 
-.headerContent {
-    max-width: 1400px;
-    margin: 0 auto;
+/* Хедер профиля */
+.profileHeader {
+    margin-bottom: 3rem;
+}
+
+.headerMain {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-}
-
-.bankLogo {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.logoIcon {
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, #3b82f6, #2563eb);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    padding: 0.4rem;
-}
-
-.bankName {
-    font-size: 1.75rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, #3b82f6, #60a5fa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: -0.025em;
-    margin: 0;
-}
-
-.nav {
-    display: flex;
+    align-items: flex-start;
     gap: 2rem;
-    align-items: center;
-}
-
-.navLink,
-.navActive {
-    color: #cbd5e1;
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.95rem;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-}
-
-.navLink:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.navActive {
-    color: white;
-    background: rgba(59, 130, 246, 0.2);
-    border: 1px solid rgba(59, 130, 246, 0.3);
-}
-
-/* Основной контент */
-.mainContent {
-    flex: 1;
-    position: relative;
-    z-index: 5;
-    padding: 2rem;
-}
-
-.profileSection {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 300px 1fr;
-    gap: 2rem;
-    align-items: start;
-}
-
-/* Боковая панель */
-.sidebar {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 20px;
-    padding: 2rem;
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
-    position: sticky;
-    top: 2rem;
 }
 
 .avatarSection {
-    text-align: center;
-    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
 }
 
 .avatar {
@@ -186,378 +102,423 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1rem;
     box-shadow: 0 12px 30px -8px rgba(59, 130, 246, 0.4);
-    border: 4px solid white;
+    border: 4px solid rgba(255, 255, 255, 0.1);
 }
 
-.avatarText {
+.avatarInitials {
     color: white;
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 700;
     letter-spacing: 0.05em;
 }
 
 .userInfo {
-    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .userName {
-    color: #1e293b;
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin: 0 0 0.5rem 0;
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff, #cbd5e1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+    line-height: 1.1;
 }
 
-.userEmail {
-    color: #64748b;
-    font-size: 0.9rem;
-    margin: 0.5rem 0 0 0;
+.userBadges {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
 }
 
-.statusBadge {
+.badgePrimary {
     background: linear-gradient(135deg, #3b82f6, #2563eb);
     color: white;
-    padding: 0.4rem 1rem;
-    border-radius: 16px;
-    font-size: 0.75rem;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.badgeSecondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #cbd5e1;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.userId {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin: 0;
+    font-weight: 500;
+}
+
+.headerStats {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 200px;
+}
+
+.statItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.statLabel {
+    color: #94a3b8;
+    font-size: 0.8rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
-.quickStats {
-    border-top: 1px solid #e2e8f0;
-    padding-top: 1.5rem;
-}
-
-.statItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.statItem:last-child {
-    margin-bottom: 0;
-}
-
-.statLabel {
-    color: #64748b;
-    font-size: 0.8rem;
-    font-weight: 500;
-}
-
 .statValue {
-    color: #1e293b;
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-.statValueActive {
-    color: #10b981;
-    font-size: 0.85rem;
+    color: #e2e8f0;
+    font-size: 0.95rem;
     font-weight: 600;
 }
 
 /* Основной контент */
-.content {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 20px;
-    padding: 2.5rem;
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+.profileMain {
+    margin-bottom: 2rem;
 }
 
-.contentHeader {
-    margin-bottom: 2.5rem;
-}
-
-.pageTitle {
-    color: #1e293b;
-    font-size: 2rem;
-    font-weight: 800;
-    margin: 0 0 0.5rem 0;
-    background: linear-gradient(135deg, #1e40af, #3b82f6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.pageSubtitle {
-    color: #64748b;
-    font-size: 1.1rem;
-    margin: 0;
-    font-weight: 500;
-}
-
-/* Сетка карточек */
-.infoGrid {
+.contentGrid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
+    grid-template-columns: 1fr 400px;
+    gap: 2rem;
+    align-items: start;
 }
 
+/* Карточки */
 .infoCard,
 .actionsCard,
-.logoutCard {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 16px;
-    padding: 1.5rem;
-    box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.08);
+.logoutCard,
+.systemCard {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
 }
 
-.actionsCard {
-    grid-column: 1 / -1;
-}
-
-.logoutCard {
-    grid-column: 1 / -1;
-    background: linear-gradient(135deg, #fef2f2, #fecaca);
-    border: 1px solid #fca5a5;
+.infoCard:hover,
+.actionsCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.3);
 }
 
 .cardHeader {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
 }
 
 .cardTitle {
-    color: #1e293b;
-    font-size: 1.125rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #f1f5f9;
+    font-size: 1.25rem;
     font-weight: 700;
     margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
 }
 
-.editButtonSmall {
-    background: none;
-    border: none;
-    color: #64748b;
-    cursor: pointer;
+.cardIcon {
+    font-size: 1.5rem;
+}
+
+.editButton {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
     padding: 0.5rem;
-    border-radius: 8px;
+    color: #cbd5e1;
+    cursor: pointer;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.editButtonSmall:hover {
-    color: #3b82f6;
-    background: rgba(59, 130, 246, 0.1);
+.editButton:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    transform: scale(1.05);
 }
 
+.editButton svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Списки информации */
 .infoList {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.25rem;
 }
 
 .infoRow {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid #f1f5f9;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
 }
 
-.infoRow:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
+.infoRow:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(5px);
+}
+
+.infoIcon {
+    font-size: 1.25rem;
+    width: 40px;
+    text-align: center;
+}
+
+.infoContent {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
 }
 
 .infoLabel {
-    color: #64748b;
-    font-size: 0.85rem;
+    color: #94a3b8;
+    font-size: 0.8rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
 .infoValue {
-    color: #1e293b;
-    font-size: 0.9rem;
+    color: #f1f5f9;
+    font-size: 0.95rem;
     font-weight: 500;
-    text-align: right;
 }
 
-/* Кнопки действий */
-.actionsList {
+/* Настройки безопасности */
+.securityList {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
+}
+
+.securityItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.securityInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.securityName {
+    color: #f1f5f9;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.securityStatus {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.toggle {
+    width: 50px;
+    height: 26px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 13px;
+    padding: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.toggleActive {
+    background: #10b981;
+}
+
+.toggleCircle {
+    width: 22px;
+    height: 22px;
+    background: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    transform: translateX(0);
+}
+
+.toggleActive .toggleCircle {
+    transform: translateX(24px);
+}
+
+/* Быстрые действия */
+.actionsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
 }
 
 .actionButton {
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 0.75rem;
-    padding: 1rem 1.25rem;
-    border: 2px solid #e2e8f0;
+    padding: 1.5rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
-    background: white;
-    color: #374151;
-    font-size: 0.9rem;
-    font-weight: 600;
+    color: #cbd5e1;
     cursor: pointer;
     transition: all 0.3s ease;
-    text-decoration: none;
-    width: 100%;
-}
-
-.actionButton:hover {
-    border-color: #3b82f6;
-    background: #f8fafc;
-    transform: none;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.buttonIcon {
-    width: 1.25rem;
-    height: 1.25rem;
-}
-
-/* Кнопка выхода */
-.logoutText {
-    color: #b91c1c;
-    font-size: 0.9rem;
-    margin-bottom: 1.5rem;
     text-align: center;
 }
 
+.actionButton:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.actionIcon {
+    font-size: 1.5rem;
+}
+
+.actionText {
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* Выход из системы */
+.logoutCard {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.05));
+    border-color: rgba(220, 38, 38, 0.3);
+}
+
+.logoutText {
+    color: #fca5a5;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    line-height: 1.5;
+}
+
 .logoutButton {
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
     padding: 1rem 2rem;
-    border: 2px solid #dc2626;
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    border: none;
     border-radius: 12px;
-    background: #dc2626;
     color: white;
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    width: 100%;
 }
 
 .logoutButton:hover {
-    background: #b91c1c;
-    border-color: #b91c1c;
-    transform: none;
-    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px -4px rgba(220, 38, 38, 0.4);
 }
 
-/* Футер */
-.footer {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 1.5rem 2rem;
-    position: relative;
-    z-index: 10;
-    margin-top: auto;
+.logoutIcon {
+    font-size: 1.25rem;
 }
 
-.footerContent {
-    max-width: 1400px;
-    margin: 0 auto;
+/* Системная информация */
+.systemCard {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.systemInfo {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-.securityBadge {
+.systemItem {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 0.5rem;
-    color: #10b981;
-    font-size: 0.8rem;
-    font-weight: 600;
-    padding: 0.75rem 1.5rem;
-    background: rgba(16, 185, 129, 0.1);
-    border-radius: 20px;
-    border: 1px solid rgba(16, 185, 129, 0.2);
+    padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.securityIcon {
-    width: 1rem;
-    height: 1rem;
+.systemItem:last-child {
+    border-bottom: none;
+}
+
+.systemLabel {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.systemValue {
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    font-weight: 600;
 }
 
 /* Адаптивность */
-@media (max-width: 1200px) {
-    .profileSection {
+@media (max-width: 1024px) {
+    .contentGrid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }
 
-    .sidebar {
-        position: static;
+    .headerMain {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+
+    .headerStats {
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
     }
 }
 
 @media (max-width: 768px) {
-    .mainContent {
+    .profileContainer {
         padding: 1rem;
-    }
-
-    .header {
-        padding: 1rem;
-    }
-
-    .headerContent {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .nav {
-        gap: 1rem;
-    }
-
-    .content {
-        padding: 1.5rem;
-    }
-
-    .infoGrid {
-        grid-template-columns: 1fr;
-    }
-
-    .gradientBlob {
-        filter: blur(60px);
-    }
-
-    .blob1 {
-        width: 400px;
-        height: 400px;
-    }
-
-    .blob2 {
-        width: 350px;
-        height: 350px;
-    }
-
-    .blob3 {
-        width: 380px;
-        height: 380px;
-    }
-}
-
-@media (max-width: 480px) {
-    .mainContent {
-        padding: 0.5rem;
-    }
-
-    .content {
-        padding: 1.25rem;
-    }
-
-    .sidebar {
-        padding: 1.5rem;
     }
 
     .avatar {
@@ -565,82 +526,285 @@
         height: 80px;
     }
 
-    .avatarText {
-        font-size: 1.25rem;
+    .avatarInitials {
+        font-size: 1.5rem;
     }
 
-    .pageTitle {
-        font-size: 1.5rem;
+    .userName {
+        font-size: 2rem;
+    }
+
+    .actionsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .infoCard,
+    .actionsCard,
+    .logoutCard,
+    .systemCard {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .profileContainer {
+        padding: 0.5rem;
+    }
+
+    .avatarSection {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .userInfo {
+        align-items: center;
+    }
+
+    .userBadges {
+        justify-content: center;
+    }
+
+    .gradientBlob:nth-child(1) {
+        width: 300px;
+        height: 300px;
+    }
+
+    .gradientBlob:nth-child(2) {
+        width: 250px;
+        height: 250px;
+    }
+
+    .gradientBlob:nth-child(3) {
+        width: 280px;
+        height: 280px;
     }
 }
 
 /* Темная тема поддержка */
 @media (prefers-color-scheme: dark) {
+    .profileContainer {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    }
+}
 
-    .sidebar,
-    .content,
-    .infoCard,
-    .actionsCard {
-        background: rgba(15, 23, 42, 0.95);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        color: white;
+/* Добавляем эти стили в существующий CSS файл */
+
+/* Карточка счетов */
+.accountsCard {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.accountsCard:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.3);
+}
+
+.totalBalance {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+}
+
+.balanceLabel {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.balanceAmount {
+    color: #10b981;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* Список счетов */
+.accountsList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.accountItem {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.accountItem:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(5px);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.accountIcon {
+    width: 50px;
+    height: 50px;
+    background: rgba(59, 130, 246, 0.1);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.accountInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+    gap: 1rem;
+}
+
+.accountMain {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.accountName {
+    color: #f1f5f9;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.accountNumber {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 500;
+    font-family: 'Courier New', monospace;
+}
+
+.accountBalance {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+}
+
+.balance {
+    color: #10b981;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.currency {
+    color: #94a3b8;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.accountActions {
+    display: flex;
+    align-items: center;
+}
+
+.actionBtn {
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: #cbd5e1;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.actionBtn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    transform: scale(1.1);
+}
+
+/* Кнопка показа всех счетов */
+.viewAllButton {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.viewAllButton:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.viewAllButton svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Адаптивность для счетов */
+@media (max-width: 768px) {
+    .accountInfo {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
     }
 
-    .userName,
-    .cardTitle,
-    .infoValue {
-        color: #f1f5f9;
+    .accountBalance {
+        align-items: flex-start;
     }
 
-    .userEmail,
-    .statLabel,
-    .infoLabel {
-        color: #cbd5e1;
+    .balanceAmount {
+        font-size: 1.25rem;
     }
 
-    .statValue {
-        color: #f1f5f9;
+    .accountIcon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .accountsCard {
+        padding: 1.5rem;
     }
 
-    .actionButton {
-        background: #1e293b;
-        border-color: #374151;
-        color: #cbd5e1;
+    .accountItem {
+        padding: 1rem;
     }
 
-    .actionButton:hover {
-        background: #374151;
-        border-color: #3b82f6;
+    .accountName {
+        font-size: 0.9rem;
     }
 
-    .infoRow {
-        border-bottom-color: #374151;
-    }
-
-    .logoutCard {
-        background: linear-gradient(135deg, #431313, #7f1d1d);
-        border-color: #dc2626;
-    }
-
-    .logoutText {
-        color: #fca5a5;
-    }
-
-    .navLink {
-        color: #cbd5e1;
-    }
-
-    .navLink:hover {
-        color: white;
-        background: rgba(255, 255, 255, 0.1);
-    }
-
-    .navActive {
-        color: white;
-        background: rgba(59, 130, 246, 0.2);
-    }
-
-    .avatar {
-        border-color: #1e293b;
+    .balance {
+        font-size: 1rem;
     }
 }
