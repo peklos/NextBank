@@ -10,11 +10,20 @@
     box-sizing: border-box;
     position: sticky;
     top: 0;
+    left: 0;
+    right: 0;
 }
 
 /* Фиксируем body когда меню открыто */
 body.menu-open {
     overflow: hidden;
+}
+
+/* Глобальные стили для предотвращения горизонтального скролла */
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
 }
 
 .headerContent {
@@ -24,6 +33,7 @@ body.menu-open {
     justify-content: space-between;
     align-items: center;
     position: relative;
+    width: 100%;
 }
 
 .bankLogo {
@@ -183,11 +193,6 @@ body.menu-open {
     background: white;
 }
 
-/* Overlay для мобильного меню - УБИРАЕМ, т.к. меню на весь экран */
-.overlay {
-    display: none;
-}
-
 /* ===== АДАПТИВНОСТЬ ===== */
 
 /* Большие планшеты (769px - 1024px) */
@@ -219,6 +224,9 @@ body.menu-open {
 @media (max-width: 768px) {
     .header {
         padding: 0.875rem 1.25rem;
+        width: 100%;
+        max-width: 100vw;
+        box-sizing: border-box;
     }
 
     .menuToggle {
@@ -228,51 +236,39 @@ body.menu-open {
     .nav {
         position: fixed;
         top: 0;
-        right: -100%;
-        /* Меняем с right на right для полного экрана */
+        left: 0;
         width: 100vw;
-        /* На весь экран по ширине */
         height: 100vh;
-        /* На весь экран по высоте */
         background: #0f172a;
-        /* Полностью непрозрачный фон */
         flex-direction: column;
         justify-content: center;
-        /* Центрируем по вертикали */
         align-items: center;
-        /* Центрируем по горизонтали */
         padding: 2rem;
         gap: 1.5rem;
-        /* Увеличиваем расстояние между ссылками */
-        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 999;
-        /* Убираем все эффекты прозрачности */
         backdrop-filter: none;
         border: none;
+        transform: translateX(-100%);
     }
 
     .navActive {
-        right: 0;
-        /* Показываем меню */
+        transform: translateX(0);
     }
 
     .navLink {
         padding: 1.5rem 2rem;
-        /* Увеличиваем размер кнопок */
         font-size: 1.2rem;
-        /* Увеличиваем шрифт */
         border-radius: 16px;
         text-align: center;
         border: 2px solid rgba(255, 255, 255, 0.1);
         margin-bottom: 0;
         transform: translateX(-30px);
         opacity: 0;
-        animation: slideInright 0.4s ease forwards;
+        animation: slideInRight 0.4s ease forwards;
         background: rgba(255, 255, 255, 0.05);
-        width: 250px;
-        /* Фиксированная ширина для кнопок */
+        width: min(250px, 80vw);
         max-width: 80%;
-        /* Ограничиваем максимальную ширину */
     }
 
     .navLink:nth-child(1) {
@@ -315,7 +311,7 @@ body.menu-open {
     .navLink {
         padding: 1.25rem 1.75rem;
         font-size: 1.1rem;
-        width: 220px;
+        width: min(220px, 75vw);
     }
 
     .bankName {
@@ -342,11 +338,11 @@ body.menu-open {
     .navLink {
         padding: 1rem 1.5rem;
         font-size: 1rem;
-        width: 200px;
+        width: min(200px, 70vw);
     }
 
     .bankLogo {
-        gap: 0.625rem;
+        gap: 0.725rem;
     }
 
     .bankName {
@@ -361,7 +357,7 @@ body.menu-open {
 
     .menuToggle {
         width: 26px;
-        height: 18px;
+        height: 20px;
     }
 }
 
@@ -383,12 +379,12 @@ body.menu-open {
     .navLink {
         padding: 0.875rem 1.25rem;
         font-size: 0.95rem;
-        width: 180px;
+        width: min(180px, 65vw);
     }
 
     .menuToggle {
         width: 24px;
-        height: 17px;
+        height: 20px;
     }
 }
 
@@ -406,7 +402,7 @@ body.menu-open {
 }
 
 /* Анимации */
-@keyframes slideInright {
+@keyframes slideInRight {
     from {
         transform: translateX(-30px);
         opacity: 0;
@@ -451,10 +447,10 @@ body.menu-open {
     }
 
     .nav {
-        transition: right 0.12s ease;
+        transition: transform 0.12s ease;
     }
 
-    @keyframes slideInright {
+    @keyframes slideInRight {
         from {
             opacity: 0;
         }
@@ -476,7 +472,7 @@ body.menu-open {
     }
 }
 
-/* Фикс для скролла на мобильных */
+/* Фикс для предотвращения горизонтального скролла */
 @media (max-width: 768px) {
 
     html,
@@ -487,10 +483,25 @@ body.menu-open {
     }
 
     .header {
-        width: 100vw;
+        width: 100%;
+        max-width: 100vw;
+        left: 0;
+        right: 0;
     }
 
     .headerContent {
         width: 100%;
+        max-width: 100%;
     }
 }
+
+/* Дополнительные гарантии от горизонтального скролла */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+

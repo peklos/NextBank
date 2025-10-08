@@ -1,16 +1,25 @@
 import React, { useState } from 'react';
 import styles from '../styles/register.module.css';
 import { NavLink } from 'react-router-dom';
+import { registerClient } from '../api/clients';
+import { setUser } from '../features/auth/authSlice';
+import { useDispatch } from 'react-redux';
 
 const Register = () => {
     const [formData, setFormData] = useState({
-        fullName: '',
+        firstName: '',
+        lastName: '',
+        patronymic: '',
         email: '',
         phone: '',
         password: '',
         confirmPassword: '',
         agreeTerms: false
     });
+
+    const [error, setError] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -20,9 +29,115 @@ const Register = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const dispatch = useDispatch()
+
+    const toggleConfirmPasswordVisibility = () => {
+        setShowConfirmPassword(!showConfirmPassword);
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Здесь будет логика регистрации
+
+        setError('')
+
+        // 1. Проверка заполненности всех обязательных полей
+        if (!formData.email || !formData.firstName || !formData.lastName || !formData.phone || !formData.password || !formData.confirmPassword) {
+            setError('Заполните все поля')
+            return
+        }
+
+        // 2. Проверка ФИО 
+        if (formData.firstName.length > 50) {
+            setError('Имя не может быть длиннее 50 символов')
+            return
+        }
+
+        if (formData.lastName.length > 50) {
+            setError('Фамилия не может быть длиннее 50 символов')
+            return
+        }
+
+        const russianRegex = /^[а-яА-ЯёЁ\s\-]*$/;
+        if (!russianRegex.test(formData.firstName) ||
+            !russianRegex.test(formData.lastName) ||
+            !russianRegex.test(formData.patronymic)) {
+            setError('ФИО должно содержать только русские буквы')
+            return
+        }
+
+        // 3. Проверка почты
+        if (formData.email.length > 100) {
+            setError('Почта не может быть длиннее 100 символов')
+            return
+        }
+
+        const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z]{2,})+$/
+        if (!emailRegex.test(formData.email)) {
+            setError('Некорректный email')
+            return
+        }
+
+        // 4. Проверка телефона
+        if (formData.phone.length > 20) {
+            setError('Телефон не может быть длиннее 20 символов')
+            return
+        }
+
+        const phoneRegex = /^\+?[0-9]+$/
+        if (!phoneRegex.test(formData.phone)) {
+            setError('Телефон должен содержать только цифры')
+            return
+        }
+
+        // 5. Проверка пароля
+        if (formData.password.length < 6) {
+            setError('Пароль должен быть не менее 6 символов')
+            return
+        }
+
+        const passwordRegex = /^[a-zA-Z0-9]+$/
+        if (!passwordRegex.test(formData.password)) {
+            setError('Пароль должен содержать только латинские буквы и цифры')
+            return
+        }
+
+        const hasDigit = /\d/.test(formData.password)
+        if (!hasDigit) {
+            setError('Пароль должен содержать хотя бы одну цифру')
+            return
+        }
+
+        if (formData.password !== formData.confirmPassword) {
+            setError('Пароли не совпадают')
+            return
+        }
+
+        const res = await registerClient(
+            formData.firstName,
+            formData.lastName,
+            formData.patronymic,
+            formData.email,
+            formData.phone,
+            formData.password
+        )
+
+        if (res.data != null) {
+            dispatch(setUser({
+                access_token: res.data.access_token,
+                first_name: res.data.first_name,
+                last_name: res.data.last_name,
+                patronymic: res.data.patronymic,
+                email: res.data.email,
+                created_at: res.data.created_at
+            }))
+        } else {
+            setError(res.error)
+        }
+
     };
 
     return (
@@ -51,27 +166,76 @@ const Register = () => {
 
                 {/* Форма регистрации */}
                 <form onSubmit={handleSubmit} className={styles.registerForm}>
-                    {/* Полное имя */}
-                    <div className={styles.formGroup}>
-                        <label htmlFor="fullName" className={styles.formLabel}>
-                            ФИО полностью
-                        </label>
-                        <div className={styles.inputContainer}>
-                            <input
-                                type="text"
-                                id="fullName"
-                                name="fullName"
-                                value={formData.fullName}
-                                onChange={handleChange}
-                                className={styles.formInput}
-                                placeholder="Иванов Иван Иванович"
-                                required
-                            />
-                            <div className={styles.inputIcon}>
-                                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21" stroke="currentColor" strokeWidth="2" />
-                                    <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="2" />
-                                </svg>
+                    {/* ФИО в одну строку */}
+                    <div className={styles.nameRow}>
+                        <div className={styles.nameGroup}>
+                            <label htmlFor="lastName" className={styles.formLabel}>
+                                Фамилия
+                            </label>
+                            <div className={styles.inputContainer}>
+                                <input
+                                    type="text"
+                                    id="lastName"
+                                    name="lastName"
+                                    value={formData.lastName}
+                                    onChange={handleChange}
+                                    className={styles.formInput}
+                                    placeholder="Иванов"
+                                    required
+                                />
+                                <div className={styles.inputIcon}>
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21" stroke="currentColor" strokeWidth="2" />
+                                        <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="2" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={styles.nameGroup}>
+                            <label htmlFor="firstName" className={styles.formLabel}>
+                                Имя
+                            </label>
+                            <div className={styles.inputContainer}>
+                                <input
+                                    type="text"
+                                    id="firstName"
+                                    name="firstName"
+                                    value={formData.firstName}
+                                    onChange={handleChange}
+                                    className={styles.formInput}
+                                    placeholder="Иван"
+                                    required
+                                />
+                                <div className={styles.inputIcon}>
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21" stroke="currentColor" strokeWidth="2" />
+                                        <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="2" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={styles.nameGroup}>
+                            <label htmlFor="patronymic" className={styles.formLabel}>
+                                Отчество
+                            </label>
+                            <div className={styles.inputContainer}>
+                                <input
+                                    type="text"
+                                    id="patronymic"
+                                    name="patronymic"
+                                    value={formData.patronymic}
+                                    onChange={handleChange}
+                                    className={styles.formInput}
+                                    placeholder="Иванович"
+                                />
+                                <div className={styles.inputIcon}>
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M20 21V19C20 16.7909 18.2091 15 16 15H8C5.79086 15 4 16.7909 4 19V21" stroke="currentColor" strokeWidth="2" />
+                                        <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="2" />
+                                    </svg>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -114,7 +278,7 @@ const Register = () => {
                                 value={formData.phone}
                                 onChange={handleChange}
                                 className={styles.formInput}
-                                placeholder="+7 (999) 999-99-99"
+                                placeholder="+79991234567"
                                 required
                             />
                             <div className={styles.inputIcon}>
@@ -133,15 +297,15 @@ const Register = () => {
                             </label>
                             <div className={styles.inputContainer}>
                                 <input
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     id="password"
                                     name="password"
                                     value={formData.password}
                                     onChange={handleChange}
                                     className={styles.formInput}
-                                    placeholder="Не менее 8 символов"
+                                    placeholder="Не менее 6 символов"
                                     required
-                                    minLength="8"
+                                    minLength="6"
                                 />
                                 <div className={styles.inputIcon}>
                                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -149,16 +313,36 @@ const Register = () => {
                                         <path d="M7 11V7C7 4.23858 9.23858 2 12 2C14.7614 2 17 4.23858 17 7V11" stroke="currentColor" strokeWidth="2" />
                                     </svg>
                                 </div>
+                                <button
+                                    type="button"
+                                    className={styles.passwordToggle}
+                                    onClick={togglePasswordVisibility}
+                                >
+                                    {showPassword ? (
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12" stroke="currentColor" strokeWidth="2" />
+                                            <path d="M1 12C1 12 5 20 12 20C19 20 23 12 23 12" stroke="currentColor" strokeWidth="2" />
+                                            <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" />
+                                        </svg>
+                                    ) : (
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M14.12 14.12C13.8454 14.4147 13.5141 14.6512 13.1462 14.8151C12.7782 14.9791 12.3809 15.0673 11.9781 15.0744C11.5753 15.0815 11.1752 15.0074 10.8016 14.8565C10.4281 14.7056 10.0887 14.481 9.80385 14.1961C9.51897 13.9113 9.29439 13.5719 9.14351 13.1984C8.99262 12.8248 8.91853 12.4247 8.92563 12.0219C8.93274 11.6191 9.02091 11.2218 9.18488 10.8538C9.34884 10.4859 9.58525 10.1546 9.88 9.88" stroke="currentColor" strokeWidth="2" />
+                                            <path d="M17.94 17.94C16.2306 19.243 14.1491 19.9649 12 20C5 20 1 12 1 12C2.24389 9.68189 3.96914 7.65661 6.06 6.06" stroke="currentColor" strokeWidth="2" />
+                                            <path d="M9.9 4.24C10.5883 4.07888 11.2931 3.99834 12 4C19 4 23 12 23 12C22.393 13.1356 21.6691 14.2047 20.84 15.19" stroke="currentColor" strokeWidth="2" />
+                                            <path d="M1 1L23 23" stroke="currentColor" strokeWidth="2" />
+                                        </svg>
+                                    )}
+                                </button>
                             </div>
                         </div>
 
                         <div className={styles.passwordGroup}>
                             <label htmlFor="confirmPassword" className={styles.formLabel}>
-                                Подтверждение
+                                Повторите пароль
                             </label>
                             <div className={styles.inputContainer}>
                                 <input
-                                    type="password"
+                                    type={showConfirmPassword ? "text" : "password"}
                                     id="confirmPassword"
                                     name="confirmPassword"
                                     value={formData.confirmPassword}
@@ -173,6 +357,26 @@ const Register = () => {
                                         <path d="M12 3C13.6672 3 15.2672 3.525 16.642 4.462C18.0167 5.399 18.8909 6.787 19.126 8.312C19.1345 8.366 19.1345 8.422 19.126 8.476C19.0735 8.792 18.736 9 18.42 9C18.104 9 17.785 8.792 17.712 8.478C17.705 8.443 17.705 8.405 17.712 8.37C17.8919 7.213 18.5169 6.115 19.462 5.288C20.407 4.462 21.511 3.975 22.684 3.9C22.794 3.9 22.9 3.9 23 3.9" stroke="currentColor" strokeWidth="2" />
                                     </svg>
                                 </div>
+                                <button
+                                    type="button"
+                                    className={styles.passwordToggle}
+                                    onClick={toggleConfirmPasswordVisibility}
+                                >
+                                    {showConfirmPassword ? (
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12" stroke="currentColor" strokeWidth="2" />
+                                            <path d="M1 12C1 12 5 20 12 20C19 20 23 12 23 12" stroke="currentColor" strokeWidth="2" />
+                                            <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2" />
+                                        </svg>
+                                    ) : (
+                                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M14.12 14.12C13.8454 14.4147 13.5141 14.6512 13.1462 14.8151C12.7782 14.9791 12.3809 15.0673 11.9781 15.0744C11.5753 15.0815 11.1752 15.0074 10.8016 14.8565C10.4281 14.7056 10.0887 14.481 9.80385 14.1961C9.51897 13.9113 9.29439 13.5719 9.14351 13.1984C8.99262 12.8248 8.91853 12.4247 8.92563 12.0219C8.93274 11.6191 9.02091 11.2218 9.18488 10.8538C9.34884 10.4859 9.58525 10.1546 9.88 9.88" stroke="currentColor" strokeWidth="2" />
+                                            <path d="M17.94 17.94C16.2306 19.243 14.1491 19.9649 12 20C5 20 1 12 1 12C2.24389 9.68189 3.96914 7.65661 6.06 6.06" stroke="currentColor" strokeWidth="2" />
+                                            <path d="M9.9 4.24C10.5883 4.07888 11.2931 3.99834 12 4C19 4 23 12 23 12C22.393 13.1356 21.6691 14.2047 20.84 15.19" stroke="currentColor" strokeWidth="2" />
+                                            <path d="M1 1L23 23" stroke="currentColor" strokeWidth="2" />
+                                        </svg>
+                                    )}
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -213,6 +417,12 @@ const Register = () => {
                             <path d="M20 12H4M20 12L14 6M20 12L14 18" stroke="currentColor" strokeWidth="2" />
                         </svg>
                     </button>
+
+                    {error && (
+                        <div className={styles.errorContainer}>
+                            <p className={styles.errorMessage}>{error}</p>
+                        </div>
+                    )}
                 </form>
 
                 {/* Футер */}

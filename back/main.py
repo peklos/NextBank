@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from auth import router as auth_router
 from db.database import engine, Base
-from db import models
 
 app = FastAPI()
 
@@ -18,5 +17,6 @@ app.add_middleware(
 
 app.include_router(auth_router.router)
 
-# uvicorn main:app --host 0.0.0.0 --port 8000
+# uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+# http://192.168.1.135:8000/docs
 

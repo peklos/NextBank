@@ -654,3 +654,46 @@
         color: #ffffff;
     }
 }
+
+/* Стили для глазка пароля */
+.passwordToggle {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 4px;
+    transition: color 0.3s ease;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.passwordToggle:hover {
+    color: #374151;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.passwordToggle svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* Увеличиваем правый отступ для полей с паролем */
+.passwordGroup .formInput {
+    padding-right: 3rem !important;
+}
+
+/* Для темной темы */
+@media (prefers-color-scheme: dark) {
+    .passwordToggle:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #cbd5e1;
+    }
+}

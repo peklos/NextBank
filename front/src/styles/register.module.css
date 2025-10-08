@@ -72,7 +72,7 @@
   }
 }
 
-/* Карточка регистрации - шире и компактнее */
+/* Карточка регистрации - шире для ФИО */
 .registerCard {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(30px);
@@ -84,7 +84,7 @@
     0 0 0 1px rgba(255, 255, 255, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
   width: 100%;
-  max-width: 520px;
+  max-width: 580px;
   position: relative;
   z-index: 10;
   transition: all 0.4s ease;
@@ -207,6 +207,36 @@
   color: #64748b;
   width: 1.25rem;
   height: 1.25rem;
+}
+
+/* Строка с ФИО */
+.nameRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.nameGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.nameGroup .formLabel {
+  font-size: 0.8rem;
+  margin-bottom: 0.4rem;
+}
+
+.nameGroup .formInput {
+  height: 46px;
+  padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+  font-size: 0.95rem;
+}
+
+.nameGroup .inputIcon {
+  left: 0.75rem;
+  width: 1.1rem;
+  height: 1.1rem;
 }
 
 /* Строка с паролями */
@@ -404,7 +434,7 @@
 /* Адаптивность для больших экранов */
 @media (min-width: 1920px) {
   .registerCard {
-    max-width: 560px;
+    max-width: 620px;
     padding: 3rem 3.5rem;
   }
 
@@ -438,11 +468,16 @@
   .registerCard {
     margin: 1rem;
     padding: 2rem 1.5rem;
-    max-width: 400px;
+    max-width: 450px;
   }
 
   .bankName {
     font-size: 2.25rem;
+  }
+
+  .nameRow {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
   .passwordRow {
@@ -489,6 +524,7 @@
     font-size: 0.8rem;
   }
 
+  .nameGroup .formInput,
   .passwordGroup .formInput {
     height: 42px;
     padding: 0.7rem 0.7rem 0.7rem 2.3rem;
@@ -523,5 +559,230 @@
 
   .registerSubtitle {
     color: #f1f5f9;
+  }
+}
+
+/* Блок ошибки */
+.errorContainer {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #fef2f2, #fecaca);
+  border: 1px solid #fca5a5;
+  border-radius: 12px;
+  margin-top: 1.5rem;
+  position: relative;
+  animation: slideIn 0.3s ease-out;
+}
+
+.errorIcon {
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #dc2626;
+  margin-top: 0.125rem;
+}
+
+.errorContent {
+  flex: 1;
+}
+
+.errorTitle {
+  color: #dc2626;
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.errorMessage {
+  color: #b91c1c;
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.errorClose {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #dc2626;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.errorClose:hover {
+  background: rgba(220, 38, 38, 0.1);
+  transform: scale(1.1);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Адаптивность для блока ошибки */
+@media (max-width: 768px) {
+  .errorContainer {
+    padding: 0.875rem;
+    gap: 0.625rem;
+  }
+
+  .errorIcon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .errorTitle {
+    font-size: 0.8rem;
+  }
+
+  .errorMessage {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .errorContainer {
+    padding: 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .errorIcon {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  .errorClose {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+}
+
+/* Блок ошибки */
+.errorContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem;
+  background: linear-gradient(135deg, #fef2f2, #fecaca);
+  border: 1px solid #fca5a5;
+  border-radius: 12px;
+  margin-top: 1.5rem;
+  animation: slideIn 0.3s ease-out;
+}
+
+.errorMessage {
+  color: #b91c1c;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0;
+  line-height: 1.4;
+  text-align: center;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Адаптивность для блока ошибки */
+@media (max-width: 768px) {
+  .errorContainer {
+    padding: 0.875rem;
+  }
+
+  .errorMessage {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .errorContainer {
+    padding: 0.75rem;
+  }
+
+  .errorMessage {
+    font-size: 0.75rem;
+  }
+}
+
+/* Темная тема для блока ошибки */
+@media (prefers-color-scheme: dark) {
+  .errorContainer {
+    background: linear-gradient(135deg, #431313, #7f1d1d);
+    border-color: #dc2626;
+  }
+
+  .errorMessage {
+    color: #ffffff;
+  }
+}
+
+/* Стили для глазка пароля */
+.passwordToggle {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: color 0.3s ease;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.passwordToggle:hover {
+  color: #374151;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.passwordToggle svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Увеличиваем правый отступ для полей с паролем */
+.passwordGroup .formInput {
+  padding-right: 3rem !important;
+}
+
+/* Для темной темы */
+@media (prefers-color-scheme: dark) {
+  .passwordToggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #cbd5e1;
   }
 }

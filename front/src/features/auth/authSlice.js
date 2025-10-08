@@ -4,15 +4,20 @@ const authSlice = createSlice({
     name: 'auth',
     initialState: {
         access_token: null,
-        full_name: null,
+        first_name: null,
+        last_name: null,
+        patronymic: null,
         email: null,
         created_at: null,
-        isLoggedIn: false
+        isLoggedIn: false,
+        phone: null
     },
     reducers: {
         setUser: (state, action) => {
             state.access_token = action.payload.access_token
-            state.full_name = action.payload.full_name
+            state.first_name = action.payload.first_name
+            state.last_name = action.payload.last_name
+            state.patronymic = action.payload.patronymic
             state.email = action.payload.email
             state.created_at = action.payload.created_at
             state.isLoggedIn = true
@@ -20,7 +25,9 @@ const authSlice = createSlice({
         },
         logout: (state) => {
             state.access_token = null
-            state.full_name = null
+            state.first_name = null
+            state.last_name = null
+            state.patronymic = null
             state.email = null
             state.created_at = null
             state.isLoggedIn = false

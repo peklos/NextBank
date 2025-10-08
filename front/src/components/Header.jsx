@@ -9,13 +9,16 @@ const Header = () => {
     useEffect(() => {
         if (isMenuOpen) {
             document.body.classList.add('menu-open');
+            document.documentElement.style.overflowX = 'hidden';
         } else {
             document.body.classList.remove('menu-open');
+            document.documentElement.style.overflowX = 'visible';
         }
 
         // Очистка при размонтировании
         return () => {
             document.body.classList.remove('menu-open');
+            document.documentElement.style.overflowX = 'visible';
         };
     }, [isMenuOpen]);
 

@@ -1,8 +1,8 @@
 from dotenv import load_dotenv
 import os
 from passlib.context import CryptContext
-from fastapi.security import HTTPBearer
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi import APIRouter, Depends, HTTPException, Request
 from datetime import datetime, timedelta, timezone
 from jose import jwt
 from schemas.client import ClientCreateSchema, ClientResponseSchema, ClientLoginSchema
@@ -42,6 +42,40 @@ def create_access_token(data: dict, expires_minutes: int = 60):
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
+def get_current_user(request: Request, db: Session = Depends(database.get_db)):
+    auth_header = request.headers.get('Authorization')
+    if not auth_header or not auth_header.startswith('Bearer '):
+        raise HTTPException(status_code=401, detail='Токен не найден')
+
+    token = auth_header.split(' ')[1]
+
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        user_id: str = payload.get('sub')
+        if user_id is None:
+            raise HTTPException(status_code=401, detail='Невалидный токен')
+    except Exception:
+        raise HTTPException(status_code=401, detail='Невалидный токен')
+
+    user = db.query(models.Client).filter(models.Client.id == user_id).first()
+    if user is None:
+        raise HTTPException(status_code=401, detail='Пользователь не найден')
+
+    return user
+
+
+@router.get('/me', summary='Автологин(токен)', dependencies=[Depends(security)])
+def read_users_me(current_user: models.Client = Depends(get_current_user), credentials: HTTPAuthorizationCredentials = Depends(security)):
+    return {
+        'id': current_user.id,
+        'first_name': current_user.first_name,
+        'last_name': current_user.last_name,
+        'patronymic': current_user.patronymic,
+        'email': current_user.email,
+        'created_at': current_user.created_at
+    }
+
+
 @router.post('/login', summary=['Логин'])
 def login(data: ClientLoginSchema, db: Session = Depends(database.get_db)):
 
@@ -53,10 +87,19 @@ def login(data: ClientLoginSchema, db: Session = Depends(database.get_db)):
         )
     token = create_access_token({'sub': str(client.id)})
 
-    return {'access_token': token, 'client_id': client.id, 'full_name': client.full_name, 'email': client.email, 'created_at': client.created_at, 'token_type': 'bearer'}
+    return {
+        'access_token': token,
+        'client_id': client.id,
+        'first_name': client.first_name,
+        'last_name': client.last_name,
+        'patronymic': client.patronymic,
+        'email': client.email,
+        'created_at': client.created_at,
+        'token_type': 'bearer'
+    }
 
 
-@router.post('/register', response_model=ClientResponseSchema, summary=['Регистрация'])
+@router.post('/register', summary=['Регистрация'])
 def create_client(data: ClientCreateSchema, db: Session = Depends(database.get_db)):
 
     if db.query(models.Client).filter(models.Client.email == data.email).first():
@@ -68,7 +111,9 @@ def create_client(data: ClientCreateSchema, db: Session = Depends(database.get_d
             status_code=400, detail='Телефон уже зарегистрирован')
 
     db_client = models.Client(
-        full_name=data.full_name,
+        first_name=data.first_name,
+        last_name=data.last_name,
+        patronymic=data.patronymic,
         email=data.email,
         phone=data.phone,
         hashed_password=hash_password(data.password)
@@ -77,7 +122,20 @@ def create_client(data: ClientCreateSchema, db: Session = Depends(database.get_d
     db.add(db_client)
     db.commit()
     db.refresh(db_client)
-    return db_client
+
+    token = create_access_token({'sub': str(db_client.id)})
+
+    return {
+        'access_token': token,
+        'client_id': db_client.id,
+        'first_name': db_client.first_name,
+        'last_name': db_client.last_name,
+        'patronymic': db_client.patronymic,
+        'email': db_client.email,
+        'created_at': db_client.created_at,
+        'token_type': 'bearer',
+        'message': 'Регистрация прошла успешно'
+    }
 
 
 @router.get('/allusers', summary=['Получить всех юзеров'])

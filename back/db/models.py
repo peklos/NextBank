@@ -31,7 +31,9 @@ class Employee(Base):
     __tablename__ = 'employees'
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    full_name = Column(String(100), nullable=False)
+    first_name = Column(String(50), nullable=False)
+    last_name = Column(String(50), nullable=False)
+    patronymic = Column(String(50))  # Optional
     email = Column(String(100), unique=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     is_active = Column(Boolean, default=True)
@@ -50,7 +52,9 @@ class Client(Base):
     __tablename__ = 'clients'
 
     id = Column(Integer, primary_key=True, index=True)
-    full_name = Column(String(100), nullable=False)
+    first_name = Column(String(50), nullable=False)
+    last_name = Column(String(50), nullable=False)
+    patronymic = Column(String(50))  # Optional
     email = Column(String(100), unique=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     phone = Column(String(20))

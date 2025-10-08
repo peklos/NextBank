@@ -808,3 +808,577 @@
         font-size: 1rem;
     }
 }
+
+/* Стили для модального окна */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.modalContent {
+    background: rgba(30, 41, 59, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 2rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modalTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #f1f5f9;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.modalIcon {
+    font-size: 1.75rem;
+}
+
+.modalClose {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 0.5rem;
+    color: #cbd5e1;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modalClose:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    transform: scale(1.05);
+}
+
+.modalClose svg {
+    width: 20px;
+    height: 20px;
+}
+
+.modalBody {
+    padding: 2rem;
+}
+
+/* Стили для вкладки просмотра */
+.viewTab {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.infoGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.infoItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.infoItem .infoLabel {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.infoItem .infoValue {
+    color: #f1f5f9;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.editInfoButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.editInfoButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px -4px rgba(59, 130, 246, 0.4);
+}
+
+.editInfoButton svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Стили для вкладки редактирования */
+.editTab {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.formLabel {
+    color: #e2e8f0;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.formInput,
+.formTextarea,
+.formSelect {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1rem;
+    color: #f1f5f9;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.formInput:focus,
+.formTextarea:focus,
+.formSelect:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.formTextarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Кастомный селект */
+.customSelect {
+    position: relative;
+}
+
+.customSelect .formSelect {
+    appearance: none;
+    width: 100%;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.05);
+    color: #f1f5f9;
+}
+
+.customSelect .formSelect option {
+    background: #1e293b;
+    color: #f1f5f9;
+}
+
+.selectArrow {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #cbd5e1;
+}
+
+.selectArrow svg {
+    width: 16px;
+    height: 16px;
+}
+
+.modalFooter {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cancelButton,
+.saveButton {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.cancelButton {
+    background: rgba(255, 255, 255, 0.1);
+    color: #cbd5e1;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cancelButton:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.saveButton {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+}
+
+.saveButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px -4px rgba(59, 130, 246, 0.4);
+}
+
+/* Адаптивность для модального окна */
+@media (max-width: 768px) {
+    .modalContent {
+        margin: 1rem;
+        max-height: calc(100vh - 2rem);
+    }
+
+    .modalHeader {
+        padding: 1.5rem 1.5rem 1rem;
+    }
+
+    .modalBody {
+        padding: 1.5rem;
+    }
+
+    .modalFooter {
+        flex-direction: column;
+    }
+
+    .cancelButton,
+    .saveButton {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .infoItem {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modalOverlay {
+        padding: 0.5rem;
+    }
+
+    .modalContent {
+        margin: 0.5rem;
+        border-radius: 16px;
+    }
+
+    .modalHeader {
+        padding: 1.25rem 1.25rem 0.75rem;
+    }
+
+    .modalTitle {
+        font-size: 1.25rem;
+    }
+
+    .modalBody {
+        padding: 1.25rem;
+    }
+
+    .formInput,
+    .formTextarea,
+    .formSelect {
+        padding: 0.75rem;
+    }
+}
+
+/* Стили для формы редактирования в карточке */
+.editForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.formLabel {
+    color: #e2e8f0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.formInput {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.75rem;
+    color: #f1f5f9;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.formInput:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.formActions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.formActions .cancelButton,
+.formActions .saveButton {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 100px;
+}
+
+.formActions .cancelButton {
+    background: rgba(255, 255, 255, 0.1);
+    color: #cbd5e1;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.formActions .cancelButton:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.formActions .saveButton {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+}
+
+.formActions .saveButton:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px -2px rgba(59, 130, 246, 0.4);
+}
+
+/* Адаптивность для формы редактирования */
+@media (max-width: 768px) {
+    .formActions {
+        flex-direction: column;
+    }
+
+    .formActions .cancelButton,
+    .formActions .saveButton {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .contentGrid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .headerMain {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+
+    .headerStats {
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 768px) {
+    .profileContainer {
+        padding: 1rem;
+    }
+
+    .avatar {
+        width: 80px;
+        height: 80px;
+    }
+
+    .avatarInitials {
+        font-size: 1.5rem;
+    }
+
+    .userName {
+        font-size: 2rem;
+    }
+
+    .actionsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .infoCard,
+    .actionsCard,
+    .logoutCard,
+    .systemCard {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .profileContainer {
+        padding: 0.5rem;
+    }
+
+    .avatarSection {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+        width: 100%;
+        align-items: center;
+    }
+
+    .userInfo {
+        align-items: center;
+        text-align: center;
+        width: 100%;
+    }
+
+    .userBadges {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .userName {
+        text-align: center;
+        font-size: 1.8rem;
+        line-height: 1.2;
+    }
+
+    .headerMain {
+        align-items: center;
+        text-align: center;
+    }
+
+    .headerStats {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .statItem {
+        align-items: center;
+        text-align: center;
+    }
+
+    .gradientBlob:nth-child(1) {
+        width: 300px;
+        height: 300px;
+    }
+
+    .gradientBlob:nth-child(2) {
+        width: 250px;
+        height: 250px;
+    }
+
+    .gradientBlob:nth-child(3) {
+        width: 280px;
+        height: 280px;
+    }
+}
+
+/* Дополнительные исправления для очень маленьких экранов */
+@media (max-width: 375px) {
+    .userName {
+        font-size: 1.6rem;
+    }
+
+    .avatar {
+        width: 70px;
+        height: 70px;
+    }
+
+    .avatarInitials {
+        font-size: 1.3rem;
+    }
+
+    .badgePrimary {
+        font-size: 0.7rem;
+        padding: 0.4rem 0.8rem;
+    }
+}
