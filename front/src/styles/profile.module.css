@@ -148,23 +148,6 @@
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
-.badgeSecondary {
-    background: rgba(255, 255, 255, 0.1);
-    color: #cbd5e1;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.userId {
-    color: #94a3b8;
-    font-size: 0.9rem;
-    margin: 0;
-    font-weight: 500;
-}
-
 .headerStats {
     display: flex;
     flex-direction: column;
@@ -206,9 +189,9 @@
 
 /* Карточки */
 .infoCard,
+.accountsCard,
 .actionsCard,
-.logoutCard,
-.systemCard {
+.logoutCard {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -219,9 +202,11 @@
     transition: all 0.3s ease;
 }
 
+/* Убраны hover-эффекты с transform */
 .infoCard:hover,
+.accountsCard:hover,
 .actionsCard:hover {
-    transform: translateY(-2px);
+    /* transform: translateY(-2px); */
     box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.3);
 }
 
@@ -262,7 +247,7 @@
 .editButton:hover {
     background: rgba(255, 255, 255, 0.2);
     color: white;
-    transform: scale(1.05);
+    /* transform: scale(1.05); */
 }
 
 .editButton svg {
@@ -290,7 +275,7 @@
 
 .infoRow:hover {
     background: rgba(255, 255, 255, 0.08);
-    transform: translateX(5px);
+    /* transform: translateX(5px); */
 }
 
 .infoIcon {
@@ -320,69 +305,6 @@
     font-weight: 500;
 }
 
-/* Настройки безопасности */
-.securityList {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.securityItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.securityInfo {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
-
-.securityName {
-    color: #f1f5f9;
-    font-size: 0.9rem;
-    font-weight: 500;
-}
-
-.securityStatus {
-    color: #94a3b8;
-    font-size: 0.8rem;
-    font-weight: 500;
-}
-
-.toggle {
-    width: 50px;
-    height: 26px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 13px;
-    padding: 2px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.toggleActive {
-    background: #10b981;
-}
-
-.toggleCircle {
-    width: 22px;
-    height: 22px;
-    background: white;
-    border-radius: 50%;
-    transition: all 0.3s ease;
-    transform: translateX(0);
-}
-
-.toggleActive .toggleCircle {
-    transform: translateX(24px);
-}
-
 /* Быстрые действия */
 .actionsGrid {
     display: grid;
@@ -408,7 +330,7 @@
 .actionButton:hover {
     background: rgba(255, 255, 255, 0.1);
     color: white;
-    transform: translateY(-2px);
+    /* transform: translateY(-2px); */
     border-color: rgba(255, 255, 255, 0.2);
 }
 
@@ -453,7 +375,7 @@
 }
 
 .logoutButton:hover {
-    transform: translateY(-2px);
+    /* transform: translateY(-2px); */
     box-shadow: 0 8px 20px -4px rgba(220, 38, 38, 0.4);
 }
 
@@ -461,152 +383,7 @@
     font-size: 1.25rem;
 }
 
-/* Системная информация */
-.systemCard {
-    background: rgba(255, 255, 255, 0.03);
-}
-
-.systemInfo {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.systemItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.systemItem:last-child {
-    border-bottom: none;
-}
-
-.systemLabel {
-    color: #94a3b8;
-    font-size: 0.85rem;
-    font-weight: 500;
-}
-
-.systemValue {
-    color: #cbd5e1;
-    font-size: 0.85rem;
-    font-weight: 600;
-}
-
-/* Адаптивность */
-@media (max-width: 1024px) {
-    .contentGrid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
-    .headerMain {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1.5rem;
-    }
-
-    .headerStats {
-        flex-direction: row;
-        width: 100%;
-        justify-content: space-between;
-    }
-}
-
-@media (max-width: 768px) {
-    .profileContainer {
-        padding: 1rem;
-    }
-
-    .avatar {
-        width: 80px;
-        height: 80px;
-    }
-
-    .avatarInitials {
-        font-size: 1.5rem;
-    }
-
-    .userName {
-        font-size: 2rem;
-    }
-
-    .actionsGrid {
-        grid-template-columns: 1fr;
-    }
-
-    .infoCard,
-    .actionsCard,
-    .logoutCard,
-    .systemCard {
-        padding: 1.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .profileContainer {
-        padding: 0.5rem;
-    }
-
-    .avatarSection {
-        flex-direction: column;
-        text-align: center;
-        gap: 1rem;
-    }
-
-    .userInfo {
-        align-items: center;
-    }
-
-    .userBadges {
-        justify-content: center;
-    }
-
-    .gradientBlob:nth-child(1) {
-        width: 300px;
-        height: 300px;
-    }
-
-    .gradientBlob:nth-child(2) {
-        width: 250px;
-        height: 250px;
-    }
-
-    .gradientBlob:nth-child(3) {
-        width: 280px;
-        height: 280px;
-    }
-}
-
-/* Темная тема поддержка */
-@media (prefers-color-scheme: dark) {
-    .profileContainer {
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    }
-}
-
-/* Добавляем эти стили в существующий CSS файл */
-
 /* Карточка счетов */
-.accountsCard {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 2rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-}
-
-.accountsCard:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.3);
-}
-
 .totalBalance {
     display: flex;
     flex-direction: column;
@@ -628,7 +405,6 @@
     font-weight: 700;
 }
 
-/* Список счетов */
 .accountsList {
     display: flex;
     flex-direction: column;
@@ -650,7 +426,7 @@
 
 .accountItem:hover {
     background: rgba(255, 255, 255, 0.08);
-    transform: translateX(5px);
+    /* transform: translateX(5px); */
     border-color: rgba(255, 255, 255, 0.1);
 }
 
@@ -736,10 +512,9 @@
 .actionBtn:hover {
     background: rgba(255, 255, 255, 0.2);
     color: white;
-    transform: scale(1.1);
+    /* transform: scale(1.1); */
 }
 
-/* Кнопка показа всех счетов */
 .viewAllButton {
     width: 100%;
     display: flex;
@@ -766,47 +541,6 @@
 .viewAllButton svg {
     width: 18px;
     height: 18px;
-}
-
-/* Адаптивность для счетов */
-@media (max-width: 768px) {
-    .accountInfo {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-    }
-
-    .accountBalance {
-        align-items: flex-start;
-    }
-
-    .balanceAmount {
-        font-size: 1.25rem;
-    }
-
-    .accountIcon {
-        width: 45px;
-        height: 45px;
-        font-size: 1.25rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .accountsCard {
-        padding: 1.5rem;
-    }
-
-    .accountItem {
-        padding: 1rem;
-    }
-
-    .accountName {
-        font-size: 0.9rem;
-    }
-
-    .balance {
-        font-size: 1rem;
-    }
 }
 
 /* Стили для модального окна */
@@ -837,6 +571,7 @@
     overflow-y: auto;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     animation: modalSlideIn 0.3s ease-out;
+    box-sizing: border-box;
 }
 
 @keyframes modalSlideIn {
@@ -889,7 +624,7 @@
 .modalClose:hover {
     background: rgba(255, 255, 255, 0.2);
     color: white;
-    transform: scale(1.05);
+    /* transform: scale(1.05); */
 }
 
 .modalClose svg {
@@ -899,6 +634,7 @@
 
 .modalBody {
     padding: 2rem;
+    box-sizing: border-box;
 }
 
 /* Стили для вкладки просмотра */
@@ -957,7 +693,7 @@
 }
 
 .editInfoButton:hover {
-    transform: translateY(-2px);
+    /* transform: translateY(-2px); */
     box-shadow: 0 8px 20px -4px rgba(59, 130, 246, 0.4);
 }
 
@@ -1087,67 +823,8 @@
 }
 
 .saveButton:hover {
-    transform: translateY(-2px);
+    /* transform: translateY(-2px); */
     box-shadow: 0 8px 20px -4px rgba(59, 130, 246, 0.4);
-}
-
-/* Адаптивность для модального окна */
-@media (max-width: 768px) {
-    .modalContent {
-        margin: 1rem;
-        max-height: calc(100vh - 2rem);
-    }
-
-    .modalHeader {
-        padding: 1.5rem 1.5rem 1rem;
-    }
-
-    .modalBody {
-        padding: 1.5rem;
-    }
-
-    .modalFooter {
-        flex-direction: column;
-    }
-
-    .cancelButton,
-    .saveButton {
-        width: 100%;
-        min-width: auto;
-    }
-
-    .infoItem {
-        padding: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .modalOverlay {
-        padding: 0.5rem;
-    }
-
-    .modalContent {
-        margin: 0.5rem;
-        border-radius: 16px;
-    }
-
-    .modalHeader {
-        padding: 1.25rem 1.25rem 0.75rem;
-    }
-
-    .modalTitle {
-        font-size: 1.25rem;
-    }
-
-    .modalBody {
-        padding: 1.25rem;
-    }
-
-    .formInput,
-    .formTextarea,
-    .formSelect {
-        padding: 0.75rem;
-    }
 }
 
 /* Стили для формы редактирования в карточке */
@@ -1155,44 +832,6 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-}
-
-.formGrid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-}
-
-.formGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.formLabel {
-    color: #e2e8f0;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.formInput {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    padding: 0.75rem;
-    color: #f1f5f9;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-    font-family: inherit;
-}
-
-.formInput:focus {
-    outline: none;
-    border-color: #3b82f6;
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
 }
 
 .formActions {
@@ -1232,21 +871,68 @@
 }
 
 .formActions .saveButton:hover {
-    transform: translateY(-1px);
+    /* transform: translateY(-1px); */
     box-shadow: 0 4px 12px -2px rgba(59, 130, 246, 0.4);
 }
 
-/* Адаптивность для формы редактирования */
-@media (max-width: 768px) {
-    .formActions {
-        flex-direction: column;
+/* Стили для валидации */
+.errorContainer {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.1) 100%);
+    border: 1px solid rgba(220, 38, 38, 0.4);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    animation: slideIn 0.3s ease-out;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.errorContainer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.errorMessage {
+    color: #fecaca;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.4;
+    text-align: left;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.errorMessage::before {
+    content: '⚠️';
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
     }
 
-    .formActions .cancelButton,
-    .formActions .saveButton {
-        width: 100%;
-        min-width: auto;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
+}
+
+.formSelectError {
+    border-color: #fc8181 !important;
+    background-color: rgba(252, 129, 129, 0.05) !important;
+    box-shadow: 0 0 0 3px rgba(252, 129, 129, 0.1) !important;
 }
 
 /* Адаптивность */
@@ -1292,10 +978,73 @@
     }
 
     .infoCard,
+    .accountsCard,
     .actionsCard,
-    .logoutCard,
-    .systemCard {
+    .logoutCard {
         padding: 1.5rem;
+    }
+
+    .modalContent {
+        margin: 1rem;
+        max-height: calc(100vh - 2rem);
+    }
+
+    .modalHeader {
+        padding: 1.5rem 1.5rem 1rem;
+    }
+
+    .modalBody {
+        padding: 1.5rem;
+    }
+
+    .modalFooter {
+        flex-direction: column;
+    }
+
+    .cancelButton,
+    .saveButton {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .formActions {
+        flex-direction: column;
+    }
+
+    .formActions .cancelButton,
+    .formActions .saveButton {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .accountInfo {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .accountBalance {
+        align-items: flex-start;
+    }
+
+    .balanceAmount {
+        font-size: 1.25rem;
+    }
+
+    .accountIcon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.25rem;
+    }
+
+    .errorContainer {
+        padding: 10px 14px;
+        margin-bottom: 16px;
+    }
+
+    .errorMessage {
+        font-size: 0.8rem;
+        gap: 6px;
     }
 }
 
@@ -1360,9 +1109,65 @@
         width: 280px;
         height: 280px;
     }
+
+    .modalOverlay {
+        padding: 0.5rem;
+    }
+
+    .modalContent {
+        margin: 0.5rem;
+        border-radius: 16px;
+    }
+
+    .modalHeader {
+        padding: 1.25rem 1.25rem 0.75rem;
+    }
+
+    .modalTitle {
+        font-size: 1.25rem;
+    }
+
+    .modalBody {
+        padding: 1.25rem;
+    }
+
+    .formInput,
+    .formTextarea,
+    .formSelect {
+        padding: 0.75rem;
+    }
+
+    .accountsCard {
+        padding: 1.5rem;
+    }
+
+    .accountItem {
+        padding: 1rem;
+    }
+
+    .accountName {
+        font-size: 0.9rem;
+    }
+
+    .balance {
+        font-size: 1rem;
+    }
+
+    .errorContainer {
+        padding: 8px 12px;
+        margin-bottom: 12px;
+    }
+
+    .errorMessage {
+        font-size: 0.75rem;
+        gap: 4px;
+    }
+
+    .errorMessage::before {
+        font-size: 0.7rem;
+    }
 }
 
-/* Дополнительные исправления для очень маленьких экранов */
 @media (max-width: 375px) {
     .userName {
         font-size: 1.6rem;

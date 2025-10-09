@@ -4,6 +4,8 @@ import { NavLink } from 'react-router-dom';
 import { loginClient } from '../api/clients'
 import { useDispatch } from 'react-redux'
 import { setUser } from '../features/auth/authSlice'
+import { setPersonalInfo } from '../features/auth/personalInfoSlice';
+
 
 export default function Login() {
     const [email, setEmail] = useState('')
@@ -43,6 +45,15 @@ export default function Login() {
                 email: res.data.email,
                 created_at: res.data.created_at
             }))
+
+            if (res.data.personal_info != null) {
+                dispatch(setPersonalInfo({
+                    passport_number: res.data.personal_info.passport_number || null,
+                    address: res.data.personal_info.address || null,
+                    birth_date: res.data.personal_info.birth_date || null,
+                    employment_status: res.data.personal_info.employment_status || null
+                }));
+            }
         } else {
             setError(res.error)
         }

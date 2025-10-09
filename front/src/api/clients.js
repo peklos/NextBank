@@ -50,3 +50,13 @@ export const getMe = async () => {
         return { data: null, error: detail }
     }
 }
+
+export const fillPersonInfo = async (personalInfo) => {
+    try {
+        const res = await axios.post('/personal_info/fill', personalInfo)
+        return { data: res.data, error: null }
+    } catch (err) {
+        const detail = err.response?.data?.detail || 'Не удалось сохранить данные'
+        return { data: null, error: detail }
+    }
+}

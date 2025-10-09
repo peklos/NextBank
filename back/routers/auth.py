@@ -2,11 +2,11 @@ from dotenv import load_dotenv
 import os
 from passlib.context import CryptContext
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException
 from datetime import datetime, timedelta, timezone
 from jose import jwt
-from schemas.client import ClientCreateSchema, ClientResponseSchema, ClientLoginSchema
-from sqlalchemy.orm import Session
+from schemas.client import ClientCreateSchema, ClientLoginSchema
+from sqlalchemy.orm import Session, joinedload
 from db import models, database
 
 load_dotenv()
@@ -42,13 +42,11 @@ def create_access_token(data: dict, expires_minutes: int = 60):
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
-def get_current_user(request: Request, db: Session = Depends(database.get_db)):
-    auth_header = request.headers.get('Authorization')
-    if not auth_header or not auth_header.startswith('Bearer '):
-        raise HTTPException(status_code=401, detail='Токен не найден')
-
-    token = auth_header.split(' ')[1]
-
+def get_current_user(
+    credentials: HTTPAuthorizationCredentials = Depends(security),
+    db: Session = Depends(database.get_db)
+):
+    token = credentials.credentials  # тут токен из Swagger автоматически
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         user_id: str = payload.get('sub')
@@ -57,34 +55,51 @@ def get_current_user(request: Request, db: Session = Depends(database.get_db)):
     except Exception:
         raise HTTPException(status_code=401, detail='Невалидный токен')
 
-    user = db.query(models.Client).filter(models.Client.id == user_id).first()
+    user = (
+        db.query(models.Client)
+        .options(joinedload(models.Client.personal_info))
+        .filter(models.Client.id == user_id)
+        .first()
+    )
+
     if user is None:
         raise HTTPException(status_code=401, detail='Пользователь не найден')
 
     return user
 
 
-@router.get('/me', summary='Автологин(токен)', dependencies=[Depends(security)])
-def read_users_me(current_user: models.Client = Depends(get_current_user), credentials: HTTPAuthorizationCredentials = Depends(security)):
+@router.get('/me', summary='Автологин(токен)')
+def read_users_me(current_user: models.Client = Depends(get_current_user)):
     return {
         'id': current_user.id,
         'first_name': current_user.first_name,
         'last_name': current_user.last_name,
         'patronymic': current_user.patronymic,
         'email': current_user.email,
-        'created_at': current_user.created_at
+        'created_at': current_user.created_at,
+        'personal_info': {
+            'passport_number': current_user.personal_info.passport_number if current_user.personal_info else None,
+            'address': current_user.personal_info.address if current_user.personal_info else None,
+            'birth_date': current_user.personal_info.birth_date if current_user.personal_info else None,
+            'employment_status': current_user.personal_info.employment_status if current_user.personal_info else None
+        } if current_user.personal_info else None
     }
 
 
-@router.post('/login', summary=['Логин'])
+@router.post('/login', summary='Логин')
 def login(data: ClientLoginSchema, db: Session = Depends(database.get_db)):
 
-    client = db.query(models.Client).filter(
-        models.Client.email == data.email).first()
+    client = (db.query(models.Client)
+              .options(joinedload(models.Client.personal_info))
+              .filter(models.Client.email == data.email)
+              .first()
+              )
+
     if not client or not verify_password(data.password, client.hashed_password):
         raise HTTPException(
             status_code=401, detail='Неверная почта или пароль'
         )
+
     token = create_access_token({'sub': str(client.id)})
 
     return {
@@ -95,11 +110,17 @@ def login(data: ClientLoginSchema, db: Session = Depends(database.get_db)):
         'patronymic': client.patronymic,
         'email': client.email,
         'created_at': client.created_at,
+        'personal_info': {
+            'passport_number': client.personal_info.passport_number if client.personal_info else None,
+            'address': client.personal_info.address if client.personal_info else None,
+            'birth_date': client.personal_info.birth_date if client.personal_info else None,
+            'employment_status': client.personal_info.employment_status if client.personal_info else None
+        } if client.personal_info else None,
         'token_type': 'bearer'
     }
 
 
-@router.post('/register', summary=['Регистрация'])
+@router.post('/register', summary='Регистрация')
 def create_client(data: ClientCreateSchema, db: Session = Depends(database.get_db)):
 
     if db.query(models.Client).filter(models.Client.email == data.email).first():
@@ -138,7 +159,7 @@ def create_client(data: ClientCreateSchema, db: Session = Depends(database.get_d
     }
 
 
-@router.get('/allusers', summary=['Получить всех юзеров'])
+@router.get('/allusers', summary='Получить всех юзеров')
 def get_users(db: Session = Depends(database.get_db)):
     users = db.query(models.Client).all()
     return users

@@ -4,6 +4,8 @@ import { NavLink } from 'react-router-dom';
 import { registerClient } from '../api/clients';
 import { setUser } from '../features/auth/authSlice';
 import { useDispatch } from 'react-redux';
+import { setPersonalInfo } from '../features/auth/personalInfoSlice';
+
 
 const Register = () => {
     const [formData, setFormData] = useState({
@@ -134,6 +136,16 @@ const Register = () => {
                 email: res.data.email,
                 created_at: res.data.created_at
             }))
+
+            if (res.data.personal_info != null) {
+                dispatch(setPersonalInfo({
+                    phone: res.data.personal_info.phone,
+                    address: res.data.personal_info.address,
+                    birth_date: res.data.personal_info.birth_date
+                }))
+            }
+
+
         } else {
             setError(res.error)
         }

@@ -8,6 +8,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import PublicRoute from './components/PublicRoute'
 import PrivateLayout from "./components/PrivateLayout";
 import axios from './api/axios'
+import { setPersonalInfo } from './features/auth/personalInfoSlice'
 
 const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
@@ -29,10 +30,21 @@ function App() {
 
     if (token) {
       axios.get('/auth/me').then((res) => {
+
         dispatch(setUser({
           access_token: token,
           ...res.data
         }))
+
+        if (res.data.personal_info) {
+          dispatch(setPersonalInfo({
+            passport_number: res.data.personal_info.passport_number,
+            address: res.data.personal_info.address,
+            birth_date: res.data.personal_info.birth_date,
+            employment_status: res.data.personal_info.employment_status
+          }))
+        }
+
       }).catch(() => {
         dispatch(logout())
       })
