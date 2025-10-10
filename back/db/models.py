@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, DateTime, Float, func
 from sqlalchemy.orm import relationship
 from .database import Base
+import random
 
 
 # === РОЛИ (например, админ, менеджер, кассир) ===
@@ -82,12 +83,18 @@ class PersonalInfo(Base):
     client = relationship('Client', back_populates='personal_info')
 
 
+def generate_account_number():
+    return ''.join(str(random.randint(0, 9)) for _ in range(20))
+
 # === СЧЕТА ===
+
+
 class Account(Base):
     __tablename__ = 'accounts'
 
     id = Column(Integer, primary_key=True, index=True)
-    account_number = Column(String(30), unique=True, nullable=False)
+    account_number = Column(String(30), unique=True,
+                            nullable=False, default=generate_account_number)
     balance = Column(Float, default=0.0)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 

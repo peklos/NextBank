@@ -771,3 +771,150 @@
         background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     }
 }
+
+/* Состояние пустого списка */
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 2rem;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    margin-bottom: 2rem;
+}
+
+.emptyIcon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.7;
+}
+
+.emptyTitle {
+    color: #f1f5f9;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.emptyDescription {
+    color: #94a3b8;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+    max-width: 300px;
+}
+
+.createAccountButton {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.createAccountButton:hover {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px -8px rgba(59, 130, 246, 0.5);
+}
+
+/* Детали счета */
+.accountDetails {
+    padding: 1rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 1rem;
+}
+
+.detailItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.detailItem:last-child {
+    margin-bottom: 0;
+}
+
+.detailLabel {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.detailValue {
+    color: #f1f5f9;
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+}
+
+/* Статусы счетов */
+.statusActive {
+    background: rgba(16, 185, 129, 0.2) !important;
+    border-color: rgba(16, 185, 129, 0.4) !important;
+    color: #10b981 !important;
+}
+
+.statusInactive {
+    background: rgba(100, 116, 139, 0.2) !important;
+    border-color: rgba(100, 116, 139, 0.4) !important;
+    color: #64748b !important;
+}
+
+/* Опасные кнопки */
+.dangerBtn {
+    background: rgba(239, 68, 68, 0.1) !important;
+    border-color: rgba(239, 68, 68, 0.3) !important;
+    color: #ef4444 !important;
+}
+
+.dangerBtn:hover {
+    background: rgba(239, 68, 68, 0.2) !important;
+    color: #fca5a5 !important;
+}
+
+/* Адаптивность для новых элементов */
+@media (max-width: 768px) {
+    .accountActions {
+        flex-direction: column;
+        width: 100%;
+        gap: 0.5rem;
+    }
+
+    .actionBtn {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .detailItem {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+
+    .emptyState {
+        padding: 3rem 1.5rem;
+    }
+
+    .emptyIcon {
+        font-size: 3rem;
+    }
+
+    .emptyTitle {
+        font-size: 1.25rem;
+    }
+}

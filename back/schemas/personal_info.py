@@ -10,7 +10,7 @@ class PersonalInfoSchema(BaseModel):
     employment_status: Optional[str]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class ClientResponse(BaseModel):
@@ -21,10 +21,10 @@ class ClientResponse(BaseModel):
     email: str
     phone: Optional[str]
     created_at: datetime
-    personal_info: Optional[PersonalInfoSchema]  
+    personal_info: Optional[PersonalInfoSchema]
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 
 class PersonalInfoCreateSchema(BaseModel):
