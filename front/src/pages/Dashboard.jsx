@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import styles from '../styles/dashboard.module.css';
+import { useSelector } from 'react-redux';
 
 const Dashboard = () => {
     const [quickAmount, setQuickAmount] = useState('');
     const [activeCard, setActiveCard] = useState(0);
+    const user = useSelector(state => state.auth)
 
     // Моковые данные
     const userData = {
@@ -101,7 +103,7 @@ const Dashboard = () => {
                     <div className={styles.headerMain}>
                         <div className={styles.welcomeSection}>
                             <h1 className={styles.welcomeTitle}>
-                                Добро пожаловать, <span className={styles.userName}>{userData.name}</span>!
+                                Добро пожаловать, <span className={styles.userName}>{user.first_name}</span>!
                             </h1>
                             <p className={styles.welcomeSubtitle}>
                                 Вот обзор ваших финансов на сегодня

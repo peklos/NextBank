@@ -5,37 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setPersonalInfo as setPersInfAction } from '../features/auth/personalInfoSlice';
 import { fullLogout } from '../features/auth/logoutThunk';
 
-const ACCOUNTS_DATA = [
-    {
-        id: 1,
-        name: 'Основной счет',
-        number: '4081 7810 0999 1000 4321',
-        balance: '1 250 750 ₽',
-        currency: 'RUB',
-        icon: '💳'
-    },
-    {
-        id: 2,
-        name: 'Накопительный',
-        number: '4081 7810 0999 1000 4322',
-        balance: '350 000 ₽',
-        currency: 'RUB',
-        icon: '💰'
-    },
-    {
-        id: 3,
-        name: 'Долларовый счет',
-        number: '4081 7810 0999 1000 4323',
-        balance: '$15,250',
-        currency: 'USD',
-        icon: '💵'
-    }
-];
-
 const Profile = () => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.auth);
     const personalInfoFromStore = useSelector(state => state.personalInfo);
+    const accounts = useSelector(state => state.accounts);
 
     const [showPersonalInfo, setShowPersonalInfo] = useState(false);
     const [error, setError] = useState('');
@@ -126,11 +100,26 @@ const Profile = () => {
         tier: 'Пользователь',
     };
 
-    const fullName = `${userData.lastName} ${userData.firstName} ${userData.patronymic}`.trim();
-    const totalBalance = ACCOUNTS_DATA.reduce((total, account) => {
-        const balance = parseFloat(account.balance.replace(/[^\d.]/g, ''));
-        return total + balance;
+    // Функция для форматирования номера счета
+    const formatAccountNumber = (number) => {
+        return number.replace(/(\d{4})/g, '$1 ').trim();
+    };
+
+    // Функция для форматирования даты создания
+    const formatCreatedDate = (dateString) => {
+        return new Date(dateString).toLocaleDateString('ru-RU', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+    };
+
+    // Расчет общего баланса
+    const totalBalance = accounts.list.reduce((total, account) => {
+        return total + (account.balance || 0);
     }, 0);
+
+    const fullName = `${userData.lastName} ${userData.firstName} ${userData.patronymic}`.trim();
 
     const handlePersonalInfoChange = (e) => {
         const { name, value } = e.target;
@@ -212,6 +201,12 @@ const Profile = () => {
         }
     };
 
+    const handleCreateAccount = () => {
+        // Здесь будет логика создания нового счета
+        console.log('Создание нового счета');
+        // dispatch(createAccountThunk());
+    };
+
     const personalInfoFields = [
         { label: 'Фамилия', value: userData.lastName, icon: '👤' },
         { label: 'Имя', value: userData.firstName, icon: '👤' },
@@ -260,7 +255,7 @@ const Profile = () => {
                             </div>
                             <div className={styles.statItem}>
                                 <span className={styles.statLabel}>Всего счетов</span>
-                                <span className={styles.statValue}>{ACCOUNTS_DATA.length}</span>
+                                <span className={styles.statValue}>{accounts.list.length}</span>
                             </div>
                         </div>
                     </div>
@@ -339,41 +334,65 @@ const Profile = () => {
                                         <span className={styles.cardIcon}>💳</span>
                                         Ваши счета
                                     </h2>
-                                    <div className={styles.totalBalance}>
-                                        <span className={styles.balanceLabel}>Общий баланс</span>
-                                        <span className={styles.balanceAmount}>
-                                            {new Intl.NumberFormat('ru-RU').format(totalBalance)} ₽
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className={styles.accountsList}>
-                                    {ACCOUNTS_DATA.map((account) => (
-                                        <div key={account.id} className={styles.accountItem}>
-                                            <div className={styles.accountIcon}>
-                                                <span>{account.icon}</span>
-                                            </div>
-                                            <div className={styles.accountInfo}>
-                                                <div className={styles.accountMain}>
-                                                    <span className={styles.accountName}>{account.name}</span>
-                                                    <span className={styles.accountNumber}>{account.number}</span>
-                                                </div>
-                                                <div className={styles.accountBalance}>
-                                                    <span className={styles.balance}>{account.balance}</span>
-                                                    <span className={styles.currency}>{account.currency}</span>
-                                                </div>
-                                            </div>
-                                            <div className={styles.accountActions}>
-                                                <button className={styles.actionBtn}>→</button>
-                                            </div>
+                                    {accounts.list.length > 0 && (
+                                        <div className={styles.totalBalance}>
+                                            <span className={styles.balanceLabel}>Общий баланс</span>
+                                            <span className={styles.balanceAmount}>
+                                                {new Intl.NumberFormat('ru-RU').format(totalBalance)} ₽
+                                            </span>
                                         </div>
-                                    ))}
+                                    )}
                                 </div>
-                                <button className={styles.viewAllButton}>
-                                    <span>Показать все счета</span>
-                                    <svg viewBox="0 0 24 24" fill="none">
-                                        <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" />
-                                    </svg>
-                                </button>
+
+                                {accounts.list.length === 0 ? (
+                                    <div className={styles.noAccounts}>
+                                        <div className={styles.noAccountsIcon}>💳</div>
+                                        <h3 className={styles.noAccountsTitle}>У вас пока нет счетов</h3>
+                                        <p className={styles.noAccountsText}>
+                                            Откройте свой первый счет и начните пользоваться всеми возможностями банка
+                                        </p>
+                                        <button className={styles.createAccountButton} onClick={handleCreateAccount}>
+                                            <span className={styles.createAccountIcon}>+</span>
+                                            Создать новый счет
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div className={styles.accountsList}>
+                                            {accounts.list.map((account) => (
+                                                <div key={account.id} className={styles.accountItem}>
+                                                    <div className={styles.accountIcon}>
+                                                        <span>💳</span>
+                                                    </div>
+                                                    <div className={styles.accountInfo}>
+                                                        <div className={styles.accountMain}>
+                                                            <span className={styles.accountNumber}>
+                                                                {formatAccountNumber(account.account_number)}
+                                                            </span>
+                                                            <span className={styles.accountDate}>
+                                                                Открыт {formatCreatedDate(account.created_at)}
+                                                            </span>
+                                                        </div>
+                                                        <div className={styles.accountBalance}>
+                                                            <span className={styles.balance}>
+                                                                {new Intl.NumberFormat('ru-RU').format(account.balance)} ₽
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div className={styles.accountActions}>
+                                                        <button className={styles.actionBtn}>→</button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <button className={styles.viewAllButton}>
+                                            <span>Показать все счета</span>
+                                            <svg viewBox="0 0 24 24" fill="none">
+                                                <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" />
+                                            </svg>
+                                        </button>
+                                    </>
+                                )}
                             </section>
                         </div>
 

@@ -1,14 +1,12 @@
 import './tailwind.css'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { setUser, logout } from './features/auth/authSlice'
 import { lazy, useEffect } from 'react'
 
 import ProtectedRoute from './components/ProtectedRoute'
 import PublicRoute from './components/PublicRoute'
 import PrivateLayout from "./components/PrivateLayout";
-import axios from './api/axios'
-import { setPersonalInfo } from './features/auth/personalInfoSlice'
+import { autoLogin } from './services/authService'
 
 const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
@@ -21,35 +19,7 @@ function App() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const token = localStorage.getItem('access_token')
-
-    if (!token) {
-      dispatch(logout())
-      return
-    }
-
-    if (token) {
-      axios.get('/auth/me').then((res) => {
-
-        dispatch(setUser({
-          access_token: token,
-          ...res.data
-        }))
-
-        if (res.data.personal_info) {
-          dispatch(setPersonalInfo({
-            passport_number: res.data.personal_info.passport_number,
-            address: res.data.personal_info.address,
-            birth_date: res.data.personal_info.birth_date,
-            employment_status: res.data.personal_info.employment_status
-          }))
-        }
-
-      }).catch(() => {
-        dispatch(logout())
-      })
-    }
-
+    autoLogin(dispatch)
   }, [dispatch])
 
   return (

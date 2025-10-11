@@ -1187,3 +1187,138 @@
         padding: 0.4rem 0.8rem;
     }
 }
+
+/* Стили для состояния "нет счетов" */
+.noAccounts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 3rem 2rem;
+    gap: 1.5rem;
+}
+
+.noAccountsIcon {
+    font-size: 4rem;
+    opacity: 0.7;
+    margin-bottom: 1rem;
+}
+
+.noAccountsTitle {
+    color: #f1f5f9;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.noAccountsText {
+    color: #94a3b8;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0;
+    max-width: 300px;
+}
+
+.createAccountButton {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.createAccountButton:hover {
+    box-shadow: 0 8px 20px -4px rgba(59, 130, 246, 0.4);
+}
+
+.createAccountIcon {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* Обновленные стили для счетов */
+.accountDate {
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+
+.accountNumber {
+    color: #f1f5f9;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.5px;
+}
+
+.accountBalance {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+}
+
+.balance {
+    color: #10b981;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/* Адаптивность для состояния "нет счетов" */
+@media (max-width: 768px) {
+    .noAccounts {
+        padding: 2rem 1rem;
+    }
+
+    .noAccountsIcon {
+        font-size: 3rem;
+    }
+
+    .noAccountsTitle {
+        font-size: 1.25rem;
+    }
+
+    .noAccountsText {
+        font-size: 0.9rem;
+    }
+
+    .createAccountButton {
+        padding: 0.875rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .noAccounts {
+        padding: 1.5rem 1rem;
+        gap: 1rem;
+    }
+
+    .noAccountsIcon {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .noAccountsTitle {
+        font-size: 1.1rem;
+    }
+
+    .noAccountsText {
+        font-size: 0.85rem;
+        max-width: 250px;
+    }
+
+    .createAccountButton {
+        width: 100%;
+        justify-content: center;
+    }
+}

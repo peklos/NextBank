@@ -1,10 +1,8 @@
 import { useState } from 'react';
 import styles from '../styles/login.module.css';
 import { NavLink } from 'react-router-dom';
-import { loginClient } from '../api/clients'
+import { handleLogin } from '../services/authService';
 import { useDispatch } from 'react-redux'
-import { setUser } from '../features/auth/authSlice'
-import { setPersonalInfo } from '../features/auth/personalInfoSlice';
 
 
 export default function Login() {
@@ -34,28 +32,10 @@ export default function Login() {
             return
         }
 
-        const res = await loginClient(email, password)
+        const res = await handleLogin(dispatch, email, password);
 
-        if (res.data != null) {
-            dispatch(setUser({
-                access_token: res.data.access_token,
-                first_name: res.data.first_name,
-                last_name: res.data.last_name,
-                patronymic: res.data.patronymic,
-                email: res.data.email,
-                created_at: res.data.created_at
-            }))
-
-            if (res.data.personal_info != null) {
-                dispatch(setPersonalInfo({
-                    passport_number: res.data.personal_info.passport_number || null,
-                    address: res.data.personal_info.address || null,
-                    birth_date: res.data.personal_info.birth_date || null,
-                    employment_status: res.data.personal_info.employment_status || null
-                }));
-            }
-        } else {
-            setError(res.error)
+        if (!res.success) {
+            setError(res.error);
         }
     };
 

@@ -4,10 +4,12 @@ import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import authReducer from '../features/auth/authSlice'
 import personalInfoReducer from '../features/auth/personalInfoSlice'
+import accountsReducer from '../features/accounts/accSlice'
 
 const rootReducer = combineReducers({
     auth: authReducer, // ✅ теперь в стейте будет state.auth
-    personalInfo: personalInfoReducer
+    personalInfo: personalInfoReducer,
+    accounts: accountsReducer
 })
 
 const persistConfig = {

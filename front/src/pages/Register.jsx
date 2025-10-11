@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from '../styles/register.module.css';
 import { NavLink } from 'react-router-dom';
-import { registerClient } from '../api/clients';
-import { setUser } from '../features/auth/authSlice';
 import { useDispatch } from 'react-redux';
-import { setPersonalInfo } from '../features/auth/personalInfoSlice';
+import { handleRegister } from '../services/authService';
 
 
 const Register = () => {
@@ -118,35 +116,9 @@ const Register = () => {
             return
         }
 
-        const res = await registerClient(
-            formData.firstName,
-            formData.lastName,
-            formData.patronymic,
-            formData.email,
-            formData.phone,
-            formData.password
-        )
+        const res = await handleRegister(dispatch, formData)
 
-        if (res.data != null) {
-            dispatch(setUser({
-                access_token: res.data.access_token,
-                first_name: res.data.first_name,
-                last_name: res.data.last_name,
-                patronymic: res.data.patronymic,
-                email: res.data.email,
-                created_at: res.data.created_at
-            }))
-
-            if (res.data.personal_info != null) {
-                dispatch(setPersonalInfo({
-                    phone: res.data.personal_info.phone,
-                    address: res.data.personal_info.address,
-                    birth_date: res.data.personal_info.birth_date
-                }))
-            }
-
-
-        } else {
+        if (!res.success) {
             setError(res.error)
         }
 

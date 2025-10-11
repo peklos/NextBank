@@ -1,68 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import styles from '../styles/accounts.module.css';
+import { useDispatch } from 'react-redux';
+import { createClientAccount, deleteClientAccount } from '../api/accounts';
+import { addAccount, removeAccount } from '../features/accounts/accSlice';
 
 const Accounts = () => {
-    const [activeTab, setActiveTab] = useState('all');
     const [selectedAccount, setSelectedAccount] = useState(null);
+    const [showCreateAccountConfirm, setShowCreateAccountConfirm] = useState(false);
+    const [showApplicationSuccess, setShowApplicationSuccess] = useState(false);
+    const [showDeleteAccountConfirm, setShowDeleteAccountConfirm] = useState(false);
+    const [showDeleteSuccess, setShowDeleteSuccess] = useState(false);
+    const [accountToDelete, setAccountToDelete] = useState(null);
 
-    // Моковые данные счетов в вашем формате
-    const accounts = [
-        {
-            id: 1,
-            account_number: "21379901342796797608",
-            balance: 245670,
-            created_at: "2024-01-15T10:30:00+03:00",
-            type: "debit",
-            status: "active"
-        },
-        {
-            id: 2,
-            account_number: "21379901342796797609",
-            balance: 1250340,
-            created_at: "2024-02-20T14:45:00+03:00",
-            type: "savings",
-            status: "active"
-        },
-        {
-            id: 3,
-            account_number: "21379901342796797610",
-            balance: -45230,
-            created_at: "2024-03-10T09:15:00+03:00",
-            type: "credit",
-            status: "active"
-        },
-        {
-            id: 4,
-            account_number: "21379901342796797611",
-            balance: 890120,
-            created_at: "2024-04-05T16:20:00+03:00",
-            type: "investment",
-            status: "active"
-        }
-    ];
+    // Получаем данные счетов из Redux store
+    const accountsData = useSelector(state => state.accounts);
+    const user = useSelector(state => state.auth)
+    const accounts = accountsData.list || [];
+
+    const dispatch = useDispatch()
 
     // Общая статистика
     const totalStats = {
         totalBalance: accounts.reduce((sum, account) => sum + account.balance, 0).toLocaleString('ru-RU') + ' ₽',
         totalAccounts: accounts.length,
-        activeAccounts: accounts.filter(acc => acc.status === 'active').length,
-        monthlyIncome: '185 000 ₽',
-        monthlyExpenses: '134 560 ₽'
+        activeAccounts: accounts.length, // Все счета активны
     };
 
-    // Фильтрация счетов по типу
-    const filteredAccounts = accounts.filter(account => {
-        if (activeTab === 'all') return true;
-        return account.type === activeTab;
-    });
-
-    const accountTypes = {
-        all: 'Все счета',
-        debit: 'Расчетные',
-        credit: 'Кредитные',
-        savings: 'Накопительные',
-        investment: 'Инвестиционные'
-    };
+    // Все счета показываем без фильтрации
+    const filteredAccounts = accounts;
 
     // Форматирование номера счета
     const formatAccountNumber = (number) => {
@@ -79,21 +45,96 @@ const Accounts = () => {
         });
     };
 
-    // Получение иконки и цвета по типу счета
-    const getAccountTypeInfo = (type) => {
-        switch (type) {
-            case 'debit':
-                return { icon: '💳', color: '#3b82f6', name: 'Расчетный счет' };
-            case 'savings':
-                return { icon: '💰', color: '#10b981', name: 'Накопительный счет' };
-            case 'credit':
-                return { icon: '💎', color: '#f59e0b', name: 'Кредитный счет' };
-            case 'investment':
-                return { icon: '📈', color: '#8b5cf6', name: 'Инвестиционный счет' };
-            default:
-                return { icon: '🏦', color: '#6b7280', name: 'Счет' };
-        }
+    // Получение иконки и цвета для счета (простая логика)
+    const getAccountInfo = (account, index) => {
+        const colors = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4'];
+        const icons = ['💳', '💰', '🏦', '💎', '📈', '💵'];
+
+        return {
+            icon: icons[index % icons.length],
+            color: colors[index % colors.length],
+        };
     };
+
+    // Обработчик создания счета
+    const handleCreateAccount = () => {
+        setShowCreateAccountConfirm(true);
+        document.body.style.overflow = 'hidden';
+    };
+
+    // Подтверждение создания счета
+    const handleConfirmCreate = async () => {
+        setShowCreateAccountConfirm(false);
+
+        const res = await createClientAccount(user.id)
+
+        if (res.data != null) {
+            dispatch(addAccount(res.data))
+        } else {
+            alert(res.error)
+        }
+
+        // Показываем сообщение об успехе
+        setShowApplicationSuccess(true);
+    };
+
+    // Отмена создания счета
+    const handleCancelCreate = () => {
+        setShowCreateAccountConfirm(false);
+        document.body.style.overflow = 'unset';
+    };
+
+    // Закрытие сообщения об успехе
+    const handleCloseSuccess = () => {
+        setShowApplicationSuccess(false);
+        document.body.style.overflow = 'unset';
+    };
+
+    // Обработчик удаления счета
+    const handleDeleteAccount = (account, e) => {
+        e.stopPropagation();
+        setAccountToDelete(account);
+        setShowDeleteAccountConfirm(true);
+        document.body.style.overflow = 'hidden';
+    };
+
+    // Подтверждение удаления счета
+    const handleConfirmDelete = async () => {
+        setShowDeleteAccountConfirm(false);
+
+        const res = await deleteClientAccount(accountToDelete.id)
+
+        if (res.data != null) {
+            console.log('Счет успешно удален')
+            dispatch(removeAccount(accountToDelete.id))
+        } else {
+            console.log(res.error)
+            alert('Ошибка при удалении счета: ' + res.error)
+        }
+
+        // Показываем сообщение об успехе удаления
+        setShowDeleteSuccess(true);
+    };
+
+    // Отмена удаления счета
+    const handleCancelDelete = () => {
+        setShowDeleteAccountConfirm(false);
+        setAccountToDelete(null);
+        document.body.style.overflow = 'unset';
+    };
+
+    // Закрытие сообщения об успешном удалении
+    const handleCloseDeleteSuccess = () => {
+        setShowDeleteSuccess(false);
+        setAccountToDelete(null);
+        document.body.style.overflow = 'unset';
+    };
+
+    useEffect(() => {
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, []);
 
     return (
         <div className={styles.accountsContainer}>
@@ -133,43 +174,29 @@ const Accounts = () => {
                 {/* Основной контент */}
                 <main className={styles.accountsMain}>
                     <div className={styles.contentGrid}>
-                        {/* Левая колонка - Фильтры и статистика */}
+                        {/* Левая колонка - Быстрые действия */}
                         <div className={styles.leftColumn}>
-
-                            {/* Ежемесячная статистика */}
-                            <section className={styles.statsCard}>
+                            {/* Быстрые действия */}
+                            <section className={styles.actionsCard}>
                                 <div className={styles.cardHeader}>
                                     <h2 className={styles.cardTitle}>
-                                        <span className={styles.cardIcon}>📊</span>
-                                        Статистика
+                                        <span className={styles.cardIcon}>⚡</span>
+                                        Быстрые действия
                                     </h2>
                                 </div>
-                                <div className={styles.statsList}>
-                                    <div className={styles.statItem}>
-                                        <div className={styles.statIcon}>📥</div>
-                                        <div className={styles.statInfo}>
-                                            <span className={styles.statName}>Доходы за месяц</span>
-                                            <span className={`${styles.statValue} ${styles.income}`}>
-                                                {totalStats.monthlyIncome}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className={styles.statItem}>
-                                        <div className={styles.statIcon}>📤</div>
-                                        <div className={styles.statInfo}>
-                                            <span className={styles.statName}>Расходы за месяц</span>
-                                            <span className={`${styles.statValue} ${styles.outcome}`}>
-                                                {totalStats.monthlyExpenses}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div className={styles.statItem}>
-                                        <div className={styles.statIcon}>🎯</div>
-                                        <div className={styles.statInfo}>
-                                            <span className={styles.statName}>Экономия</span>
-                                            <span className={styles.statValue}>50 440 ₽</span>
-                                        </div>
-                                    </div>
+                                <div className={styles.actionsList}>
+                                    <button className={styles.actionButton} onClick={handleCreateAccount}>
+                                        <span className={styles.actionIcon}>➕</span>
+                                        <span className={styles.actionText}>Создать новый счет</span>
+                                    </button>
+                                    <button className={styles.actionButton}>
+                                        <span className={styles.actionIcon}>💸</span>
+                                        <span className={styles.actionText}>Перевод между счетами</span>
+                                    </button>
+                                    <button className={styles.actionButton}>
+                                        <span className={styles.actionIcon}>🔍</span>
+                                        <span className={styles.actionText}>История операций</span>
+                                    </button>
                                 </div>
                             </section>
                         </div>
@@ -200,7 +227,7 @@ const Accounts = () => {
                                     <p className={styles.emptyDescription}>
                                         Откройте первый счет, чтобы начать пользоваться банковскими услугами
                                     </p>
-                                    <button className={styles.createAccountButton}>
+                                    <button className={styles.createAccountButton} onClick={handleCreateAccount}>
                                         <span className={styles.addIcon}>+</span>
                                         Создать первый счет
                                     </button>
@@ -208,8 +235,8 @@ const Accounts = () => {
                             ) : (
                                 <>
                                     <div className={styles.accountsGrid}>
-                                        {filteredAccounts.map((account) => {
-                                            const typeInfo = getAccountTypeInfo(account.type);
+                                        {filteredAccounts.map((account, index) => {
+                                            const accountInfo = getAccountInfo(account, index);
                                             return (
                                                 <div
                                                     key={account.id}
@@ -217,18 +244,18 @@ const Accounts = () => {
                                                     onClick={() => setSelectedAccount(account.id)}
                                                 >
                                                     <div className={styles.accountHeader}>
-                                                        <div className={styles.accountIcon} style={{ backgroundColor: typeInfo.color }}>
-                                                            <span>{typeInfo.icon}</span>
+                                                        <div className={styles.accountIcon} style={{ backgroundColor: accountInfo.color }}>
+                                                            <span>{accountInfo.icon}</span>
                                                         </div>
                                                         <div className={styles.accountInfo}>
-                                                            <h3 className={styles.accountName}>{typeInfo.name}</h3>
+                                                            <h3 className={styles.accountName}>Счет {account.id}</h3>
                                                             <span className={styles.accountNumber}>
                                                                 {formatAccountNumber(account.account_number)}
                                                             </span>
                                                         </div>
                                                         <div className={styles.accountStatus}>
-                                                            <span className={`${styles.statusBadge} ${account.status === 'active' ? styles.statusActive : styles.statusInactive}`}>
-                                                                {account.status === 'active' ? 'Активен' : 'Неактивен'}
+                                                            <span className={`${styles.statusBadge} ${styles.statusActive}`}>
+                                                                Активен
                                                             </span>
                                                         </div>
                                                     </div>
@@ -256,17 +283,14 @@ const Accounts = () => {
                                                                 className={styles.actionBtn}
                                                                 onClick={(e) => {
                                                                     e.stopPropagation();
-                                                                    // Переход к карточкам счета
+                                                                    // Просмотр операций
                                                                 }}
                                                             >
-                                                                💳 Привязанные карты
+                                                                📊 Операции
                                                             </button>
                                                             <button
                                                                 className={`${styles.actionBtn} ${styles.dangerBtn}`}
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation();
-                                                                    // Удаление счета
-                                                                }}
+                                                                onClick={(e) => handleDeleteAccount(account, e)}
                                                             >
                                                                 🗑️ Удалить
                                                             </button>
@@ -279,7 +303,7 @@ const Accounts = () => {
 
                                     {/* Кнопка добавления нового счета */}
                                     <div className={styles.addAccountSection}>
-                                        <button className={styles.addAccountButton}>
+                                        <button className={styles.addAccountButton} onClick={handleCreateAccount}>
                                             <span className={styles.addIcon}>+</span>
                                             Открыть новый счет
                                         </button>
@@ -290,6 +314,173 @@ const Accounts = () => {
                     </div>
                 </main>
             </div>
+
+            {/* Попап подтверждения создания счета */}
+            {showCreateAccountConfirm && (
+                <div className={styles.modalOverlay}>
+                    <div className={styles.modalContent}>
+                        <div className={styles.modalHeader}>
+                            <h2 className={styles.modalTitle}>
+                                <span className={styles.modalIcon}>🏦</span>
+                                Создание нового счета
+                            </h2>
+                            <button className={styles.modalClose} onClick={handleCancelCreate}>
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div className={styles.modalBody}>
+                            <div className={styles.confirmContent}>
+                                <div className={styles.confirmIcon}>❓</div>
+                                <h3 className={styles.confirmTitle}>
+                                    Вы уверены, что хотите завести новый счет?
+                                </h3>
+                                <p className={styles.confirmDescription}>
+                                    После подтверждения будет создана заявка на открытие нового банковского счета.
+                                    Обычно это занимает несколько минут.
+                                </p>
+                            </div>
+
+                            <div className={styles.modalFooter}>
+                                <button className={styles.cancelButton} onClick={handleCancelCreate}>
+                                    Отмена
+                                </button>
+                                <button className={styles.saveButton} onClick={handleConfirmCreate}>
+                                    Да, создать счет
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Попап успешного создания заявки */}
+            {showApplicationSuccess && (
+                <div className={styles.modalOverlay}>
+                    <div className={styles.modalContent}>
+                        <div className={styles.modalHeader}>
+                            <h2 className={styles.modalTitle}>
+                                <span className={styles.modalIcon}>✅</span>
+                                Заявка оформлена
+                            </h2>
+                            <button className={styles.modalClose} onClick={handleCloseSuccess}>
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div className={styles.modalBody}>
+                            <div className={styles.successContent}>
+                                <div className={styles.successIcon}>🎉</div>
+                                <h3 className={styles.successTitle}>
+                                    Ваша заявка на создание нового счета была оформлена
+                                </h3>
+                                <p className={styles.successDescription}>
+                                    Ожидайте подтверждения. Обычно это занимает не более 5 минут.
+                                    Вы получите уведомление, когда счет будет готов к использованию.
+                                </p>
+                            </div>
+
+                            <div className={styles.modalFooter}>
+                                <button className={styles.saveButton} onClick={handleCloseSuccess}>
+                                    Понятно
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Попап подтверждения удаления счета */}
+            {showDeleteAccountConfirm && accountToDelete && (
+                <div className={styles.modalOverlay}>
+                    <div className={styles.modalContent}>
+                        <div className={styles.modalHeader}>
+                            <h2 className={styles.modalTitle}>
+                                <span className={styles.modalIcon}>🗑️</span>
+                                Удаление счета
+                            </h2>
+                            <button className={styles.modalClose} onClick={handleCancelDelete}>
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div className={styles.modalBody}>
+                            <div className={styles.confirmContent}>
+                                <div className={styles.confirmIcon} style={{ color: '#ef4444' }}>⚠️</div>
+                                <h3 className={styles.confirmTitle}>
+                                    Вы точно уверены, что хотите удалить счет?
+                                </h3>
+                                <p className={styles.confirmDescription}>
+                                    Вместе с ним удалятся и обнулятся карты, которые были привязаны к этому счету.
+                                    Это действие нельзя будет отменить.
+                                </p>
+                                <div className={styles.accountPreview}>
+                                    <div className={styles.accountPreviewIcon} style={{ backgroundColor: getAccountInfo(accountToDelete, accounts.findIndex(acc => acc.id === accountToDelete.id)).color }}>
+                                        <span>{getAccountInfo(accountToDelete, accounts.findIndex(acc => acc.id === accountToDelete.id)).icon}</span>
+                                    </div>
+                                    <div className={styles.accountPreviewInfo}>
+                                        <span className={styles.accountPreviewName}>Счет {accountToDelete.id}</span>
+                                        <span className={styles.accountPreviewNumber}>{formatAccountNumber(accountToDelete.account_number)}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className={styles.modalFooter}>
+                                <button className={styles.cancelButton} onClick={handleCancelDelete}>
+                                    Отмена
+                                </button>
+                                <button className={`${styles.saveButton} ${styles.dangerButton}`} onClick={handleConfirmDelete}>
+                                    Да, удалить счет
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Попап успешного удаления счета */}
+            {showDeleteSuccess && (
+                <div className={styles.modalOverlay}>
+                    <div className={styles.modalContent}>
+                        <div className={styles.modalHeader}>
+                            <h2 className={styles.modalTitle}>
+                                <span className={styles.modalIcon}>✅</span>
+                                Заявка на удаление отправлена
+                            </h2>
+                            <button className={styles.modalClose} onClick={handleCloseDeleteSuccess}>
+                                <svg viewBox="0 0 24 24" fill="none">
+                                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div className={styles.modalBody}>
+                            <div className={styles.successContent}>
+                                <div className={styles.successIcon}>📨</div>
+                                <h3 className={styles.successTitle}>
+                                    Ваша заявка на удаление счета была отправлена
+                                </h3>
+                                <p className={styles.successDescription}>
+                                    Ожидайте подтверждения. Обычно это занимает не более 5 минут.
+                                    Вы получите уведомление, когда счет будет удален.
+                                </p>
+                            </div>
+
+                            <div className={styles.modalFooter}>
+                                <button className={styles.saveButton} onClick={handleCloseDeleteSuccess}>
+                                    Понятно
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
