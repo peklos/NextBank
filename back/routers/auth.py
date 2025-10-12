@@ -76,6 +76,7 @@ def read_users_me(current_user: models.Client = Depends(get_current_user)):
         'last_name': current_user.last_name,
         'patronymic': current_user.patronymic,
         'email': current_user.email,
+        'phone': current_user.phone,
         'created_at': current_user.created_at,
         'personal_info': {
             'passport_number': current_user.personal_info.passport_number if current_user.personal_info else None,
@@ -109,6 +110,7 @@ def login(data: ClientLoginSchema, db: Session = Depends(database.get_db)):
         'last_name': client.last_name,
         'patronymic': client.patronymic,
         'email': client.email,
+        'phone': client.phone,
         'created_at': client.created_at,
         'personal_info': {
             'passport_number': client.personal_info.passport_number if client.personal_info else None,
@@ -154,6 +156,7 @@ def create_client(data: ClientCreateSchema, db: Session = Depends(database.get_d
         'patronymic': db_client.patronymic,
         'email': db_client.email,
         'created_at': db_client.created_at,
+        'phone': db_client.phone,
         'token_type': 'bearer',
         'message': 'Регистрация прошла успешно'
     }

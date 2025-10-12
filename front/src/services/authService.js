@@ -16,7 +16,8 @@ export const handleLogin = async (dispatch, email, password) => {
             last_name: res.data.last_name,
             patronymic: res.data.patronymic,
             email: res.data.email,
-            created_at: res.data.created_at
+            created_at: res.data.created_at,
+            phone: res.data.phone
         }));
 
         if (res.data.personal_info) {
@@ -57,7 +58,8 @@ export const handleRegister = async (dispatch, formData) => {
             last_name: res.data.last_name,
             patronymic: res.data.patronymic,
             email: res.data.email,
-            created_at: res.data.created_at
+            created_at: res.data.created_at,
+            phone: res.data.phone
         }));
 
         if (res.data.personal_info) {

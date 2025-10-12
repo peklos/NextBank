@@ -23,6 +23,7 @@ const authSlice = createSlice({
             state.email = action.payload.email
             state.created_at = action.payload.created_at
             state.isLoggedIn = true
+            state.phone = action.payload.phone
             localStorage.setItem('access_token', action.payload.access_token)
         },
         logout: (state) => {
@@ -34,6 +35,7 @@ const authSlice = createSlice({
             state.email = null
             state.created_at = null
             state.isLoggedIn = false
+            state.phone = null
             localStorage.removeItem('access_token')
         }
     }
