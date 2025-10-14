@@ -14,6 +14,7 @@ const Transfers = lazy(() => import('./pages/Transfers'))
 const Profile = lazy(() => import('./pages/Profile'))
 const Accounts = lazy(() => import('./pages/Accounts'))
 const Dashboard = lazy(() => import('./pages/Dashboard'))
+const Cards = lazy(() => import('./pages/Cards'))
 
 function App() {
   const dispatch = useDispatch()
@@ -46,6 +47,7 @@ function App() {
           <Route path='/profile' element={<Profile></Profile>}></Route>
           <Route path='/accounts' element={<Accounts></Accounts>}></Route>
           <Route path='/transfers' element={<Transfers></Transfers>}></Route>
+          <Route path='/cards' element={<Cards></Cards>}></Route>
         </Route>
 
         {/* Если путь не найден(404) */}

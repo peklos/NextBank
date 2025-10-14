@@ -5,11 +5,13 @@ import storage from 'redux-persist/lib/storage'
 import authReducer from '../features/auth/authSlice'
 import personalInfoReducer from '../features/auth/personalInfoSlice'
 import accountsReducer from '../features/accounts/accSlice'
+import cardReducer from '../features/cards/cardSlice'
 
 const rootReducer = combineReducers({
     auth: authReducer, // ✅ теперь в стейте будет state.auth
     personalInfo: personalInfoReducer,
-    accounts: accountsReducer
+    accounts: accountsReducer,
+    cards: cardReducer
 })
 
 const persistConfig = {

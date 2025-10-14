@@ -1,4 +1,3 @@
-/* Базовые стили */
 .accountsContainer {
     min-height: 100vh;
     padding: 2rem;
@@ -133,8 +132,6 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     min-width: 140px;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
 }
 
 .statLabel {
@@ -143,7 +140,6 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    word-break: break-word;
 }
 
 .statValue {
@@ -165,9 +161,7 @@
 }
 
 /* Карточки */
-.filtersCard,
-.actionsCard,
-.statsCard {
+.actionsCard {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -196,58 +190,6 @@
 
 .cardIcon {
     font-size: 1.5rem;
-}
-
-/* Фильтры */
-.filtersGroup {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.filterSection {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.filterTitle {
-    color: #cbd5e1;
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin: 0;
-}
-
-.filterButtons {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.filterBtn {
-    padding: 0.75rem 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    color: #cbd5e1;
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: left;
-}
-
-.filterBtn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-.filterBtnActive {
-    background: rgba(59, 130, 246, 0.2);
-    border-color: rgba(59, 130, 246, 0.4);
-    color: #3b82f6;
 }
 
 /* Быстрые действия */
@@ -286,52 +228,6 @@
 
 .actionText {
     flex: 1;
-}
-
-/* Статистика */
-.statsList {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.statItem {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.statIcon {
-    font-size: 1.5rem;
-    width: 40px;
-    text-align: center;
-}
-
-.statInfo {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    flex: 1;
-}
-
-.statName {
-    color: #94a3b8;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-.statValue.income {
-    color: #10b981;
-}
-
-.statValue.outcome {
-    color: #ef4444;
 }
 
 /* Правая колонка */
@@ -466,13 +362,16 @@
 
 .statusBadge {
     padding: 0.25rem 0.75rem;
-    background: rgba(16, 185, 129, 0.2);
-    border: 1px solid rgba(16, 185, 129, 0.4);
     border-radius: 20px;
-    color: #10b981;
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
+}
+
+.statusActive {
+    background: rgba(16, 185, 129, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    color: #10b981;
 }
 
 .accountBalance {
@@ -492,81 +391,35 @@
     color: #ef4444;
 }
 
-.currency {
-    color: #94a3b8;
-    font-size: 1rem;
-    font-weight: 500;
-}
-
-.accountRate {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem 0;
+.accountDetails {
+    padding: 1rem 0;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     margin-bottom: 1rem;
 }
 
-.rateLabel {
+.detailItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.detailItem:last-child {
+    margin-bottom: 0;
+}
+
+.detailLabel {
     color: #94a3b8;
     font-size: 0.85rem;
     font-weight: 500;
 }
 
-.rateValue {
-    color: #10b981;
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-
-.cardInfo {
-    padding: 0.75rem 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    margin-bottom: 1rem;
-}
-
-.cardNumber {
+.detailValue {
     color: #f1f5f9;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 600;
-    margin-bottom: 0.25rem;
-}
-
-.cardExpiry {
-    color: #94a3b8;
-    font-size: 0.8rem;
-    font-weight: 500;
-}
-
-.creditInfo {
-    padding: 0.75rem 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    margin-bottom: 1rem;
-}
-
-.limitBar {
-    width: 100%;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
-    margin-bottom: 0.5rem;
-    overflow: hidden;
-}
-
-.limitProgress {
-    height: 100%;
-    background: linear-gradient(90deg, #f59e0b, #f97316);
-    border-radius: 3px;
-    transition: width 0.3s ease;
-}
-
-.limitText {
-    color: #94a3b8;
-    font-size: 0.8rem;
-    font-weight: 500;
+    font-family: 'Courier New', monospace;
 }
 
 .accountFooter {
@@ -575,20 +428,10 @@
     align-items: center;
 }
 
-.transactionsInfo {
-    display: flex;
-    align-items: center;
-}
-
-.transactionsText {
-    color: #94a3b8;
-    font-size: 0.8rem;
-    font-weight: 500;
-}
-
 .accountActions {
     display: flex;
     gap: 0.5rem;
+    width: 100%;
 }
 
 .actionBtn {
@@ -601,11 +444,24 @@
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
+    flex: 1;
+    text-align: center;
 }
 
 .actionBtn:hover {
     background: rgba(255, 255, 255, 0.1);
     color: white;
+}
+
+.dangerBtn {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+}
+
+.dangerBtn:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
 }
 
 /* Кнопка добавления счета */
@@ -614,162 +470,32 @@
     justify-content: center;
 }
 
-.addAccountButton {
+.addAccountButton,
+.createAccountButton {
     display: flex;
     align-items: center;
     gap: 0.75rem;
     padding: 1rem 2rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    border: none;
     border-radius: 12px;
-    color: #cbd5e1;
+    color: white;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.addAccountButton:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    border-color: rgba(255, 255, 255, 0.2);
+.addAccountButton:hover,
+.createAccountButton:hover {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px -8px rgba(59, 130, 246, 0.5);
 }
 
 .addIcon {
     font-size: 1.25rem;
     font-weight: 700;
-}
-
-/* Адаптивность */
-@media (max-width: 1200px) {
-    .contentGrid {
-        grid-template-columns: 300px 1fr;
-        gap: 1.5rem;
-    }
-
-    .accountsGrid {
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    }
-}
-
-@media (max-width: 1024px) {
-    .contentGrid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
-    .headerMain {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1.5rem;
-    }
-
-    .headerStats {
-        width: 100%;
-        justify-content: space-between;
-    }
-}
-
-@media (max-width: 768px) {
-    .accountsContainer {
-        padding: 1rem;
-    }
-
-    .pageTitle {
-        font-size: 2rem;
-    }
-
-    .titleIcon {
-        font-size: 2rem;
-    }
-
-    .headerStats {
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-
-    .statCard {
-        flex: 1;
-        min-width: 140px;
-    }
-
-    .accountsHeader {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-
-    .searchBox {
-        width: 100%;
-    }
-
-    .accountsGrid {
-        grid-template-columns: 1fr;
-    }
-
-    .accountFooter {
-        flex-direction: column;
-        gap: 1rem;
-        align-items: flex-start;
-    }
-
-    .accountActions {
-        width: 100%;
-        justify-content: space-between;
-    }
-
-    .actionBtn {
-        flex: 1;
-        text-align: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .accountsContainer {
-        padding: 0.5rem;
-    }
-
-    .filtersCard,
-    .actionsCard,
-    .statsCard,
-    .accountCard {
-        padding: 1.25rem;
-    }
-
-    .pageTitle {
-        font-size: 1.75rem;
-    }
-
-    .statCard {
-        min-width: 100px;
-        padding: 1rem;
-    }
-
-    .statValue {
-        font-size: 1.25rem;
-    }
-
-    .gradientBlob:nth-child(1) {
-        width: 300px;
-        height: 300px;
-    }
-
-    .gradientBlob:nth-child(2) {
-        width: 250px;
-        height: 250px;
-    }
-
-    .gradientBlob:nth-child(3) {
-        width: 280px;
-        height: 280px;
-    }
-}
-
-/* Темная тема поддержка */
-@media (prefers-color-scheme: dark) {
-    .accountsContainer {
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    }
 }
 
 /* Состояние пустого списка */
@@ -808,211 +534,7 @@
     max-width: 300px;
 }
 
-.createAccountButton {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 2rem;
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-    border: none;
-    border-radius: 12px;
-    color: white;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.createAccountButton:hover {
-    background: linear-gradient(135deg, #2563eb, #1e40af);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px -8px rgba(59, 130, 246, 0.5);
-}
-
-/* Детали счета */
-.accountDetails {
-    padding: 1rem 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    margin-bottom: 1rem;
-}
-
-.detailItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.5rem;
-}
-
-.detailItem:last-child {
-    margin-bottom: 0;
-}
-
-.detailLabel {
-    color: #94a3b8;
-    font-size: 0.85rem;
-    font-weight: 500;
-}
-
-.detailValue {
-    color: #f1f5f9;
-    font-size: 0.85rem;
-    font-weight: 600;
-    font-family: 'Courier New', monospace;
-}
-
-/* Статусы счетов */
-.statusActive {
-    background: rgba(16, 185, 129, 0.2) !important;
-    border-color: rgba(16, 185, 129, 0.4) !important;
-    color: #10b981 !important;
-}
-
-.statusInactive {
-    background: rgba(100, 116, 139, 0.2) !important;
-    border-color: rgba(100, 116, 139, 0.4) !important;
-    color: #64748b !important;
-}
-
-/* Опасные кнопки */
-.dangerBtn {
-    background: rgba(239, 68, 68, 0.1) !important;
-    border-color: rgba(239, 68, 68, 0.3) !important;
-    color: #ef4444 !important;
-}
-
-.dangerBtn:hover {
-    background: rgba(239, 68, 68, 0.2) !important;
-    color: #fca5a5 !important;
-}
-
-/* Адаптивность для новых элементов */
-@media (max-width: 768px) {
-    .accountActions {
-        flex-direction: column;
-        width: 100%;
-        gap: 0.5rem;
-    }
-
-    .actionBtn {
-        width: 100%;
-        text-align: center;
-        justify-content: center;
-    }
-
-    .detailItem {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.25rem;
-    }
-
-    .emptyState {
-        padding: 3rem 1.5rem;
-    }
-
-    .emptyIcon {
-        font-size: 3rem;
-    }
-
-    .emptyTitle {
-        font-size: 1.25rem;
-    }
-}
-
-/* Стили для попапов создания счета */
-.confirmContent,
-.successContent {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 1.5rem;
-    padding: 1rem 0;
-}
-
-.confirmIcon,
-.successIcon {
-    font-size: 4rem;
-    opacity: 0.8;
-}
-
-.confirmTitle,
-.successTitle {
-    color: #f1f5f9;
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0;
-    line-height: 1.3;
-}
-
-.confirmDescription,
-.successDescription {
-    color: #94a3b8;
-    font-size: 1rem;
-    line-height: 1.5;
-    margin: 0;
-    max-width: 400px;
-}
-
-.successContent .successIcon {
-    color: #10b981;
-}
-
-.confirmContent .confirmIcon {
-    color: #f59e0b;
-}
-
-/* Адаптивность для попапов */
-@media (max-width: 768px) {
-
-    .confirmContent,
-    .successContent {
-        gap: 1rem;
-        padding: 0.5rem 0;
-    }
-
-    .confirmIcon,
-    .successIcon {
-        font-size: 3rem;
-    }
-
-    .confirmTitle,
-    .successTitle {
-        font-size: 1.25rem;
-    }
-
-    .confirmDescription,
-    .successDescription {
-        font-size: 0.9rem;
-        max-width: 300px;
-    }
-}
-
-@media (max-width: 480px) {
-
-    .confirmContent,
-    .successContent {
-        gap: 0.75rem;
-    }
-
-    .confirmIcon,
-    .successIcon {
-        font-size: 2.5rem;
-    }
-
-    .confirmTitle,
-    .successTitle {
-        font-size: 1.1rem;
-    }
-
-    .confirmDescription,
-    .successDescription {
-        font-size: 0.85rem;
-        max-width: 250px;
-    }
-}
-
-/* Стили для модальных окон */
+/* Модальные окна */
 .modalOverlay {
     position: fixed;
     top: 0;
@@ -1145,7 +667,15 @@
     box-shadow: 0 8px 20px -4px rgba(59, 130, 246, 0.4);
 }
 
-/* Стили для попапов создания счета */
+.dangerButton {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.dangerButton:hover {
+    box-shadow: 0 8px 20px -4px rgba(239, 68, 68, 0.4);
+}
+
+/* Контент модальных окон */
 .confirmContent,
 .successContent {
     display: flex;
@@ -1180,16 +710,400 @@
     max-width: 400px;
 }
 
-.successContent .successIcon {
+.successIcon {
     color: #10b981;
 }
 
-.confirmContent .confirmIcon {
+.confirmIcon {
     color: #f59e0b;
 }
 
-/* Адаптивность для модальных окон */
+/* Предпросмотр счета */
+.accountPreview {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    margin-top: 1rem;
+}
+
+.accountPreviewIcon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.accountPreviewInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+}
+
+.accountPreviewName {
+    color: #f1f5f9;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.accountPreviewNumber {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Стили для модального окна карт */
+.accountInfoHeader {
+    margin-bottom: 2rem;
+}
+
+.accountInfoCard {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.accountInfoNumber {
+    color: #f1f5f9;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.accountInfoBalance {
+    color: #10b981;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.cardsSection {
+    margin-bottom: 2rem;
+}
+
+.cardsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.cardsTitle {
+    color: #f1f5f9;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.addCardButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.addCardButton:hover {
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    transform: translateY(-1px);
+}
+
+.noCards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px dashed rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+}
+
+.noCardsIcon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.noCardsTitle {
+    color: #f1f5f9;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.noCardsDescription {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    max-width: 250px;
+}
+
+.cardsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.cardItem {
+    display: flex;
+    flex-direction: column;
+}
+
+.cardVisual,
+.previewCard {
+    padding: 1.5rem;
+    border-radius: 16px;
+    color: white;
+    box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.cardVisual::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200px;
+    height: 200px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+.cardHeader,
+.previewCardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cardType,
+.previewCardType {
+    font-size: 0.8rem;
+    font-weight: 700;
+    opacity: 0.9;
+}
+
+.cardIcon,
+.previewCardIcon {
+    font-size: 1.5rem;
+}
+
+.cardNumber,
+.previewCardNumber {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.cardFooter,
+.previewCardFooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.cardInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.cardHolder,
+.previewCardHolder {
+    font-size: 0.75rem;
+    font-weight: 600;
+    opacity: 0.9;
+}
+
+.cardExpiry,
+.previewCardExpiry {
+    font-size: 0.7rem;
+    opacity: 0.8;
+}
+
+.statusInactive {
+    background: rgba(100, 116, 139, 0.2);
+    border: 1px solid rgba(100, 116, 139, 0.4);
+    color: #64748b;
+}
+
+/* Форма добавления карты */
+.formGroup {
+    margin-bottom: 2rem;
+}
+
+.formLabel {
+    display: block;
+    color: #f1f5f9;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.cardTypeOptions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.radioOption {
+    position: relative;
+}
+
+.radioOption input {
+    position: absolute;
+    opacity: 0;
+}
+
+.radioLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.25rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.radioOption input:checked+.radioLabel {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: rgba(59, 130, 246, 0.4);
+    color: #3b82f6;
+}
+
+.radioLabel:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.radioIcon {
+    font-size: 1.5rem;
+}
+
+.cardPreview {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
+.previewCard {
+    width: 300px;
+}
+
+/* Адаптивность */
+@media (max-width: 1200px) {
+    .contentGrid {
+        grid-template-columns: 300px 1fr;
+        gap: 1.5rem;
+    }
+
+    .accountsGrid {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+}
+
+@media (max-width: 1024px) {
+    .contentGrid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .headerMain {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+
+    .headerStats {
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
 @media (max-width: 768px) {
+    .accountsContainer {
+        padding: 1rem;
+    }
+
+    .pageTitle {
+        font-size: 2rem;
+    }
+
+    .titleIcon {
+        font-size: 2rem;
+    }
+
+    .headerStats {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .statCard {
+        flex: 1;
+        min-width: 140px;
+    }
+
+    .accountsHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .searchBox {
+        width: 100%;
+    }
+
+    .accountsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .accountFooter {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .accountActions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .actionBtn {
+        width: 100%;
+    }
+
     .modalContent {
         margin: 1rem;
         max-height: calc(100vh - 2rem);
@@ -1234,9 +1148,94 @@
         font-size: 0.9rem;
         max-width: 300px;
     }
+
+    .cardsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .cardsHeader {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .addCardButton {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .cardTypeOptions {
+        grid-template-columns: 1fr;
+    }
+
+    .accountInfoCard {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .previewCard {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .emptyState {
+        padding: 3rem 1.5rem;
+    }
+
+    .emptyIcon {
+        font-size: 3rem;
+    }
+
+    .emptyTitle {
+        font-size: 1.25rem;
+    }
+
+    .detailItem {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
 }
 
 @media (max-width: 480px) {
+    .accountsContainer {
+        padding: 0.5rem;
+    }
+
+    .actionsCard,
+    .accountCard {
+        padding: 1.25rem;
+    }
+
+    .pageTitle {
+        font-size: 1.75rem;
+    }
+
+    .statCard {
+        min-width: 100px;
+        padding: 1rem;
+    }
+
+    .statValue {
+        font-size: 1.25rem;
+    }
+
+    .gradientBlob:nth-child(1) {
+        width: 300px;
+        height: 300px;
+    }
+
+    .gradientBlob:nth-child(2) {
+        width: 250px;
+        height: 250px;
+    }
+
+    .gradientBlob:nth-child(3) {
+        width: 280px;
+        height: 280px;
+    }
+
     .modalOverlay {
         padding: 0.5rem;
     }
@@ -1278,55 +1277,532 @@
         font-size: 0.85rem;
         max-width: 250px;
     }
+
+    .cardVisual,
+    .previewCard {
+        padding: 1.25rem;
+        min-height: 160px;
+    }
+
+    .cardNumber,
+    .previewCardNumber {
+        font-size: 1rem;
+    }
+
+    .noCards {
+        padding: 2rem 1rem;
+    }
 }
 
-/* Стили для предпросмотра счета в попапе удаления */
-.accountPreview {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    margin-top: 1rem;
-}
-
-.accountPreviewIcon {
-    width: 40px;
-    height: 40px;
+/* Уведомления */
+.notification {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    padding: 1rem 1.5rem;
     border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem;
-    flex-shrink: 0;
+    color: white;
+    font-weight: 600;
+    z-index: 1001;
+    animation: slideIn 0.3s ease-out;
+    max-width: 400px;
+    box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.3);
 }
 
-.accountPreviewInfo {
+.notification.success {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.notification.error {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Контейнер номера карты с действиями */
+.cardNumberContainer {
     display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1rem 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.75rem;
+}
+
+.cardNumber {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    font-family: 'Courier New', monospace;
     flex: 1;
 }
 
-.accountPreviewName {
+.cardNumberActions {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: 1rem;
+}
+
+.eyeButton,
+.copyButton {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.eyeButton:hover,
+.copyButton:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+/* Действия с картой */
+.cardActions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.cardActionBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.cardActionBtn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.cardActionBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.cardManagementActions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.managementBtn {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #cbd5e1;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.managementBtn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.managementBtn.danger {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+}
+
+.managementBtn.danger:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+}
+
+.managementBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Формы в модальных окнах */
+.formInput {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
     color: #f1f5f9;
     font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.formInput:focus {
+    outline: none;
+    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.formInput::placeholder {
+    color: #94a3b8;
+}
+
+.selectedCard {
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #f1f5f9;
+    font-family: 'Courier New', monospace;
     font-weight: 600;
 }
 
-.accountPreviewNumber {
-    color: #94a3b8;
-    font-size: 0.8rem;
+/* Адаптивность для новых элементов */
+@media (max-width: 768px) {
+    .notification {
+        right: 1rem;
+        left: 1rem;
+        max-width: none;
+    }
+
+    .cardNumberContainer {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: stretch;
+    }
+
+    .cardNumberActions {
+        margin-left: 0;
+        justify-content: center;
+    }
+
+    .cardManagementActions {
+        flex-direction: column;
+    }
+
+    .cardActions {
+        gap: 0.5rem;
+    }
+
+    .cardActionBtn {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .notification {
+        top: 1rem;
+        right: 0.5rem;
+        left: 0.5rem;
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .cardNumber {
+        font-size: 1rem;
+    }
+
+    .eyeButton,
+    .copyButton {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Уведомления */
+.notification {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    color: white;
+    font-weight: 600;
+    z-index: 1001;
+    animation: slideIn 0.3s ease-out;
+    max-width: 400px;
+    box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.3);
+}
+
+.notification.success {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.notification.error {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Контейнер номера карты с действиями */
+.cardNumberContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1rem 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.75rem;
+}
+
+.cardNumber {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    font-family: 'Courier New', monospace;
+    flex: 1;
+}
+
+.cardNumberActions {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: 1rem;
+}
+
+.eyeButton,
+.copyButton {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.eyeButton:hover,
+.copyButton:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+/* Действия с картой */
+.cardActions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.cardActionBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #cbd5e1;
+    font-size: 0.85rem;
     font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
 }
 
-/* Опасная кнопка для удаления */
-.dangerButton {
-    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+.cardActionBtn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
 }
 
-.dangerButton:hover {
-    box-shadow: 0 8px 20px -4px rgba(239, 68, 68, 0.4) !important;
+.cardActionBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.cardManagementActions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.managementBtn {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #cbd5e1;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.managementBtn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.managementBtn.danger {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+}
+
+.managementBtn.danger:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+}
+
+.managementBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Формы в модальных окнах */
+.formInput {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #f1f5f9;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.formInput:focus {
+    outline: none;
+    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.formInput::placeholder {
+    color: #94a3b8;
+}
+
+.selectedCard {
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #f1f5f9;
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+}
+
+/* Адаптивность для новых элементов */
+@media (max-width: 768px) {
+    .notification {
+        right: 1rem;
+        left: 1rem;
+        max-width: none;
+    }
+
+    .cardNumberContainer {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: stretch;
+    }
+
+    .cardNumberActions {
+        margin-left: 0;
+        justify-content: center;
+    }
+
+    .cardManagementActions {
+        flex-direction: column;
+    }
+
+    .cardActions {
+        gap: 0.5rem;
+    }
+
+    .cardActionBtn {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .notification {
+        top: 1rem;
+        right: 0.5rem;
+        left: 0.5rem;
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .cardNumber {
+        font-size: 1rem;
+    }
+
+    .eyeButton,
+    .copyButton {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Добавьте в accounts.module.css */
+.copyButton.copied {
+    background-color: #10b981 !important;
+    transform: scale(1.1);
+    transition: all 0.2s ease;
+}
+
+.closeButton {
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.closeButton:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
 }

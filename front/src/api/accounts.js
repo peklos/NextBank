@@ -1,8 +1,9 @@
 import axios from "./axios";
 
-export const fetchClientAccounts = async (id) => {
+// Получить все счета текущего пользователя
+export const fetchMyAccounts = async () => {
     try {
-        const res = await axios.get(`/accounts/client/${id}`)
+        const res = await axios.get(`/accounts/me`)
         return { data: res.data, error: null }
     } catch (err) {
         const detail = err.response?.data?.detail || 'Не удалось найти счета'
@@ -10,9 +11,10 @@ export const fetchClientAccounts = async (id) => {
     }
 }
 
-export const createClientAccount = async (client_id) => {
+// Создать новый счет для текущего пользователя
+export const createClientAccount = async () => {
     try {
-        const res = await axios.post(`/accounts/`, { client_id })
+        const res = await axios.post(`/accounts/`)
         return { data: res.data, error: null }
     } catch (err) {
         const detail = err.response?.data?.detail || 'Не удалось создать счет'
@@ -20,6 +22,7 @@ export const createClientAccount = async (client_id) => {
     }
 }
 
+// Удалить счет текущего пользователя
 export const deleteClientAccount = async (account_id) => {
     try {
         const res = await axios.delete(`/accounts/${account_id}`)

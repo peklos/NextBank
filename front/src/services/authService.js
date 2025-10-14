@@ -1,8 +1,10 @@
 import { loginClient, registerClient, getMe } from "../api/clients";
-import { fetchClientAccounts } from "../api/accounts";
+import { fetchMyAccounts } from "../api/accounts"; // для счетов
+import { getClientCards } from "../api/cards"; // для карт
 import { setUser } from '../features/auth/authSlice';
 import { setPersonalInfo } from '../features/auth/personalInfoSlice';
 import { setAccounts } from '../features/accounts/accSlice';
+import { setCards } from '../features/cards/cardSlice'; // диспатчим карты
 import { fullLogout } from "../features/auth/logoutThunk";
 
 // === ЛОГИН ===
@@ -29,8 +31,13 @@ export const handleLogin = async (dispatch, email, password) => {
             }));
         }
 
-        const accRes = await fetchClientAccounts(res.data.client_id);
+        // Получаем счета текущего пользователя
+        const accRes = await fetchMyAccounts();
         if (accRes.data) dispatch(setAccounts(accRes.data));
+
+        // Получаем карты текущего пользователя
+        const cardsRes = await getClientCards();
+        if (cardsRes.data) dispatch(setCards(cardsRes.data));
 
         localStorage.setItem("access_token", res.data.access_token);
         return { success: true };
@@ -71,8 +78,13 @@ export const handleRegister = async (dispatch, formData) => {
             }));
         }
 
-        const accRes = await fetchClientAccounts(res.data.client_id);
+        // Получаем счета текущего пользователя
+        const accRes = await fetchMyAccounts();
         if (accRes.data) dispatch(setAccounts(accRes.data));
+
+        // Получаем карты текущего пользователя
+        const cardsRes = await getClientCards();
+        if (cardsRes.data) dispatch(setCards(cardsRes.data));
 
         localStorage.setItem("access_token", res.data.access_token);
         return { success: true };
@@ -106,8 +118,13 @@ export const autoLogin = async (dispatch) => {
             }));
         }
 
-        const accRes = await fetchClientAccounts(res.data.id);
+        // Получаем счета текущего пользователя
+        const accRes = await fetchMyAccounts();
         if (accRes.data) dispatch(setAccounts(accRes.data));
+
+        // Получаем карты текущего пользователя
+        const cardsRes = await getClientCards();
+        if (cardsRes.data) dispatch(setCards(cardsRes.data));
 
     } else {
         dispatch(fullLogout());

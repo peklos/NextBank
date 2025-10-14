@@ -4,6 +4,7 @@ import styles from '../styles/profile.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPersonalInfo as setPersInfAction } from '../features/auth/personalInfoSlice';
 import { fullLogout } from '../features/auth/logoutThunk';
+import { NavLink } from 'react-router-dom';
 
 const Profile = () => {
     const dispatch = useDispatch();
@@ -351,10 +352,10 @@ const Profile = () => {
                                         <p className={styles.noAccountsText}>
                                             Откройте свой первый счет и начните пользоваться всеми возможностями банка
                                         </p>
-                                        <button className={styles.createAccountButton} onClick={handleCreateAccount}>
+                                        <NavLink to='/accounts' className={styles.createAccountButton} onClick={handleCreateAccount}>
                                             <span className={styles.createAccountIcon}>+</span>
                                             Создать новый счет
-                                        </button>
+                                        </NavLink>
                                     </div>
                                 ) : (
                                     <>
@@ -380,17 +381,17 @@ const Profile = () => {
                                                         </div>
                                                     </div>
                                                     <div className={styles.accountActions}>
-                                                        <button className={styles.actionBtn}>→</button>
+                                                        <NavLink to='/accounts' className={styles.actionBtn}>→</NavLink>
                                                     </div>
                                                 </div>
                                             ))}
                                         </div>
-                                        <button className={styles.viewAllButton}>
+                                        <NavLink to='/accounts' className={styles.viewAllButton}>
                                             <span>Показать все счета</span>
                                             <svg viewBox="0 0 24 24" fill="none">
                                                 <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" strokeWidth="2" />
                                             </svg>
-                                        </button>
+                                        </NavLink>
                                     </>
                                 )}
                             </section>

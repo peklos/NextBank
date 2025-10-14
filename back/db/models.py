@@ -100,7 +100,11 @@ class Account(Base):
 
     client_id = Column(Integer, ForeignKey('clients.id'))
     client = relationship('Client', back_populates='accounts')
-    cards = relationship('Card', back_populates='account')
+    cards = relationship(
+        'Card',
+        back_populates='account',
+        cascade='all, delete-orphan'
+    )
 
 
 # === КАРТОЧКИ ===
