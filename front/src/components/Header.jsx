@@ -76,6 +76,15 @@ const Header = () => {
                         Счета
                     </NavLink>
                     <NavLink
+                        to="/loans"
+                        className={({ isActive }) =>
+                            isActive ? `${styles.navLink} ${styles.navActive}` : styles.navLink
+                        }
+                        onClick={closeMenu}
+                    >
+                        Кредиты
+                    </NavLink>
+                    <NavLink
                         to="/transfers"
                         className={({ isActive }) =>
                             isActive ? `${styles.navLink} ${styles.navActive}` : styles.navLink
