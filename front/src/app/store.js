@@ -6,12 +6,16 @@ import authReducer from '../features/auth/authSlice'
 import personalInfoReducer from '../features/auth/personalInfoSlice'
 import accountsReducer from '../features/accounts/accSlice'
 import cardReducer from '../features/cards/cardSlice'
+import loansReducer from '../features/loans/loansSlice' // 🆕
+import processesReducer from '../features/processes/processesSlice' // 🆕
 
 const rootReducer = combineReducers({
-    auth: authReducer, // ✅ теперь в стейте будет state.auth
+    auth: authReducer,
     personalInfo: personalInfoReducer,
     accounts: accountsReducer,
-    cards: cardReducer
+    cards: cardReducer,
+    loans: loansReducer, // 🆕
+    processes: processesReducer // 🆕
 })
 
 const persistConfig = {

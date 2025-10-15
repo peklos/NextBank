@@ -15,6 +15,7 @@ const Profile = lazy(() => import('./pages/Profile'))
 const Accounts = lazy(() => import('./pages/Accounts'))
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const Cards = lazy(() => import('./pages/Cards'))
+const Loans = lazy(() => import('./pages/Loans')) // 🆕 Добавляем импорт страницы Loans
 
 function App() {
   const dispatch = useDispatch()
@@ -48,6 +49,7 @@ function App() {
           <Route path='/accounts' element={<Accounts></Accounts>}></Route>
           <Route path='/transfers' element={<Transfers></Transfers>}></Route>
           <Route path='/cards' element={<Cards></Cards>}></Route>
+          <Route path='/loans' element={<Loans></Loans>}></Route> {/* 🆕 Добавляем маршрут для Loans */}
         </Route>
 
         {/* Если путь не найден(404) */}

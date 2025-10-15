@@ -1,10 +1,14 @@
 import { loginClient, registerClient, getMe } from "../api/clients";
-import { fetchMyAccounts } from "../api/accounts"; // для счетов
-import { getClientCards } from "../api/cards"; // для карт
+import { fetchMyAccounts } from "../api/accounts";
+import { getClientCards } from "../api/cards";
+import { getMyLoans } from "../api/loans"; // 🆕
+import { getMyProcesses } from "../api/processes"; // 🆕
 import { setUser } from '../features/auth/authSlice';
 import { setPersonalInfo } from '../features/auth/personalInfoSlice';
 import { setAccounts } from '../features/accounts/accSlice';
-import { setCards } from '../features/cards/cardSlice'; // диспатчим карты
+import { setCards } from '../features/cards/cardSlice';
+import { setLoans } from '../features/loans/loansSlice'; // 🆕
+import { setProcesses } from '../features/processes/processesSlice'; // 🆕
 import { fullLogout } from "../features/auth/logoutThunk";
 
 // === ЛОГИН ===
@@ -31,13 +35,21 @@ export const handleLogin = async (dispatch, email, password) => {
             }));
         }
 
-        // Получаем счета текущего пользователя
+        // Получаем счета
         const accRes = await fetchMyAccounts();
         if (accRes.data) dispatch(setAccounts(accRes.data));
 
-        // Получаем карты текущего пользователя
+        // Получаем карты
         const cardsRes = await getClientCards();
         if (cardsRes.data) dispatch(setCards(cardsRes.data));
+
+        // 🆕 Получаем кредиты
+        const loansRes = await getMyLoans();
+        if (loansRes.data) dispatch(setLoans(loansRes.data));
+
+        // 🆕 Получаем процессы
+        const processesRes = await getMyProcesses();
+        if (processesRes.data) dispatch(setProcesses(processesRes.data));
 
         localStorage.setItem("access_token", res.data.access_token);
         return { success: true };
@@ -78,13 +90,21 @@ export const handleRegister = async (dispatch, formData) => {
             }));
         }
 
-        // Получаем счета текущего пользователя
+        // Получаем счета
         const accRes = await fetchMyAccounts();
         if (accRes.data) dispatch(setAccounts(accRes.data));
 
-        // Получаем карты текущего пользователя
+        // Получаем карты
         const cardsRes = await getClientCards();
         if (cardsRes.data) dispatch(setCards(cardsRes.data));
+
+        // 🆕 Получаем кредиты
+        const loansRes = await getMyLoans();
+        if (loansRes.data) dispatch(setLoans(loansRes.data));
+
+        // 🆕 Получаем процессы
+        const processesRes = await getMyProcesses();
+        if (processesRes.data) dispatch(setProcesses(processesRes.data));
 
         localStorage.setItem("access_token", res.data.access_token);
         return { success: true };
@@ -118,13 +138,21 @@ export const autoLogin = async (dispatch) => {
             }));
         }
 
-        // Получаем счета текущего пользователя
+        // Получаем счета
         const accRes = await fetchMyAccounts();
         if (accRes.data) dispatch(setAccounts(accRes.data));
 
-        // Получаем карты текущего пользователя
+        // Получаем карты
         const cardsRes = await getClientCards();
         if (cardsRes.data) dispatch(setCards(cardsRes.data));
+
+        // 🆕 Получаем кредиты
+        const loansRes = await getMyLoans();
+        if (loansRes.data) dispatch(setLoans(loansRes.data));
+
+        // 🆕 Получаем процессы
+        const processesRes = await getMyProcesses();
+        if (processesRes.data) dispatch(setProcesses(processesRes.data));
 
     } else {
         dispatch(fullLogout());

@@ -1,0 +1,1110 @@
+/* [file name]: loans.module.css */
+/* Базовые стили */
+.loansContainer {
+    min-height: 100vh;
+    padding: 2rem;
+    position: relative;
+    overflow-x: hidden;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+/* Анимированный фон */
+.background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.gradientBlob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.08;
+    animation: float 20s ease-in-out infinite;
+}
+
+.gradientBlob:nth-child(1) {
+    width: 600px;
+    height: 600px;
+    background: linear-gradient(45deg, #3b82f6, #06b6d4);
+    top: 10%;
+    left: 5%;
+    animation-delay: 0s;
+}
+
+.gradientBlob:nth-child(2) {
+    width: 500px;
+    height: 500px;
+    background: linear-gradient(45deg, #6366f1, #8b5cf6);
+    top: 60%;
+    right: 5%;
+    animation-delay: -7s;
+}
+
+.gradientBlob:nth-child(3) {
+    width: 550px;
+    height: 550px;
+    background: linear-gradient(45deg, #06b6d4, #10b981);
+    bottom: 10%;
+    left: 20%;
+    animation-delay: -14s;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1) rotate(0deg);
+    }
+
+    33% {
+        transform: translateY(-20px) scale(1.05) rotate(2deg);
+    }
+
+    66% {
+        transform: translateY(10px) scale(0.95) rotate(-2deg);
+    }
+}
+
+/* Основной контент */
+.loansContent {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+}
+
+/* Хедер страницы */
+.loansHeader {
+    margin-bottom: 3rem;
+}
+
+.headerMain {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+}
+
+.titleSection {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.pageTitle {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff, #cbd5e1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.pageSubtitle {
+    color: #94a3b8;
+    font-size: 1.1rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.headerStats {
+    display: flex;
+    gap: 2rem;
+    min-width: 300px;
+}
+
+.statItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    align-items: center;
+    text-align: center;
+}
+
+.statLabel {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.statValue {
+    color: #e2e8f0;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/* Навигационные табы */
+.tabsContainer {
+    margin-bottom: 2rem;
+}
+
+.tabs {
+    display: flex;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 0.5rem;
+    backdrop-filter: blur(20px);
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 12px;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    justify-content: center;
+}
+
+.tab:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+}
+
+.tabActive {
+    background: rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.tabIcon {
+    font-size: 1.1rem;
+}
+
+/* Контент табов */
+.tabContent {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.2);
+}
+
+/* Заголовки секций */
+.sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.sectionTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #f1f5f9;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.sectionIcon {
+    font-size: 1.75rem;
+}
+
+/* Кнопки */
+.primaryButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.primaryButton:hover {
+    box-shadow: 0 8px 20px -4px rgba(59, 130, 246, 0.4);
+}
+
+.secondaryButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #cbd5e1;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.secondaryButton:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.actionButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: linear-gradient(135deg, #10b981, #059669);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.actionButton:hover {
+    box-shadow: 0 4px 12px -2px rgba(16, 185, 129, 0.4);
+}
+
+.buttonIcon {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+/* Сетка кредитов */
+.loansGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Карточка кредита */
+.loanCard {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.loanCard:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.loanHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.loanTitle {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.loanName {
+    color: #f1f5f9;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.loanStatus {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    width: fit-content;
+}
+
+.loanAmount {
+    color: #10b981;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.loanDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.detailRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.detailLabel {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.detailValue {
+    color: #e2e8f0;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.loanActions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* Список процессов */
+.processesList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.processCard {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.processCard:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.processHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.processMain {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.processTitle {
+    color: #f1f5f9;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.processMeta {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.processType,
+.processPriority {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.processStatus {
+    color: #cbd5e1;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.processDescription {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.processDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.processActions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* Карточка статистики */
+.statsCard {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.statsTitle {
+    color: #f1f5f9;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+}
+
+.statsGrid .statItem {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.statNumber {
+    color: #3b82f6;
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+/* Состояния загрузки и ошибок */
+.loadingState,
+.errorState,
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 3rem 2rem;
+    gap: 1rem;
+}
+
+.loadingSpinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-left: 3px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.errorIcon,
+.emptyIcon {
+    font-size: 3rem;
+    opacity: 0.7;
+    margin-bottom: 1rem;
+}
+
+.emptyTitle,
+.errorState p {
+    color: #f1f5f9;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.emptyText {
+    color: #94a3b8;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0;
+    max-width: 400px;
+}
+
+.retryButton,
+.emptyActionButton {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.retryButton:hover,
+.emptyActionButton:hover {
+    box-shadow: 0 8px 20px -4px rgba(59, 130, 246, 0.4);
+}
+
+/* Модальные окна */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.modalContent {
+    background: rgba(30, 41, 59, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 2rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modalTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #f1f5f9;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.modalIcon {
+    font-size: 1.5rem;
+}
+
+.modalClose {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    padding: 0.5rem;
+    color: #cbd5e1;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+}
+
+.modalClose:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.modalBody {
+    padding: 2rem;
+}
+
+/* Формы */
+.formGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.formLabel {
+    color: #e2e8f0;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.formInput,
+.formTextarea,
+.formSelect {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1rem;
+    color: #f1f5f9;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.formInput:focus,
+.formTextarea:focus,
+.formSelect:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.formTextarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Информационные блоки */
+.loanInfo,
+.processInfo {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.loanInfoTitle,
+.processInfoTitle {
+    color: #f1f5f9;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.processInfoDescription {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.processMeta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.metaItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.metaItem span:first-child {
+    color: #94a3b8;
+    font-size: 0.8rem;
+}
+
+.metaItem span:last-child {
+    color: #e2e8f0;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* График платежей */
+.scheduleSection {
+    margin: 1.5rem 0;
+}
+
+.scheduleTitle {
+    color: #f1f5f9;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.scheduleList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.scheduleItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    font-size: 0.8rem;
+}
+
+.scheduleItem span:first-child {
+    color: #94a3b8;
+}
+
+.scheduleItem span:nth-child(2) {
+    color: #e2e8f0;
+    font-weight: 600;
+}
+
+.paidStatus {
+    color: #10b981 !important;
+    font-weight: 600;
+}
+
+.overdueStatus {
+    color: #ef4444 !important;
+    font-weight: 600;
+}
+
+.pendingStatus {
+    color: #f59e0b !important;
+    font-weight: 600;
+}
+
+/* Футер модальных окон */
+.modalFooter {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cancelButton,
+.saveButton,
+.deleteButton {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.cancelButton {
+    background: rgba(255, 255, 255, 0.1);
+    color: #cbd5e1;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cancelButton:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.saveButton {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+}
+
+.saveButton:hover:not(:disabled) {
+    box-shadow: 0 8px 20px -4px rgba(59, 130, 246, 0.4);
+}
+
+.saveButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.deleteButton {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: white;
+}
+
+.deleteButton:hover {
+    box-shadow: 0 8px 20px -4px rgba(239, 68, 68, 0.4);
+}
+
+/* Обработка ошибок */
+.errorContainer {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.1) 100%);
+    border: 1px solid rgba(220, 38, 38, 0.4);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    animation: slideIn 0.3s ease-out;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.errorContainer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.errorMessage {
+    color: #fecaca;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin: 0;
+    line-height: 1.4;
+    text-align: left;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.errorMessage::before {
+    content: '⚠️';
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .headerMain {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+
+    .headerStats {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .loansGrid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .loansContainer {
+        padding: 1rem;
+    }
+
+    .pageTitle {
+        font-size: 2rem;
+    }
+
+    .headerStats {
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .statItem {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .tabs {
+        flex-direction: column;
+    }
+
+    .sectionHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .primaryButton {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .tabContent {
+        padding: 1.5rem;
+    }
+
+    .loansGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .loanActions,
+    .processActions {
+        justify-content: center;
+    }
+
+    .modalContent {
+        margin: 1rem;
+        max-height: calc(100vh - 2rem);
+    }
+
+    .modalHeader {
+        padding: 1.5rem 1.5rem 1rem;
+    }
+
+    .modalBody {
+        padding: 1.5rem;
+    }
+
+    .modalFooter {
+        flex-direction: column;
+    }
+
+    .cancelButton,
+    .saveButton,
+    .deleteButton {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .loansContainer {
+        padding: 0.5rem;
+    }
+
+    .pageTitle {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+    .pageSubtitle {
+        text-align: center;
+    }
+
+    .titleSection {
+        align-items: center;
+        width: 100%;
+    }
+
+    .headerMain {
+        align-items: center;
+        text-align: center;
+    }
+
+    .gradientBlob:nth-child(1) {
+        width: 300px;
+        height: 300px;
+    }
+
+    .gradientBlob:nth-child(2) {
+        width: 250px;
+        height: 250px;
+    }
+
+    .gradientBlob:nth-child(3) {
+        width: 280px;
+        height: 280px;
+    }
+
+    .modalOverlay {
+        padding: 0.5rem;
+    }
+
+    .modalContent {
+        margin: 0.5rem;
+        border-radius: 16px;
+    }
+
+    .modalHeader {
+        padding: 1.25rem 1.25rem 0.75rem;
+    }
+
+    .modalTitle {
+        font-size: 1.1rem;
+    }
+
+    .modalBody {
+        padding: 1.25rem;
+    }
+
+    .formInput,
+    .formTextarea,
+    .formSelect {
+        padding: 0.75rem;
+    }
+
+    .loanCard,
+    .processCard {
+        padding: 1rem;
+    }
+
+    .loanHeader,
+    .processHeader {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .loanAmount {
+        align-self: flex-start;
+    }
+
+    .processStatus {
+        align-self: flex-start;
+    }
+}
+
+@media (max-width: 375px) {
+    .pageTitle {
+        font-size: 1.6rem;
+    }
+
+    .sectionTitle {
+        font-size: 1.25rem;
+    }
+
+    .statsGrid {
+        grid-template-columns: 1fr;
+    }
+}
