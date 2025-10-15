@@ -20,6 +20,7 @@ class LoanResponse(BaseModel):
     term_months: int
     issued_at: datetime
     is_paid: bool
+    paid_amount: float  # 🆕 Добавляем поле
     client_id: int
 
     class Config:

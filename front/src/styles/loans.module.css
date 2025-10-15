@@ -700,6 +700,79 @@
     font-weight: 600;
 }
 
+/* 🆕 Стили для выделения остатка и оплаченной суммы */
+.paidAmount {
+    color: #10b981 !important;
+}
+
+.remainingAmount {
+    color: #f59e0b !important;
+    font-weight: 700 !important;
+}
+
+.remainingHighlight {
+    color: #f59e0b !important;
+    font-weight: 700 !important;
+    font-size: 1.1rem !important;
+}
+
+/* 🆕 Кастомный селект */
+.customSelect {
+    position: relative;
+}
+
+.customSelect select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 12px;
+    padding-right: 3rem;
+    cursor: pointer;
+}
+
+.customSelect select option {
+    background: #1e293b;
+    color: #f1f5f9;
+    padding: 0.75rem;
+}
+
+/* 🆕 Поле ввода с кнопкой "Макс" */
+.inputWithHint {
+    position: relative;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.inputWithHint input {
+    flex: 1;
+}
+
+.maxButton {
+    padding: 0.75rem 1.5rem;
+    background: rgba(245, 158, 11, 0.2);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    border-radius: 10px;
+    color: #f59e0b;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.maxButton:hover {
+    background: rgba(245, 158, 11, 0.3);
+    border-color: rgba(245, 158, 11, 0.6);
+}
+
+.inputHint {
+    display: block;
+    margin-top: 0.5rem;
+    color: #94a3b8;
+    font-size: 0.8rem;
+}
+
 /* График платежей */
 .scheduleSummary {
     display: grid;

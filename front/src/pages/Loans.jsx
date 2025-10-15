@@ -127,6 +127,12 @@ const Loans = () => {
         return loan.amount * (1 + loan.interest_rate / 100);
     };
 
+    // 🆕 Расчёт оставшейся суммы
+    const calculateRemainingAmount = (loan) => {
+        const total = calculateTotalAmount(loan);
+        return total - (loan.paid_amount || 0);
+    };
+
     // Статистика
     const totalLoans = loans.length;
     const activeLoans = loans.filter(l => !l.is_paid).length;

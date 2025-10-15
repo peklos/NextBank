@@ -135,6 +135,8 @@ class Loan(Base):
     term_months = Column(Integer)
     issued_at = Column(DateTime(timezone=True), server_default=func.now())
     is_paid = Column(Boolean, default=False)
+    # 🆕 Добавляем отслеживание оплаченной суммы
+    paid_amount = Column(Float, default=0.0)
 
     client_id = Column(Integer, ForeignKey('clients.id'))
     client = relationship('Client', back_populates='loans')

@@ -105,7 +105,7 @@ def get_loan_details(
 
 
 # ==============================
-# 💰 Оплатить кредит
+# 💰 Оплатить кредит 
 # ==============================
 @router.post("/{loan_id}/pay", summary="Оплатить кредит")
 def pay_loan(
@@ -145,10 +145,13 @@ def pay_loan(
     # Рассчитываем общую сумму к оплате (с процентами)
     total_amount = loan.amount * (1 + loan.interest_rate / 100)
 
-    if payment_data.payment_amount > total_amount:
+    # 🆕 Рассчитываем оставшуюся сумму
+    remaining_amount = total_amount - loan.paid_amount
+
+    if payment_data.payment_amount > remaining_amount:
         raise HTTPException(
             status_code=400,
-            detail=f"Сумма платежа превышает остаток по кредиту ({total_amount:.2f} ₽)"
+            detail=f"Сумма платежа превышает остаток по кредиту ({remaining_amount:.2f} ₽)"
         )
 
     # Проверяем баланс карты
@@ -159,10 +162,17 @@ def pay_loan(
     # Списываем средства
     card.account.balance -= payment_data.payment_amount
 
+    # 🆕 Обновляем оплаченную сумму
+    loan.paid_amount += payment_data.payment_amount
+
+    # 🆕 Пересчитываем остаток
+    new_remaining = total_amount - loan.paid_amount
+
     # Если оплачена полная сумма - помечаем кредит оплаченным
-    if payment_data.payment_amount >= total_amount:
+    if new_remaining <= 0.01:  # небольшая погрешность для float
         loan.is_paid = True
-        message = f"Кредит полностью оплачен. Списано {payment_data.payment_amount:.2f} ₽"
+        new_remaining = 0
+        message = f"Кредит полностью оплачен! Списано {payment_data.payment_amount:.2f} ₽"
     else:
         message = f"Частичная оплата кредита. Списано {payment_data.payment_amount:.2f} ₽"
 
@@ -171,7 +181,8 @@ def pay_loan(
     return {
         "message": message,
         "paid_amount": payment_data.payment_amount,
-        "remaining_amount": max(0, total_amount - payment_data.payment_amount),
+        "total_paid": loan.paid_amount,
+        "remaining_amount": new_remaining,
         "card_balance": card.account.balance
     }
 
