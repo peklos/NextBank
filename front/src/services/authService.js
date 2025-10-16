@@ -1,14 +1,16 @@
 import { loginClient, registerClient, getMe } from "../api/clients";
 import { fetchMyAccounts } from "../api/accounts";
 import { getClientCards } from "../api/cards";
-import { getMyLoans } from "../api/loans"; // 🆕
-import { getMyProcesses } from "../api/processes"; // 🆕
+import { getMyLoans } from "../api/loans";
+import { getMyProcesses } from "../api/processes";
+import { getMyTransactions } from "../api/transactions"; // 🆕
 import { setUser } from '../features/auth/authSlice';
 import { setPersonalInfo } from '../features/auth/personalInfoSlice';
 import { setAccounts } from '../features/accounts/accSlice';
 import { setCards } from '../features/cards/cardSlice';
-import { setLoans } from '../features/loans/loansSlice'; // 🆕
-import { setProcesses } from '../features/processes/processesSlice'; // 🆕
+import { setLoans } from '../features/loans/loansSlice';
+import { setProcesses } from '../features/processes/processesSlice';
+import { setTransactions } from '../features/transactions/transactionsSlice'; // 🆕
 import { fullLogout } from "../features/auth/logoutThunk";
 
 // === ЛОГИН ===
@@ -50,6 +52,10 @@ export const handleLogin = async (dispatch, email, password) => {
         // 🆕 Получаем процессы
         const processesRes = await getMyProcesses();
         if (processesRes.data) dispatch(setProcesses(processesRes.data));
+
+        // 🆕 Получаем транзакции
+        const transactionsRes = await getMyTransactions();
+        if (transactionsRes.data) dispatch(setTransactions(transactionsRes.data));
 
         localStorage.setItem("access_token", res.data.access_token);
         return { success: true };
@@ -106,6 +112,10 @@ export const handleRegister = async (dispatch, formData) => {
         const processesRes = await getMyProcesses();
         if (processesRes.data) dispatch(setProcesses(processesRes.data));
 
+        // 🆕 Получаем транзакции
+        const transactionsRes = await getMyTransactions();
+        if (transactionsRes.data) dispatch(setTransactions(transactionsRes.data));
+
         localStorage.setItem("access_token", res.data.access_token);
         return { success: true };
     }
@@ -153,6 +163,10 @@ export const autoLogin = async (dispatch) => {
         // 🆕 Получаем процессы
         const processesRes = await getMyProcesses();
         if (processesRes.data) dispatch(setProcesses(processesRes.data));
+
+        // 🆕 Получаем транзакции
+        const transactionsRes = await getMyTransactions();
+        if (transactionsRes.data) dispatch(setTransactions(transactionsRes.data));
 
     } else {
         dispatch(fullLogout());

@@ -1,4 +1,3 @@
-/* Базовые стили */
 .transactionsContainer {
     min-height: 100vh;
     padding: 2rem;
@@ -28,7 +27,7 @@
 .gradientBlob:nth-child(1) {
     width: 600px;
     height: 600px;
-    background: linear-gradient(45deg, #3b82f6, #06b6d4);
+    background: linear-gradient(45deg, #3b82f6, #2563eb);
     top: 10%;
     left: 5%;
     animation-delay: 0s;
@@ -37,7 +36,7 @@
 .gradientBlob:nth-child(2) {
     width: 500px;
     height: 500px;
-    background: linear-gradient(45deg, #6366f1, #8b5cf6);
+    background: linear-gradient(45deg, #10b981, #059669);
     top: 60%;
     right: 5%;
     animation-delay: -7s;
@@ -46,7 +45,7 @@
 .gradientBlob:nth-child(3) {
     width: 550px;
     height: 550px;
-    background: linear-gradient(45deg, #06b6d4, #10b981);
+    background: linear-gradient(45deg, #f59e0b, #d97706);
     bottom: 10%;
     left: 20%;
     animation-delay: -14s;
@@ -133,8 +132,13 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     min-width: 140px;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+    backdrop-filter: blur(20px);
+    transition: all 0.3s ease;
+}
+
+.statCard:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
 }
 
 .statLabel {
@@ -143,21 +147,12 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    word-break: break-word;
 }
 
 .statValue {
     color: #f1f5f9;
     font-size: 1.5rem;
     font-weight: 700;
-}
-
-.statValue.income {
-    color: #10b981;
-}
-
-.statValue.outcome {
-    color: #ef4444;
 }
 
 /* Основной контент */
@@ -167,29 +162,24 @@
 
 .contentGrid {
     display: grid;
-    grid-template-columns: 350px 1fr;
+    grid-template-columns: 320px 1fr;
     gap: 2rem;
     align-items: start;
 }
 
-/* Карточки */
-.filtersCard,
-.statsCard,
-.transactionsCard {
+/* Левая колонка */
+.leftColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.filtersCard {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     padding: 2rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-}
-
-/* Убраны эффекты поднятия при наведении */
-.filtersCard:hover,
-.statsCard:hover,
-.transactionsCard:hover {
     box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.2);
 }
 
@@ -214,136 +204,94 @@
     font-size: 1.5rem;
 }
 
-/* Фильтры */
-.filtersGroup {
+.filtersList {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-}
-
-.filterSection {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-}
-
-.filterTitle {
-    color: #cbd5e1;
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin: 0;
-}
-
-.filterButtons {
-    display: flex;
-    flex-wrap: wrap;
     gap: 0.5rem;
 }
 
-.filterBtn {
-    padding: 0.5rem 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    color: #cbd5e1;
-    font-size: 0.85rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    flex: 1;
-    min-width: 80px;
-}
-
-.filterBtn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-.filterBtnActive {
-    background: rgba(59, 130, 246, 0.2);
-    border-color: rgba(59, 130, 246, 0.4);
-    color: #3b82f6;
-}
-
-.exportButton {
-    width: 100%;
+.filterButton {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 0.75rem;
+    gap: 1rem;
     padding: 1rem;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     color: #cbd5e1;
     font-size: 0.9rem;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 1rem;
+    text-align: left;
+    width: 100%;
 }
 
-.exportButton:hover {
+.filterButton:hover {
     background: rgba(255, 255, 255, 0.1);
     color: white;
-    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateX(4px);
 }
 
-.exportIcon {
+.filterActive {
+    background: rgba(59, 130, 246, 0.2) !important;
+    border-color: rgba(59, 130, 246, 0.4) !important;
+    color: #3b82f6 !important;
+}
+
+.filterIcon {
     font-size: 1.25rem;
-}
-
-/* Статистика */
-.statsList {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.statItem {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.statIcon {
-    font-size: 1.5rem;
-    width: 40px;
+    width: 24px;
     text-align: center;
 }
 
-.statInfo {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
+.filterText {
     flex: 1;
+    text-align: left;
 }
 
-.statName {
-    color: #94a3b8;
-    font-size: 0.8rem;
+.filterCount {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    min-width: 24px;
+    text-align: center;
 }
 
-/* Список транзакций */
+/* Правая колонка */
+.rightColumn {
+    width: 100%;
+}
+
+.transactionsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 1rem;
+}
+
+.sectionTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #f1f5f9;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
 .transactionsCount {
     color: #94a3b8;
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: 500;
-    margin-left: 0.5rem;
 }
 
 .searchBox {
     position: relative;
-    width: 250px;
+    min-width: 300px;
 }
 
 .searchInput {
@@ -351,7 +299,7 @@
     padding: 0.75rem 1rem 0.75rem 2.5rem;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+    border-radius: 12px;
     color: #f1f5f9;
     font-size: 0.9rem;
     transition: all 0.3s ease;
@@ -376,90 +324,71 @@
     font-size: 1rem;
 }
 
+/* Список транзакций */
 .transactionsList {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    max-height: 600px;
-    overflow-y: auto;
+    gap: 1rem;
 }
 
-.transactionItem {
+.transactionCard {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 1.25rem;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     transition: all 0.3s ease;
     cursor: pointer;
 }
 
-.transactionItem:hover {
+.transactionCard:hover {
     background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.2);
 }
 
 .transactionIcon {
-    width: 50px;
-    height: 50px;
-    background: rgba(255, 255, 255, 0.1);
+    width: 48px;
+    height: 48px;
     border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     flex-shrink: 0;
 }
 
 .transactionInfo {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
     flex: 1;
-}
-
-.transactionMain {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
 }
 
-.transactionDescription {
+.transactionTitle {
     color: #f1f5f9;
     font-size: 1rem;
     font-weight: 600;
-}
-
-.transactionAccount {
-    color: #94a3b8;
-    font-size: 0.8rem;
-    font-weight: 500;
-}
-
-.transactionMeta {
-    display: flex;
-    gap: 1rem;
+    margin: 0;
+    line-height: 1.4;
 }
 
 .transactionDate {
     color: #94a3b8;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 500;
-}
-
-.transactionStatus {
-    color: #10b981;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-transform: uppercase;
 }
 
 .transactionAmount {
     display: flex;
-    align-items: center;
-    margin-right: 1rem;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+    text-align: right;
 }
 
 .amount {
@@ -467,91 +396,117 @@
     font-weight: 700;
 }
 
-.amountIncome {
+.statusBadge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.statusCompleted {
+    background: rgba(16, 185, 129, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.4);
     color: #10b981;
 }
 
-.amountOutcome {
+.statusPending {
+    background: rgba(245, 158, 11, 0.2);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    color: #f59e0b;
+}
+
+.statusFailed {
+    background: rgba(239, 68, 68, 0.2);
+    border: 1px solid rgba(239, 68, 68, 0.4);
     color: #ef4444;
 }
 
-.detailsButton {
-    width: 36px;
-    height: 36px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-    color: #cbd5e1;
-    cursor: pointer;
-    transition: all 0.3s ease;
+/* Пустое состояние */
+.emptyState {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-}
-
-.detailsButton:hover {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-}
-
-.detailsButton svg {
-    width: 18px;
-    height: 18px;
-}
-
-.transactionsFooter {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.loadMoreButton {
-    padding: 0.75rem 1.5rem;
+    padding: 4rem 2rem;
+    text-align: center;
     background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    color: #cbd5e1;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
+    border-radius: 20px;
 }
 
-.loadMoreButton:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
+.emptyIcon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    opacity: 0.7;
 }
 
-.paginationInfo {
+.emptyTitle {
+    color: #f1f5f9;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.emptyDescription {
     color: #94a3b8;
-    font-size: 0.8rem;
-    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+    max-width: 300px;
+}
+
+/* Уведомления */
+.notification {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    color: white;
+    font-weight: 600;
+    z-index: 1001;
+    animation: slideIn 0.3s ease-out;
+    max-width: 400px;
+    box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.3);
+}
+
+.notification.success {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.notification.error {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 /* Адаптивность */
 @media (max-width: 1200px) {
     .contentGrid {
-        grid-template-columns: 300px 1fr;
+        grid-template-columns: 280px 1fr;
         gap: 1.5rem;
     }
 
-    .headerStats {
-        gap: 1rem;
-    }
-
-    .statCard {
-        min-width: 120px;
-        padding: 1.25rem;
+    .searchBox {
+        min-width: 250px;
     }
 }
 
 @media (max-width: 1024px) {
     .contentGrid {
         grid-template-columns: 1fr;
-        gap: 1.5rem;
     }
 
     .headerMain {
@@ -563,6 +518,14 @@
     .headerStats {
         width: 100%;
         justify-content: space-between;
+    }
+
+    .filtersCard {
+        order: 2;
+    }
+
+    .rightColumn {
+        order: 1;
     }
 }
 
@@ -587,41 +550,53 @@
     .statCard {
         flex: 1;
         min-width: 140px;
+        padding: 1.25rem;
     }
 
-    .cardHeader {
+    .transactionsHeader {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
         gap: 1rem;
     }
 
     .searchBox {
-        width: 100%;
+        min-width: auto;
     }
 
-    .transactionItem {
-        padding: 1rem;
+    .transactionCard {
+        padding: 1.25rem;
     }
 
     .transactionIcon {
-        width: 45px;
-        height: 45px;
-        font-size: 1.25rem;
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+
+    .transactionInfo {
+        min-width: 0;
+    }
+
+    .transactionTitle {
+        font-size: 0.9rem;
+    }
+
+    .amount {
+        font-size: 1rem;
     }
 }
 
 @media (max-width: 480px) {
     .transactionsContainer {
-        padding: 0.5rem;
-    }
-
-    .filtersCard,
-    .statsCard,
-    .transactionsCard {
-        padding: 1.5rem;
+        padding: 0.75rem;
     }
 
     .pageTitle {
+        font-size: 1.75rem;
+        gap: 0.75rem;
+    }
+
+    .titleIcon {
         font-size: 1.75rem;
     }
 
@@ -634,55 +609,60 @@
         font-size: 1.25rem;
     }
 
-    .transactionMeta {
-        flex-direction: column;
-        gap: 0.25rem;
+    .filtersCard {
+        padding: 1.5rem;
     }
 
-    .transactionsFooter {
-        flex-direction: column;
-        gap: 1rem;
-        align-items: stretch;
+    .transactionCard {
+        padding: 1rem;
+        gap: 0.75rem;
     }
 
-    .gradientBlob:nth-child(1) {
-        width: 300px;
-        height: 300px;
+    .transactionIcon {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
     }
 
-    .gradientBlob:nth-child(2) {
-        width: 250px;
-        height: 250px;
+    .transactionAmount {
+        align-items: flex-start;
     }
 
-    .gradientBlob:nth-child(3) {
-        width: 280px;
-        height: 280px;
+    .emptyState {
+        padding: 3rem 1.5rem;
+    }
+
+    .emptyIcon {
+        font-size: 3rem;
+    }
+
+    .emptyTitle {
+        font-size: 1.25rem;
+    }
+
+    .notification {
+        right: 1rem;
+        left: 1rem;
+        max-width: none;
     }
 }
 
-/* Темная тема поддержка */
-@media (prefers-color-scheme: dark) {
-    .transactionsContainer {
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+/* Плавные переходы для всех интерактивных элементов */
+.transactionCard,
+.filterButton,
+.statCard,
+.searchInput {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Улучшенная доступность */
+@media (prefers-reduced-motion: reduce) {
+
+    .gradientBlob,
+    .transactionCard,
+    .filterButton,
+    .statCard {
+        animation: none;
+        transition: none;
     }
-}
-
-/* Кастомный скроллбар */
-.transactionsList::-webkit-scrollbar {
-    width: 6px;
-}
-
-.transactionsList::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 3px;
-}
-
-.transactionsList::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 3px;
-}
-
-.transactionsList::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
 }

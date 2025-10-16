@@ -10,12 +10,12 @@ import { autoLogin } from './services/authService'
 
 const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
-const Transfers = lazy(() => import('./pages/Transfers'))
+const Transfers = lazy(() => import('./pages/Transactions'))
 const Profile = lazy(() => import('./pages/Profile'))
 const Accounts = lazy(() => import('./pages/Accounts'))
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 const Cards = lazy(() => import('./pages/Cards'))
-const Loans = lazy(() => import('./pages/Loans')) // 🆕 Добавляем импорт страницы Loans
+const Loans = lazy(() => import('./pages/Loans'))
 
 function App() {
   const dispatch = useDispatch()
