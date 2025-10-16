@@ -67,6 +67,7 @@ class Client(Base):
     cards = relationship('Card', back_populates='client')
     loans = relationship('Loan', back_populates='client')
     processes = relationship('Process', back_populates='client')
+    transactions = relationship('Transaction', back_populates='client')
 
 
 # === ПЕРСОНАЛЬНАЯ ИНФОРМАЦИЯ (1 к 1 с клиентом) ===
@@ -159,3 +160,45 @@ class Process(Base):
     client = relationship('Client', back_populates='processes')
     employee = relationship('Employee', back_populates='processes')
     branch = relationship('Branch', back_populates='processes')
+
+
+# === ТРАНЗАКЦИИ ===
+class Transaction(Base):
+    __tablename__ = 'transactions'
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    # Тип транзакции: deposit, withdraw, transfer, loan_payment
+    transaction_type = Column(String(50), nullable=False)
+
+    # Сумма транзакции
+    amount = Column(Float, nullable=False)
+
+    # Описание транзакции
+    description = Column(String(255))
+
+    # Дата и время
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    # Статус: completed, pending, failed
+    status = Column(String(30), default="completed")
+
+    # Карта отправителя (если применимо)
+    from_card_id = Column(Integer, ForeignKey('cards.id'), nullable=True)
+
+    # Карта получателя (если применимо)
+    to_card_id = Column(Integer, ForeignKey('cards.id'), nullable=True)
+
+    # Кредит (если это оплата кредита)
+    loan_id = Column(Integer, ForeignKey('loans.id'), nullable=True)
+
+    # Клиент (владелец транзакции)
+    client_id = Column(Integer, ForeignKey('clients.id'))
+
+    # Relationships
+    client = relationship('Client', back_populates='transactions')
+    from_card = relationship('Card', foreign_keys=[
+                             from_card_id], backref='transactions_sent')
+    to_card = relationship('Card', foreign_keys=[
+                           to_card_id], backref='transactions_received')
+    loan = relationship('Loan', backref='transactions')

@@ -105,7 +105,7 @@ def get_loan_details(
 
 
 # ==============================
-# 💰 Оплатить кредит 
+# 💰 Оплатить кредит
 # ==============================
 @router.post("/{loan_id}/pay", summary="Оплатить кредит")
 def pay_loan(
@@ -175,6 +175,17 @@ def pay_loan(
         message = f"Кредит полностью оплачен! Списано {payment_data.payment_amount:.2f} ₽"
     else:
         message = f"Частичная оплата кредита. Списано {payment_data.payment_amount:.2f} ₽"
+
+    transaction = models.Transaction(
+        client_id=current_client.id,
+        transaction_type="loan_payment",
+        amount=payment_data.payment_amount,
+        description=f"Оплата кредита #{loan.id}",
+        status="completed",
+        from_card_id=payment_data.card_id,
+        loan_id=loan.id
+    )
+    db.add(transaction)
 
     db.commit()
 

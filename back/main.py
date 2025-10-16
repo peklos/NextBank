@@ -5,8 +5,9 @@ from routers import auth as auth_router
 from routers import personal_info as pers_inf_router
 from routers import accounts as accounts_router
 from routers import cards as cards_router
-from routers import loans as loans_router  # 🆕
-from routers import processes as processes_router  # 🆕
+from routers import loans as loans_router
+from routers import processes as processes_router
+from routers import transactions as transactions_router
 
 from db.database import engine, Base
 
@@ -31,8 +32,9 @@ app.include_router(auth_router.router)
 app.include_router(pers_inf_router.router)
 app.include_router(accounts_router.router)
 app.include_router(cards_router.router)
-app.include_router(loans_router.router)  # 🆕
-app.include_router(processes_router.router)  # 🆕
+app.include_router(loans_router.router)
+app.include_router(processes_router.router)
+app.include_router(transactions_router.router)
 
 
 @app.get("/", tags=["Главная"])

@@ -32,6 +32,31 @@ def generate_expiration_date():
     """Срок действия карты — 4 года с момента выпуска"""
     return datetime.utcnow() + timedelta(days=365 * 4)
 
+
+def create_transaction(
+    db: Session,
+    client_id: int,
+    transaction_type: str,
+    amount: float,
+    description: str,
+    from_card_id: int = None,
+    to_card_id: int = None,
+    loan_id: int = None
+):
+    """Вспомогательная функция для создания транзакции"""
+    transaction = models.Transaction(
+        client_id=client_id,
+        transaction_type=transaction_type,
+        amount=amount,
+        description=description,
+        status="completed",
+        from_card_id=from_card_id,
+        to_card_id=to_card_id,
+        loan_id=loan_id
+    )
+    db.add(transaction)
+    return transaction
+
 # ==============================
 # 🆕 Выпуск карты
 # ==============================
@@ -171,8 +196,20 @@ def deposit_to_card(
             status_code=404, detail="Карта не найдена или неактивна")
 
     card.account.balance += amount
+
+    # 🆕 Создаем транзакцию
+    create_transaction(
+        db=db,
+        client_id=current_client.id,
+        transaction_type="deposit",
+        amount=amount,
+        description=f"Пополнение карты •••• {card.card_number[-4:]}",
+        to_card_id=card.id
+    )
+
     db.commit()
     return {"message": f"Баланс карты пополнен на {amount} ₽", "new_balance": card.account.balance}
+
 
 # ==============================
 # 💸 Снятие денег с карты
@@ -204,6 +241,17 @@ def withdraw_from_card(
         raise HTTPException(status_code=400, detail="Недостаточно средств")
 
     card.account.balance -= amount
+
+    # 🆕 Создаем транзакцию
+    create_transaction(
+        db=db,
+        client_id=current_client.id,
+        transaction_type="withdraw",
+        amount=amount,
+        description=f"Снятие с карты •••• {card.card_number[-4:]}",
+        from_card_id=card.id
+    )
+
     db.commit()
     return {"message": f"С карты списано {amount} ₽", "new_balance": card.account.balance}
 
@@ -248,6 +296,30 @@ def transfer_between_cards(
 
     from_card.account.balance -= amount
     to_card.account.balance += amount
+
+    # 🆕 Создаем транзакцию для отправителя
+    create_transaction(
+        db=db,
+        client_id=current_client.id,
+        transaction_type="transfer",
+        amount=amount,
+        description=f"Перевод на карту •••• {to_card_number[-4:]}",
+        from_card_id=from_card.id,
+        to_card_id=to_card.id
+    )
+
+    # 🆕 Создаем транзакцию для получателя (если это другой клиент)
+    if to_card.client_id != current_client.id:
+        create_transaction(
+            db=db,
+            client_id=to_card.client_id,
+            transaction_type="deposit",
+            amount=amount,
+            description=f"Получен перевод от карты •••• {from_card.card_number[-4:]}",
+            from_card_id=from_card.id,
+            to_card_id=to_card.id
+        )
+
     db.commit()
 
     return {"message": f"Переведено {amount} ₽ на карту {to_card_number}"}
