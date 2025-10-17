@@ -4,6 +4,7 @@ import { clearAccounts } from '../accounts/accSlice';
 import { clearCards } from "../cards/cardSlice";
 import { clearLoans } from "../loans/loansSlice";
 import { clearProcesses } from "../processes/processesSlice";
+import { clearTransactions } from "../transactions/transactionsSlice";
 
 export const fullLogout = () => (dispatch) => {
     dispatch(logout());

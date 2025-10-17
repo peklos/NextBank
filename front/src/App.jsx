@@ -1,66 +1,96 @@
-import './tailwind.css'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { lazy, useEffect } from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import ProtectedRoute from './components/ProtectedRoute'
-import PublicRoute from './components/PublicRoute'
-import PrivateLayout from "./components/PrivateLayout";
-import { autoLogin } from './services/authService'
+// Клиентские страницы
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import Accounts from './pages/Accounts';
+import Cards from './pages/Cards';
+import Loans from './pages/Loans';
+import Transactions from './pages/Transactions';
+import Profile from './pages/Profile';
 
-const Login = lazy(() => import('./pages/Login'))
-const Register = lazy(() => import('./pages/Register'))
-const Transfers = lazy(() => import('./pages/Transactions'))
-const Profile = lazy(() => import('./pages/Profile'))
-const Accounts = lazy(() => import('./pages/Accounts'))
-const Dashboard = lazy(() => import('./pages/Dashboard'))
-const Cards = lazy(() => import('./pages/Cards'))
-const Loans = lazy(() => import('./pages/Loans'))
+// Админские страницы
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
+
+// Компоненты
+import PrivateLayout from './components/PrivateLayout';
+import ProtectedRoute from './components/ProtectedRoute';
+import PublicRoute from './components/PublicRoute';
+import AdminProtectedRoute from './components/AdminProtectedRoute';
+
+// Сервисы
+import { autoLogin } from './services/authService';
+import { autoLoginEmployee } from './services/employeeAuthService';
 
 function App() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const clientAuth = useSelector(state => state.auth);
+  const employeeAuth = useSelector(state => state.employee);
 
   useEffect(() => {
-    autoLogin(dispatch)
-  }, [dispatch])
+    // Проверяем автологин для клиента
+    const clientToken = localStorage.getItem('access_token');
+    if (clientToken && !clientAuth.isLoggedIn) {
+      autoLogin(dispatch);
+    }
+
+    // Проверяем автологин для сотрудника
+    const employeeToken = localStorage.getItem('employee_token');
+    if (employeeToken && !employeeAuth?.isLoggedIn) {
+      autoLoginEmployee(dispatch);
+    }
+  }, [dispatch]);
 
   return (
     <BrowserRouter>
       <Routes>
-
-        {/* Публичные страницы */}
-        <Route path='/login' element={
+        {/* Публичные роуты - клиент */}
+        <Route path="/login" element={
           <PublicRoute>
             <Login />
           </PublicRoute>
-        }></Route>
-
-        <Route path='/register' element={
+        } />
+        <Route path="/register" element={
           <PublicRoute>
             <Register />
           </PublicRoute>
+        } />
+
+        {/* Защищённые роуты - клиент */}
+        <Route element={
+          <ProtectedRoute>
+            <PrivateLayout />
+          </ProtectedRoute>
         }>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/accounts" element={<Accounts />} />
+          <Route path="/cards" element={<Cards />} />
+          <Route path="/loans" element={<Loans />} />
+          <Route path="/transfers" element={<Transactions />} />
+          <Route path="/profile" element={<Profile />} />
         </Route>
 
-        {/* Приватные страницы */}
-        <Route element={<ProtectedRoute><PrivateLayout></PrivateLayout></ProtectedRoute>}>
-          <Route path='/dashboard' element={<Dashboard></Dashboard>}></Route>
-          <Route path='/profile' element={<Profile></Profile>}></Route>
-          <Route path='/accounts' element={<Accounts></Accounts>}></Route>
-          <Route path='/transfers' element={<Transfers></Transfers>}></Route>
-          <Route path='/cards' element={<Cards></Cards>}></Route>
-          <Route path='/loans' element={<Loans></Loans>}></Route> {/* 🆕 Добавляем маршрут для Loans */}
-        </Route>
+        {/* Публичный роут - админ */}
+        <Route path="/admin/login" element={<AdminLogin />} />
 
-        {/* Если путь не найден(404) */}
-        <Route path='*' element={
-          <Navigate to='/profile' replace></Navigate>
-        }>
-        </Route>
+        {/* Защищённые роуты - админ */}
+        <Route path="/admin/dashboard" element={
+          <AdminProtectedRoute>
+            <AdminDashboard />
+          </AdminProtectedRoute>
+        } />
 
+        {/* Редиректы */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/admin" element={<Navigate to="/admin/login" replace />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;
