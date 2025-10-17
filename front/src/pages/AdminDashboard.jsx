@@ -97,129 +97,6 @@ const AdminDashboard = () => {
         setLoading(false);
     };
 
-    if (loading) {
-        return (
-            <div className={styles.adminContainer}>
-                <div className={styles.loadingState}>
-                    <div className={styles.spinner}></div>
-                    <p>Загрузка данных...</p>
-                </div>
-            </div>
-        );
-    }
-
-    return (
-        <div className={styles.adminContainer}>
-            <div className={styles.background}>
-                <div className={styles.gradientBlob}></div>
-                <div className={styles.gradientBlob}></div>
-                <div className={styles.gradientBlob}></div>
-            </div>
-
-            {notification.show && (
-                <div className={`${styles.notification} ${styles[notification.type]}`}>
-                    {notification.message}
-                </div>
-            )}
-
-            <div className={styles.adminContent}>
-                <header className={styles.pageHeader}>
-                    <div className={styles.titleSection}>
-                        <h1 className={styles.pageTitle}>
-                            <span className={styles.titleIcon}>⚙️</span>
-                            Панель администратора
-                        </h1>
-                        <p className={styles.pageSubtitle}>
-                            Управление системой NextBank
-                        </p>
-                    </div>
-                </header>
-
-                <div className={styles.tabsContainer}>
-                    <button
-                        className={`${styles.tab} ${activeTab === 'overview' ? styles.tabActive : ''}`}
-                        onClick={() => setActiveTab('overview')}
-                    >
-                        📊 Обзор
-                    </button>
-                    <button
-                        className={`${styles.tab} ${activeTab === 'employees' ? styles.tabActive : ''}`}
-                        onClick={() => setActiveTab('employees')}
-                    >
-                        👥 Сотрудники ({admin.employees.length})
-                    </button>
-                    <button
-                        className={`${styles.tab} ${activeTab === 'roles' ? styles.tabActive : ''}`}
-                        onClick={() => setActiveTab('roles')}
-                    >
-                        🎭 Роли ({admin.roles.length})
-                    </button>
-                    <button
-                        className={`${styles.tab} ${activeTab === 'branches' ? styles.tabActive : ''}`}
-                        onClick={() => setActiveTab('branches')}
-                    >
-                        🏢 Отделения ({admin.branches.length})
-                    </button>
-                    <button
-                        className={`${styles.tab} ${activeTab === 'clients' ? styles.tabActive : ''}`}
-                        onClick={() => setActiveTab('clients')}
-                    >
-                        👤 Клиенты ({admin.clients.length})
-                    </button>
-                    <button
-                        className={`${styles.tab} ${activeTab === 'processes' ? styles.tabActive : ''}`}
-                        onClick={() => setActiveTab('processes')}
-                    >
-                        📋 Процессы ({admin.processes.length})
-                    </button>
-                </div>
-
-                <main className={styles.tabContent}>
-                    {activeTab === 'overview' && <OverviewTab stats={admin.stats} />}
-                    {activeTab === 'employees' && (
-                        <EmployeesTab
-                            employees={admin.employees}
-                            roles={admin.roles}
-                            branches={admin.branches}
-                            onUpdate={(id, data) => handleEmployeeUpdate(id, data)}
-                            onDelete={(id) => handleEmployeeDelete(id)}
-                            onToggleActive={(id) => handleEmployeeToggle(id)}
-                            showNotification={showNotification}
-                        />
-                    )}
-                    {activeTab === 'roles' && (
-                        <RolesTab
-                            roles={admin.roles}
-                            onCreate={(data) => handleRoleCreate(data)}
-                            onUpdate={(id, data) => handleRoleUpdate(id, data)}
-                            onDelete={(id) => handleRoleDelete(id)}
-                            showNotification={showNotification}
-                        />
-                    )}
-                    {activeTab === 'branches' && (
-                        <BranchesTab
-                            branches={admin.branches}
-                            onCreate={(data) => handleBranchCreate(data)}
-                            onUpdate={(id, data) => handleBranchUpdate(id, data)}
-                            onDelete={(id) => handleBranchDelete(id)}
-                            showNotification={showNotification}
-                        />
-                    )}
-                    {activeTab === 'clients' && <ClientsTab clients={admin.clients} />}
-                    {activeTab === 'processes' && (
-                        <ProcessesTab
-                            processes={admin.processes}
-                            onApprove={(id) => handleProcessApprove(id)}
-                            onReject={(id) => handleProcessReject(id)}
-                            onComplete={(id) => handleProcessComplete(id)}
-                            showNotification={showNotification}
-                        />
-                    )}
-                </main>
-            </div>
-        </div>
-    );
-
     // Handlers
     async function handleRoleCreate(data) {
         const res = await createRole(data);
@@ -365,6 +242,129 @@ const AdminDashboard = () => {
             return false;
         }
     }
+
+    if (loading) {
+        return (
+            <div className={styles.adminContainer}>
+                <div className={styles.loadingState}>
+                    <div className={styles.spinner}></div>
+                    <p>Загрузка данных...</p>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className={styles.adminContainer}>
+            <div className={styles.background}>
+                <div className={styles.gradientBlob}></div>
+                <div className={styles.gradientBlob}></div>
+                <div className={styles.gradientBlob}></div>
+            </div>
+
+            {notification.show && (
+                <div className={`${styles.notification} ${styles[notification.type]}`}>
+                    {notification.message}
+                </div>
+            )}
+
+            <div className={styles.adminContent}>
+                <header className={styles.pageHeader}>
+                    <div className={styles.titleSection}>
+                        <h1 className={styles.pageTitle}>
+                            <span className={styles.titleIcon}>⚙️</span>
+                            Панель администратора
+                        </h1>
+                        <p className={styles.pageSubtitle}>
+                            Управление системой NextBank
+                        </p>
+                    </div>
+                </header>
+
+                <div className={styles.tabsContainer}>
+                    <button
+                        className={`${styles.tab} ${activeTab === 'overview' ? styles.tabActive : ''}`}
+                        onClick={() => setActiveTab('overview')}
+                    >
+                        📊 Обзор
+                    </button>
+                    <button
+                        className={`${styles.tab} ${activeTab === 'employees' ? styles.tabActive : ''}`}
+                        onClick={() => setActiveTab('employees')}
+                    >
+                        👥 Сотрудники ({admin.employees.length})
+                    </button>
+                    <button
+                        className={`${styles.tab} ${activeTab === 'roles' ? styles.tabActive : ''}`}
+                        onClick={() => setActiveTab('roles')}
+                    >
+                        🎭 Роли ({admin.roles.length})
+                    </button>
+                    <button
+                        className={`${styles.tab} ${activeTab === 'branches' ? styles.tabActive : ''}`}
+                        onClick={() => setActiveTab('branches')}
+                    >
+                        🏢 Отделения ({admin.branches.length})
+                    </button>
+                    <button
+                        className={`${styles.tab} ${activeTab === 'clients' ? styles.tabActive : ''}`}
+                        onClick={() => setActiveTab('clients')}
+                    >
+                        👤 Клиенты ({admin.clients.length})
+                    </button>
+                    <button
+                        className={`${styles.tab} ${activeTab === 'processes' ? styles.tabActive : ''}`}
+                        onClick={() => setActiveTab('processes')}
+                    >
+                        📋 Процессы ({admin.processes.length})
+                    </button>
+                </div>
+
+                <main className={styles.tabContent}>
+                    {activeTab === 'overview' && <OverviewTab stats={admin.stats} />}
+                    {activeTab === 'employees' && (
+                        <EmployeesTab
+                            employees={admin.employees}
+                            roles={admin.roles}
+                            branches={admin.branches}
+                            onUpdate={(id, data) => handleEmployeeUpdate(id, data)}
+                            onDelete={(id) => handleEmployeeDelete(id)}
+                            onToggleActive={(id) => handleEmployeeToggle(id)}
+                            showNotification={showNotification}
+                        />
+                    )}
+                    {activeTab === 'roles' && (
+                        <RolesTab
+                            roles={admin.roles}
+                            onCreate={(data) => handleRoleCreate(data)}
+                            onUpdate={(id, data) => handleRoleUpdate(id, data)}
+                            onDelete={(id) => handleRoleDelete(id)}
+                            showNotification={showNotification}
+                        />
+                    )}
+                    {activeTab === 'branches' && (
+                        <BranchesTab
+                            branches={admin.branches}
+                            onCreate={(data) => handleBranchCreate(data)}
+                            onUpdate={(id, data) => handleBranchUpdate(id, data)}
+                            onDelete={(id) => handleBranchDelete(id)}
+                            showNotification={showNotification}
+                        />
+                    )}
+                    {activeTab === 'clients' && <ClientsTab clients={admin.clients} />}
+                    {activeTab === 'processes' && (
+                        <ProcessesTab
+                            processes={admin.processes}
+                            onApprove={(id) => handleProcessApprove(id)}
+                            onReject={(id) => handleProcessReject(id)}
+                            onComplete={(id) => handleProcessComplete(id)}
+                            showNotification={showNotification}
+                        />
+                    )}
+                </main>
+            </div>
+        </div>
+    );
 };
 
 // ========== OVERVIEW TAB ==========
@@ -658,7 +658,7 @@ const EmployeeEditModal = ({ employee, roles, branches, onClose, onSave }) => {
 };
 
 // ========== ROLES TAB ==========
-const RolesTab = ({ roles, onCreate, onUpdate, onDelete, showNotification }) => {
+const RolesTab = ({ roles, onCreate, onUpdate, onDelete }) => {
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [selectedRole, setSelectedRole] = useState(null);
@@ -777,7 +777,7 @@ const RoleFormModal = ({ title, initialData = null, onClose, onSave }) => {
 };
 
 // ========== BRANCHES TAB ==========
-const BranchesTab = ({ branches, onCreate, onUpdate, onDelete, showNotification }) => {
+const BranchesTab = ({ branches, onCreate, onUpdate, onDelete }) => {
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [selectedBranch, setSelectedBranch] = useState(null);
@@ -820,3 +820,422 @@ const BranchesTab = ({ branches, onCreate, onUpdate, onDelete, showNotification 
                                 onClick={() => {
                                     setSelectedBranch(branch);
                                     setShowEditModal(true);
+                                }}
+                            >
+                                ✏️ Редактировать
+                            </button>
+                            <button
+                                className={styles.btnDelete}
+                                onClick={() => {
+                                    if (window.confirm(`Удалить отделение "${branch.name}"?`)) {
+                                        onDelete(branch.id);
+                                    }
+                                }}
+                            >
+                                🗑️ Удалить
+                            </button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {showCreateModal && (
+                <BranchFormModal
+                    title="Создать отделение"
+                    onClose={() => setShowCreateModal(false)}
+                    onSave={async (data) => {
+                        const success = await onCreate(data);
+                        if (success) setShowCreateModal(false);
+                    }}
+                />
+            )}
+
+            {showEditModal && selectedBranch && (
+                <BranchFormModal
+                    title="Редактировать отделение"
+                    initialData={selectedBranch}
+                    onClose={() => setShowEditModal(false)}
+                    onSave={async (data) => {
+                        const success = await onUpdate(selectedBranch.id, data);
+                        if (success) setShowEditModal(false);
+                    }}
+                />
+            )}
+        </div>
+    );
+};
+
+// ========== BRANCH FORM MODAL ==========
+const BranchFormModal = ({ title, initialData = null, onClose, onSave }) => {
+    const [formData, setFormData] = useState({
+        name: initialData?.name || '',
+        address: initialData?.address || '',
+        phone: initialData?.phone || ''
+    });
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        onSave(formData);
+    };
+
+    return (
+        <div className={styles.modalOverlay} onClick={onClose}>
+            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+                <div className={styles.modalHeader}>
+                    <h2 className={styles.modalTitle}>{title}</h2>
+                    <button className={styles.modalClose} onClick={onClose}>✕</button>
+                </div>
+                <form onSubmit={handleSubmit} className={styles.modalBody}>
+                    <div className={styles.formGroup}>
+                        <label className={styles.formLabel}>Название отделения</label>
+                        <input
+                            type="text"
+                            className={styles.formInput}
+                            value={formData.name}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                            placeholder="Например: Центральное отделение"
+                            required
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label className={styles.formLabel}>Адрес</label>
+                        <input
+                            type="text"
+                            className={styles.formInput}
+                            value={formData.address}
+                            onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                            placeholder="Например: г. Москва, ул. Ленина, д. 1"
+                            required
+                        />
+                    </div>
+                    <div className={styles.formGroup}>
+                        <label className={styles.formLabel}>Телефон</label>
+                        <input
+                            type="tel"
+                            className={styles.formInput}
+                            value={formData.phone}
+                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                            placeholder="+7 (999) 123-45-67"
+                        />
+                    </div>
+                    <div className={styles.modalFooter}>
+                        <button type="button" className={styles.btnCancel} onClick={onClose}>
+                            Отмена
+                        </button>
+                        <button type="submit" className={styles.btnSave}>
+                            Сохранить
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+};
+
+// ========== CLIENTS TAB ==========
+const ClientsTab = ({ clients }) => {
+    const [searchQuery, setSearchQuery] = useState('');
+    const [selectedClient, setSelectedClient] = useState(null);
+    const [showDetailsModal, setShowDetailsModal] = useState(false);
+
+    const filteredClients = clients.filter(client =>
+        client.first_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        client.last_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        client.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        client.phone?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const handleViewDetails = (client) => {
+        setSelectedClient(client);
+        setShowDetailsModal(true);
+    };
+
+    return (
+        <div className={styles.tabSection}>
+            <div className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>Управление клиентами</h2>
+                <div className={styles.searchBox}>
+                    <input
+                        type="text"
+                        placeholder="Поиск по имени, email или телефону..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className={styles.searchInput}
+                    />
+                    <span className={styles.searchIcon}>🔍</span>
+                </div>
+            </div>
+
+            <div className={styles.tableContainer}>
+                <table className={styles.dataTable}>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>ФИО</th>
+                            <th>Email</th>
+                            <th>Телефон</th>
+                            <th>Дата регистрации</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredClients.map(client => (
+                            <tr key={client.id}>
+                                <td>{client.id}</td>
+                                <td>{`${client.last_name} ${client.first_name} ${client.patronymic || ''}`}</td>
+                                <td>{client.email}</td>
+                                <td>{client.phone || '—'}</td>
+                                <td>{new Date(client.created_at).toLocaleDateString('ru-RU')}</td>
+                                <td>
+                                    <div className={styles.actionButtons}>
+                                        <button
+                                            className={styles.btnView}
+                                            onClick={() => handleViewDetails(client)}
+                                            title="Просмотр"
+                                        >
+                                            👁️
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+            {showDetailsModal && selectedClient && (
+                <ClientDetailsModal
+                    client={selectedClient}
+                    onClose={() => setShowDetailsModal(false)}
+                />
+            )}
+        </div>
+    );
+};
+
+// ========== CLIENT DETAILS MODAL ==========
+const ClientDetailsModal = ({ client, onClose }) => {
+    return (
+        <div className={styles.modalOverlay} onClick={onClose}>
+            <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+                <div className={styles.modalHeader}>
+                    <h2 className={styles.modalTitle}>Информация о клиенте</h2>
+                    <button className={styles.modalClose} onClick={onClose}>✕</button>
+                </div>
+                <div className={styles.modalBody}>
+                    <div className={styles.clientDetails}>
+                        <div className={styles.detailGroup}>
+                            <h3 className={styles.detailGroupTitle}>Основная информация</h3>
+                            <div className={styles.detailRow}>
+                                <span className={styles.detailLabel}>ID:</span>
+                                <span className={styles.detailValue}>{client.id}</span>
+                            </div>
+                            <div className={styles.detailRow}>
+                                <span className={styles.detailLabel}>ФИО:</span>
+                                <span className={styles.detailValue}>
+                                    {`${client.last_name} ${client.first_name} ${client.patronymic || ''}`}
+                                </span>
+                            </div>
+                            <div className={styles.detailRow}>
+                                <span className={styles.detailLabel}>Email:</span>
+                                <span className={styles.detailValue}>{client.email}</span>
+                            </div>
+                            <div className={styles.detailRow}>
+                                <span className={styles.detailLabel}>Телефон:</span>
+                                <span className={styles.detailValue}>{client.phone || '—'}</span>
+                            </div>
+                            <div className={styles.detailRow}>
+                                <span className={styles.detailLabel}>Дата регистрации:</span>
+                                <span className={styles.detailValue}>
+                                    {new Date(client.created_at).toLocaleDateString('ru-RU')}
+                                </span>
+                            </div>
+                        </div>
+
+                        {client.personal_info && (
+                            <div className={styles.detailGroup}>
+                                <h3 className={styles.detailGroupTitle}>Персональные данные</h3>
+                                <div className={styles.detailRow}>
+                                    <span className={styles.detailLabel}>Паспорт:</span>
+                                    <span className={styles.detailValue}>{client.personal_info.passport_number || '—'}</span>
+                                </div>
+                                <div className={styles.detailRow}>
+                                    <span className={styles.detailLabel}>Адрес:</span>
+                                    <span className={styles.detailValue}>{client.personal_info.address || '—'}</span>
+                                </div>
+                                <div className={styles.detailRow}>
+                                    <span className={styles.detailLabel}>Дата рождения:</span>
+                                    <span className={styles.detailValue}>
+                                        {client.personal_info.birth_date
+                                            ? new Date(client.personal_info.birth_date).toLocaleDateString('ru-RU')
+                                            : '—'
+                                        }
+                                    </span>
+                                </div>
+                                <div className={styles.detailRow}>
+                                    <span className={styles.detailLabel}>Занятость:</span>
+                                    <span className={styles.detailValue}>{client.personal_info.employment_status || '—'}</span>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+                <div className={styles.modalFooter}>
+                    <button className={styles.btnCancel} onClick={onClose}>
+                        Закрыть
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+// ========== PROCESSES TAB ==========
+const ProcessesTab = ({ processes, onApprove, onReject, onComplete }) => {
+    const [filterStatus, setFilterStatus] = useState('all');
+
+    const filteredProcesses = filterStatus === 'all'
+        ? processes
+        : processes.filter(p => p.status === filterStatus);
+
+    const getStatusBadgeClass = (status) => {
+        const statusMap = {
+            'in_progress': styles.statusPending,
+            'approved': styles.statusSuccess,
+            'rejected': styles.statusDanger,
+            'completed': styles.statusSuccess
+        };
+        return statusMap[status] || styles.statusPending;
+    };
+
+    const getStatusText = (status) => {
+        const statusMap = {
+            'in_progress': 'В обработке',
+            'approved': 'Одобрен',
+            'rejected': 'Отклонен',
+            'completed': 'Завершен'
+        };
+        return statusMap[status] || status;
+    };
+
+    const getProcessTypeText = (type) => {
+        const typeMap = {
+            'loan_application': 'Заявка на кредит',
+            'card_issue': 'Выпуск карты',
+            'account_opening': 'Открытие счета'
+        };
+        return typeMap[type] || type;
+    };
+
+    return (
+        <div className={styles.tabSection}>
+            <div className={styles.sectionHeader}>
+                <h2 className={styles.sectionTitle}>Управление процессами</h2>
+                <div className={styles.filterButtons}>
+                    <button
+                        className={`${styles.filterBtn} ${filterStatus === 'all' ? styles.filterActive : ''}`}
+                        onClick={() => setFilterStatus('all')}
+                    >
+                        Все
+                    </button>
+                    <button
+                        className={`${styles.filterBtn} ${filterStatus === 'in_progress' ? styles.filterActive : ''}`}
+                        onClick={() => setFilterStatus('in_progress')}
+                    >
+                        В обработке
+                    </button>
+                    <button
+                        className={`${styles.filterBtn} ${filterStatus === 'approved' ? styles.filterActive : ''}`}
+                        onClick={() => setFilterStatus('approved')}
+                    >
+                        Одобренные
+                    </button>
+                    <button
+                        className={`${styles.filterBtn} ${filterStatus === 'rejected' ? styles.filterActive : ''}`}
+                        onClick={() => setFilterStatus('rejected')}
+                    >
+                        Отклоненные
+                    </button>
+                </div>
+            </div>
+
+            <div className={styles.tableContainer}>
+                <table className={styles.dataTable}>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Тип</th>
+                            <th>Клиент</th>
+                            <th>Статус</th>
+                            <th>Дата создания</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredProcesses.map(process => (
+                            <tr key={process.id}>
+                                <td>{process.id}</td>
+                                <td>{getProcessTypeText(process.process_type)}</td>
+                                <td>ID: {process.client_id}</td>
+                                <td>
+                                    <span className={`${styles.statusBadge} ${getStatusBadgeClass(process.status)}`}>
+                                        {getStatusText(process.status)}
+                                    </span>
+                                </td>
+                                <td>{new Date(process.created_at).toLocaleDateString('ru-RU')}</td>
+                                <td>
+                                    <div className={styles.actionButtons}>
+                                        {process.status === 'in_progress' && (
+                                            <>
+                                                <button
+                                                    className={styles.btnApprove}
+                                                    onClick={() => {
+                                                        if (window.confirm('Одобрить этот процесс?')) {
+                                                            onApprove(process.id);
+                                                        }
+                                                    }}
+                                                    title="Одобрить"
+                                                >
+                                                    ✅
+                                                </button>
+                                                <button
+                                                    className={styles.btnReject}
+                                                    onClick={() => {
+                                                        if (window.confirm('Отклонить этот процесс?')) {
+                                                            onReject(process.id);
+                                                        }
+                                                    }}
+                                                    title="Отклонить"
+                                                >
+                                                    ❌
+                                                </button>
+                                            </>
+                                        )}
+                                        {process.status === 'approved' && (
+                                            <button
+                                                className={styles.btnComplete}
+                                                onClick={() => {
+                                                    if (window.confirm('Завершить этот процесс?')) {
+                                                        onComplete(process.id);
+                                                    }
+                                                }}
+                                                title="Завершить"
+                                            >
+                                                ✔️
+                                            </button>
+                                        )}
+                                        {(process.status === 'rejected' || process.status === 'completed') && (
+                                            <span className={styles.noActions}>—</span>
+                                        )}
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+};
+
+export default AdminDashboard;
