@@ -1,6 +1,7 @@
 // store.js
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
 import { persistReducer, persistStore } from 'redux-persist'
+
 import storage from 'redux-persist/lib/storage'
 import authReducer from '../features/auth/authSlice'
 import personalInfoReducer from '../features/auth/personalInfoSlice'
@@ -9,6 +10,7 @@ import cardReducer from '../features/cards/cardSlice'
 import loansReducer from '../features/loans/loansSlice'
 import processesReducer from '../features/processes/processesSlice'
 import transactionsReducer from '../features/transactions/transactionsSlice'
+import adminReducer from '../features/admin/adminSlice'
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -17,7 +19,8 @@ const rootReducer = combineReducers({
     cards: cardReducer,
     loans: loansReducer,
     processes: processesReducer,
-    transactions: transactionsReducer
+    transactions: transactionsReducer,
+    admin: adminReducer
 })
 
 const persistConfig = {
