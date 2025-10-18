@@ -18,7 +18,8 @@ from routers import employees as employees_router
 from routers import admin_processes as admin_processes_router
 from routers import admin_clients as admin_clients_router
 
-from db.database import engine, Base
+from db.database import engine, Base, SessionLocal
+from db.init_data import initialize_database
 
 app = FastAPI(
     title="NextBank API",
@@ -26,7 +27,15 @@ app = FastAPI(
     version="2.0.0"
 )
 
+# Создание таблиц
 Base.metadata.create_all(bind=engine)
+
+# 🆕 Инициализация начальных данных
+db = SessionLocal()
+try:
+    initialize_database(db)
+finally:
+    db.close()
 
 app.add_middleware(
     CORSMiddleware,
@@ -66,4 +75,4 @@ def root():
 
 
 # uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-# http://localhost:8000/docs
+# http://http://172.18.0.1:8000/docs

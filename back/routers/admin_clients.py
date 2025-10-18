@@ -18,7 +18,8 @@ def get_all_clients(
     current_employee: models.Employee = Depends(get_current_employee)
 ):
     """Получить список всех клиентов с пагинацией"""
-    check_permission(current_employee, ["Admin", "Manager", "Support"])
+    # 🆕 Доступ для SuperAdmin, Manager и Support
+    check_permission(current_employee, ["SuperAdmin", "Manager", "Support"])
 
     clients = (
         db.query(models.Client)
@@ -38,7 +39,7 @@ def search_clients(
     current_employee: models.Employee = Depends(get_current_employee)
 ):
     """Поиск клиентов по имени, email или телефону"""
-    check_permission(current_employee, ["Admin", "Manager", "Support"])
+    check_permission(current_employee, ["SuperAdmin", "Manager", "Support"])
 
     clients = (
         db.query(models.Client)
@@ -62,7 +63,7 @@ def get_client_by_id(
     current_employee: models.Employee = Depends(get_current_employee)
 ):
     """Получить детальную информацию о клиенте"""
-    check_permission(current_employee, ["Admin", "Manager", "Support"])
+    check_permission(current_employee, ["SuperAdmin", "Manager", "Support"])
 
     client = (
         db.query(models.Client)
@@ -103,7 +104,7 @@ def get_client_accounts(
 ):
     """Получить все счета конкретного клиента"""
     check_permission(current_employee, [
-                     "Admin", "Manager", "Support", "Cashier"])
+                     "SuperAdmin", "Manager", "Support", "Cashier"])
 
     client = db.query(models.Client).filter(
         models.Client.id == client_id).first()
@@ -125,7 +126,7 @@ def get_client_transactions(
     current_employee: models.Employee = Depends(get_current_employee)
 ):
     """Получить последние транзакции клиента"""
-    check_permission(current_employee, ["Admin", "Manager", "Support"])
+    check_permission(current_employee, ["SuperAdmin", "Manager", "Support"])
 
     client = db.query(models.Client).filter(
         models.Client.id == client_id).first()
@@ -149,7 +150,7 @@ def get_clients_stats(
     current_employee: models.Employee = Depends(get_current_employee)
 ):
     """Получить общую статистику по клиентам"""
-    check_permission(current_employee, ["Admin", "Manager"])
+    check_permission(current_employee, ["SuperAdmin", "Manager"])
 
     total_clients = db.query(models.Client).count()
     total_accounts = db.query(models.Account).count()

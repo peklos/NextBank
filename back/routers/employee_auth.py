@@ -35,10 +35,10 @@ def verify_password(plain_pass, hashed_pass):
     return pwd_context.verify(plain_pass, hashed_pass)
 
 
-def create_access_token(data: dict, expires_minutes: int = 480):  # 8 часов для сотрудников
+def create_access_token(data: dict, expires_minutes: int = 480):
     to_encode = data.copy()
     expire = datetime.now(timezone.utc) + timedelta(minutes=expires_minutes)
-    to_encode.update({'exp': expire, 'type': 'employee'})  # Тип токена
+    to_encode.update({'exp': expire, 'type': 'employee'})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
@@ -84,6 +84,16 @@ def check_permission(employee: models.Employee, allowed_roles: list[str]):
         raise HTTPException(
             status_code=403,
             detail=f'Недостаточно прав. Требуется роль: {", ".join(allowed_roles)}'
+        )
+
+
+# 🆕 Проверка, что пользователь - SuperAdmin
+def check_superadmin(employee: models.Employee):
+    """Проверка, что пользователь является SuperAdmin"""
+    if employee.role.name != "SuperAdmin":
+        raise HTTPException(
+            status_code=403,
+            detail='Доступ запрещён. Требуются права SuperAdmin.'
         )
 
 
@@ -154,14 +164,30 @@ def login(data: EmployeeLoginSchema, db: Session = Depends(database.get_db)):
     }
 
 
-@router.post('/register', summary='Регистрация сотрудника (только Admin)')
+@router.post('/register', summary='Регистрация сотрудника (только SuperAdmin)')
 def create_employee(
     data: EmployeeCreateSchema,
     db: Session = Depends(database.get_db),
     current_employee: models.Employee = Depends(get_current_employee)
 ):
-    """Создание нового сотрудника (только для Admin)"""
-    check_permission(current_employee, ["Admin"])
+    """
+    🆕 Создание нового сотрудника (только для SuperAdmin)
+
+    ⚠️ ВАЖНО: Нельзя создать еще одного SuperAdmin!
+    """
+    # Проверка прав SuperAdmin
+    check_superadmin(current_employee)
+
+    # 🆕 Запрет на создание второго SuperAdmin
+    superadmin_role = db.query(models.Role).filter(
+        models.Role.name == "SuperAdmin"
+    ).first()
+
+    if superadmin_role and data.role_id == superadmin_role.id:
+        raise HTTPException(
+            status_code=403,
+            detail='Нельзя создать второго SuperAdmin! В системе может быть только один SuperAdmin.'
+        )
 
     if db.query(models.Employee).filter(models.Employee.email == data.email).first():
         raise HTTPException(

@@ -1,0 +1,197 @@
+/* ===== ГЛОБАЛЬНЫЕ СТИЛИ ШРИФТОВ ДЛЯ NEXTBANK ===== */
+
+/* Базовые настройки для всего приложения */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Основной шрифт для body */
+body {
+  font-family: 
+    /* Системные шрифты для разных платформ */ -apple-system,
+    BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", "Arial",
+    /* Шрифты с хорошей кириллицей */ "Noto Sans", "Liberation Sans", sans-serif,
+    /* Эмодзи */ "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
+
+  /* Улучшенная читаемость */
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* Заголовки */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Helvetica Neue", "Arial", "Noto Sans", sans-serif;
+
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+/* Улучшенная читаемость для заголовков */
+h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+/* Моноширинные шрифты для номеров счетов, карт */
+.font-mono,
+code,
+pre,
+kbd,
+samp {
+  font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", "Consolas",
+    "Courier New", monospace;
+
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+/* Специальные классы для цифр */
+.numeric {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Для финансовых данных */
+.financial-number {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    sans-serif;
+
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Кнопки */
+button,
+.button {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Helvetica Neue", sans-serif;
+
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Инпуты */
+input,
+textarea,
+select {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Helvetica Neue", sans-serif;
+
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* Улучшенная типографика для мобильных */
+@media (max-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+  }
+}
+
+/* Поддержка переменных шрифтов для современных браузеров */
+@supports (font-variation-settings: normal) {
+  body {
+    font-variation-settings: "wght" 400;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-variation-settings: "wght" 700;
+  }
+
+  strong,
+  b {
+    font-variation-settings: "wght" 600;
+  }
+}
+
+/* Оптимизация для высоких DPI экранов */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Улучшенная читаемость текста */
+p {
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+
+/* Акцентный текст */
+strong,
+b {
+  font-weight: 600;
+}
+
+/* Специальные утилитарные классы */
+.font-light {
+  font-weight: 300;
+}
+
+.font-regular {
+  font-weight: 400;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-extrabold {
+  font-weight: 800;
+}
+
+/* Оптимизация для печати */
+@media print {
+  body {
+    font-family: "Georgia", "Times New Roman", serif;
+  }
+}

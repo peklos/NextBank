@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from db.database import get_db
 from db import models
 from schemas.branch import BranchCreate, BranchResponse, BranchUpdate
-from routers.employee_auth import get_current_employee, check_permission
+from routers.employee_auth import get_current_employee, check_superadmin
 
 router = APIRouter(
     prefix="/branches",
@@ -16,8 +16,8 @@ def get_all_branches(
     db: Session = Depends(get_db),
     current_employee: models.Employee = Depends(get_current_employee)
 ):
-    """Получить список всех отделений"""
-    check_permission(current_employee, ["Admin", "Manager"])
+    """Получить список всех отделений (только SuperAdmin)"""
+    check_superadmin(current_employee)
 
     branches = db.query(models.Branch).all()
     return branches
@@ -30,7 +30,7 @@ def get_branch_by_id(
     current_employee: models.Employee = Depends(get_current_employee)
 ):
     """Получить информацию о конкретном отделении"""
-    check_permission(current_employee, ["Admin", "Manager"])
+    check_superadmin(current_employee)
 
     branch = db.query(models.Branch).filter(
         models.Branch.id == branch_id).first()
@@ -46,8 +46,8 @@ def create_branch(
     db: Session = Depends(get_db),
     current_employee: models.Employee = Depends(get_current_employee)
 ):
-    """Создать новое отделение (только Admin)"""
-    check_permission(current_employee, ["Admin"])
+    """Создать новое отделение (только SuperAdmin)"""
+    check_superadmin(current_employee)
 
     # Проверка на существование отделения с таким названием
     existing_branch = db.query(models.Branch).filter(
@@ -79,8 +79,8 @@ def update_branch(
     db: Session = Depends(get_db),
     current_employee: models.Employee = Depends(get_current_employee)
 ):
-    """Обновить информацию об отделении"""
-    check_permission(current_employee, ["Admin"])
+    """Обновить информацию об отделении (только SuperAdmin)"""
+    check_superadmin(current_employee)
 
     branch = db.query(models.Branch).filter(
         models.Branch.id == branch_id).first()
@@ -117,8 +117,8 @@ def delete_branch(
     db: Session = Depends(get_db),
     current_employee: models.Employee = Depends(get_current_employee)
 ):
-    """Удалить отделение (только Admin)"""
-    check_permission(current_employee, ["Admin"])
+    """Удалить отделение (только SuperAdmin)"""
+    check_superadmin(current_employee)
 
     branch = db.query(models.Branch).filter(
         models.Branch.id == branch_id).first()
@@ -147,8 +147,8 @@ def get_branches_stats(
     db: Session = Depends(get_db),
     current_employee: models.Employee = Depends(get_current_employee)
 ):
-    """Получить общую статистику по отделениям"""
-    check_permission(current_employee, ["Admin", "Manager"])
+    """Получить общую статистику по отделениям (только SuperAdmin)"""
+    check_superadmin(current_employee)
 
     total_branches = db.query(models.Branch).count()
 

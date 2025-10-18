@@ -19,7 +19,8 @@ def get_all_processes(
     current_employee: models.Employee = Depends(get_current_employee)
 ):
     """Получить список всех процессов с фильтрацией"""
-    check_permission(current_employee, ["Admin", "Manager"])
+    # 🆕 Теперь доступ есть у SuperAdmin и Manager
+    check_permission(current_employee, ["SuperAdmin", "Manager"])
 
     query = db.query(models.Process)
 
@@ -38,7 +39,7 @@ def get_pending_processes(
     current_employee: models.Employee = Depends(get_current_employee)
 ):
     """Получить все процессы ожидающие обработки"""
-    check_permission(current_employee, ["Admin", "Manager", "Support"])
+    check_permission(current_employee, ["SuperAdmin", "Manager", "Support"])
 
     processes = db.query(models.Process).filter(
         models.Process.status == "in_progress"
@@ -54,7 +55,7 @@ def get_process_by_id(
     current_employee: models.Employee = Depends(get_current_employee)
 ):
     """Получить детали конкретного процесса"""
-    check_permission(current_employee, ["Admin", "Manager", "Support"])
+    check_permission(current_employee, ["SuperAdmin", "Manager", "Support"])
 
     process = db.query(models.Process).filter(
         models.Process.id == process_id
@@ -73,7 +74,7 @@ def approve_process(
     current_employee: models.Employee = Depends(get_current_employee)
 ):
     """Одобрить процесс (изменить статус на approved)"""
-    check_permission(current_employee, ["Admin", "Manager"])
+    check_permission(current_employee, ["SuperAdmin", "Manager"])
 
     process = db.query(models.Process).filter(
         models.Process.id == process_id
@@ -105,7 +106,7 @@ def reject_process(
     current_employee: models.Employee = Depends(get_current_employee)
 ):
     """Отклонить процесс (изменить статус на rejected)"""
-    check_permission(current_employee, ["Admin", "Manager"])
+    check_permission(current_employee, ["SuperAdmin", "Manager"])
 
     process = db.query(models.Process).filter(
         models.Process.id == process_id
@@ -137,7 +138,7 @@ def complete_process(
     current_employee: models.Employee = Depends(get_current_employee)
 ):
     """Завершить процесс (изменить статус на completed)"""
-    check_permission(current_employee, ["Admin", "Manager"])
+    check_permission(current_employee, ["SuperAdmin", "Manager"])
 
     process = db.query(models.Process).filter(
         models.Process.id == process_id
@@ -169,7 +170,7 @@ def get_processes_stats(
     current_employee: models.Employee = Depends(get_current_employee)
 ):
     """Получить статистику по процессам"""
-    check_permission(current_employee, ["Admin", "Manager"])
+    check_permission(current_employee, ["SuperAdmin", "Manager"])
 
     total_processes = db.query(models.Process).count()
 

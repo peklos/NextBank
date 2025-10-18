@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from db.database import get_db
 from db import models
 from schemas.role import RoleCreate, RoleResponse, RoleUpdate
-from routers.employee_auth import get_current_employee, check_permission
+from routers.employee_auth import get_current_employee, check_superadmin
 
 router = APIRouter(
     prefix="/roles",
@@ -16,8 +16,8 @@ def get_all_roles(
     db: Session = Depends(get_db),
     current_employee: models.Employee = Depends(get_current_employee)
 ):
-    """Получить список всех ролей (только для Admin)"""
-    check_permission(current_employee, ["Admin"])
+    """Получить список всех ролей (только для SuperAdmin)"""
+    check_superadmin(current_employee)
 
     roles = db.query(models.Role).all()
     return roles
@@ -30,7 +30,7 @@ def get_role_by_id(
     current_employee: models.Employee = Depends(get_current_employee)
 ):
     """Получить информацию о конкретной роли"""
-    check_permission(current_employee, ["Admin"])
+    check_superadmin(current_employee)
 
     role = db.query(models.Role).filter(models.Role.id == role_id).first()
     if not role:
@@ -45,8 +45,19 @@ def create_role(
     db: Session = Depends(get_db),
     current_employee: models.Employee = Depends(get_current_employee)
 ):
-    """Создать новую роль (только Admin)"""
-    check_permission(current_employee, ["Admin"])
+    """
+    Создать новую роль (только SuperAdmin)
+
+    ⚠️ ВАЖНО: Нельзя создать роль SuperAdmin!
+    """
+    check_superadmin(current_employee)
+
+    # 🆕 Запрет на создание роли SuperAdmin
+    if role_data.name == "SuperAdmin":
+        raise HTTPException(
+            status_code=403,
+            detail="Нельзя создать роль SuperAdmin! Эта роль зарезервирована системой."
+        )
 
     # Проверка на существование роли с таким именем
     existing_role = db.query(models.Role).filter(
@@ -72,12 +83,30 @@ def update_role(
     db: Session = Depends(get_db),
     current_employee: models.Employee = Depends(get_current_employee)
 ):
-    """Обновить информацию о роли"""
-    check_permission(current_employee, ["Admin"])
+    """
+    Обновить информацию о роли
+
+    ⚠️ ВАЖНО: Нельзя изменить название роли SuperAdmin!
+    """
+    check_superadmin(current_employee)
 
     role = db.query(models.Role).filter(models.Role.id == role_id).first()
     if not role:
         raise HTTPException(status_code=404, detail="Роль не найдена")
+
+    # 🆕 Запрет на изменение роли SuperAdmin
+    if role.name == "SuperAdmin":
+        raise HTTPException(
+            status_code=403,
+            detail="Нельзя изменить роль SuperAdmin!"
+        )
+
+    # 🆕 Запрет на изменение названия на SuperAdmin
+    if role_data.name == "SuperAdmin":
+        raise HTTPException(
+            status_code=403,
+            detail="Нельзя переименовать роль в SuperAdmin!"
+        )
 
     if role_data.name:
         # Проверка на уникальность нового имени
@@ -102,12 +131,23 @@ def delete_role(
     db: Session = Depends(get_db),
     current_employee: models.Employee = Depends(get_current_employee)
 ):
-    """Удалить роль (только Admin)"""
-    check_permission(current_employee, ["Admin"])
+    """
+    Удалить роль (только SuperAdmin)
+
+    ⚠️ ВАЖНО: Нельзя удалить роль SuperAdmin!
+    """
+    check_superadmin(current_employee)
 
     role = db.query(models.Role).filter(models.Role.id == role_id).first()
     if not role:
         raise HTTPException(status_code=404, detail="Роль не найдена")
+
+    # 🆕 Запрет на удаление роли SuperAdmin
+    if role.name == "SuperAdmin":
+        raise HTTPException(
+            status_code=403,
+            detail="Нельзя удалить роль SuperAdmin!"
+        )
 
     # Проверка, есть ли сотрудники с этой ролью
     employees_count = db.query(models.Employee).filter(
