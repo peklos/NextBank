@@ -5,6 +5,7 @@
     position: relative;
     overflow-x: hidden;
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* Анимированный фон */
@@ -15,6 +16,7 @@
     width: 100%;
     height: 100%;
     z-index: 0;
+    pointer-events: none;
 }
 
 .gradientBlob {
@@ -92,6 +94,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    flex: 1;
 }
 
 .welcomeTitle {
@@ -106,7 +109,10 @@
 }
 
 .userName {
-    color: #3b82f6;
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .welcomeSubtitle {
@@ -120,6 +126,7 @@
     display: flex;
     align-items: center;
     gap: 1.5rem;
+    flex-shrink: 0;
 }
 
 .currentDate {
@@ -132,11 +139,15 @@
 .notificationBell {
     font-size: 1.5rem;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+    padding: 0.5rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .notificationBell:hover {
     transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 /* Основной контент */
@@ -151,7 +162,7 @@
     align-items: start;
 }
 
-/* Карточки общие стили */
+/* Общие стили для карточек */
 .balanceCard,
 .cardsSection,
 .quickActions,
@@ -166,6 +177,18 @@
     padding: 2rem;
     margin-bottom: 1.5rem;
     box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.balanceCard:hover,
+.cardsSection:hover,
+.quickActions:hover,
+.quickTransfer:hover,
+.statsSection:hover,
+.transactionsSection:hover,
+.paymentsSection:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.3);
 }
 
 .sectionHeader {
@@ -211,6 +234,10 @@
     font-size: 2.5rem;
     font-weight: 800;
     margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #ffffff, #cbd5e1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .balanceStats {
@@ -223,6 +250,10 @@
     flex-direction: column;
     gap: 0.25rem;
     flex: 1;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .statLabel {
@@ -239,7 +270,7 @@
     font-weight: 700;
 }
 
-/* Карты */
+/* Стили для карт */
 .addCardButton {
     padding: 0.5rem 1rem;
     background: rgba(255, 255, 255, 0.05);
@@ -250,11 +281,14 @@
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .addCardButton:hover {
     background: rgba(255, 255, 255, 0.1);
     color: white;
+    transform: translateY(-1px);
 }
 
 .cardsContainer {
@@ -265,22 +299,47 @@
 
 .cardItem {
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cardItem:hover {
+    transform: translateY(-2px);
 }
 
 .cardActive .cardBackground {
     transform: scale(1.02);
+    box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.3);
 }
 
 .cardBackground {
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
     border-radius: 16px;
     padding: 1.5rem;
     margin-bottom: 0.75rem;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.cardBackground::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.cardBackground:hover::before {
+    opacity: 1;
 }
 
 .cardContent {
     color: white;
+    position: relative;
+    z-index: 2;
 }
 
 .cardHeader {
@@ -293,10 +352,12 @@
 .cardType {
     font-size: 1.1rem;
     font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .cardChip {
     font-size: 1.5rem;
+    opacity: 0.9;
 }
 
 .cardNumber {
@@ -305,6 +366,7 @@
     letter-spacing: 0.1em;
     margin-bottom: 2rem;
     text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .cardFooter {
@@ -318,12 +380,14 @@
     font-size: 0.7rem;
     opacity: 0.8;
     margin-bottom: 0.25rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .holderName,
 .expiryDate {
     font-size: 0.9rem;
     font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .cardBalance {
@@ -331,6 +395,20 @@
     font-size: 0.9rem;
     font-weight: 500;
     text-align: center;
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.emptyCards {
+    text-align: center;
+    padding: 2rem;
+    color: #94a3b8;
+}
+
+.emptyCards p {
+    margin-bottom: 1rem;
 }
 
 /* Быстрые действия */
@@ -352,17 +430,29 @@
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: left;
+    text-decoration: none;
 }
 
 .actionButton:hover {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
 }
 
 .actionIcon {
     font-size: 1.5rem;
     width: 40px;
-    text-align: center;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.actionButton:hover .actionIcon {
+    transform: scale(1.1);
 }
 
 .actionInfo {
@@ -383,7 +473,23 @@
     font-weight: 500;
 }
 
-/* Быстрый перевод */
+/* Стили для кредитов */
+.quickTransfer {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.quickTransfer:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.3);
+}
+
 .transferCard {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.05);
@@ -391,129 +497,86 @@
     padding: 1.5rem;
 }
 
-.transferHeader {
+.loanItem {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-}
-
-.contactAvatar {
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(135deg, #8b5cf6, #6366f1);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 700;
-    font-size: 1.1rem;
-}
-
-.contactInfo {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
-
-.contactName {
-    color: #f1f5f9;
-    font-size: 1rem;
-    font-weight: 600;
-}
-
-.contactBank {
-    color: #94a3b8;
-    font-size: 0.85rem;
-    font-weight: 500;
-}
-
-.amountSection {
-    margin-bottom: 1.5rem;
-}
-
-.amountLabel {
-    display: block;
-    color: #94a3b8;
-    font-size: 0.9rem;
-    font-weight: 500;
-    margin-bottom: 0.75rem;
-}
-
-.amountInputWrapper {
-    position: relative;
-    margin-bottom: 1rem;
-}
-
-.amountInput {
-    width: 100%;
+    justify-content: space-between;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 12px;
-    color: #f1f5f9;
-    font-size: 1.5rem;
-    font-weight: 700;
-    text-align: center;
+    margin-bottom: 1rem;
     transition: all 0.3s ease;
 }
 
-.amountInput:focus {
-    outline: none;
-    border-color: rgba(59, 130, 246, 0.4);
+.loanItem:hover {
     background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
-.currency {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #94a3b8;
-    font-size: 1.25rem;
+.loanInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+}
+
+.loanName {
+    color: #f1f5f9;
+    font-size: 0.9rem;
     font-weight: 600;
 }
 
-.quickAmounts {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: center;
+.loanStatus {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 500;
 }
 
-.quickAmountButton {
-    padding: 0.5rem 1rem;
+.loanAction {
+    padding: 0.5rem;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     color: #cbd5e1;
-    font-size: 0.85rem;
-    font-weight: 500;
-    cursor: pointer;
+    text-decoration: none;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
 }
 
-.quickAmountButton:hover {
+.loanAction:hover {
     background: rgba(255, 255, 255, 0.1);
     color: white;
+    transform: translateX(2px);
 }
 
+/* Стили для кнопки "Все кредиты" */
 .transferButton {
     width: 100%;
     padding: 1rem;
-    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-    border: none;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
-    color: white;
+    color: #cbd5e1;
     font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    margin-top: 1rem;
 }
 
 .transferButton:hover {
-    background: linear-gradient(135deg, #2563eb, #1e40af);
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
     transform: translateY(-1px);
+    border-color: rgba(255, 255, 255, 0.15);
 }
 
 /* Статистика */
@@ -530,6 +593,12 @@
     padding: 1.25rem;
     position: relative;
     overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.statCard:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
 .statHeader {
@@ -537,6 +606,14 @@
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 0.5rem;
+}
+
+.statLabel {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .statChange {
@@ -549,6 +626,11 @@
 .statChange.up {
     background: rgba(16, 185, 129, 0.2);
     color: #10b981;
+}
+
+.statChange.down {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
 }
 
 .statValue {
@@ -565,12 +647,14 @@
     right: 0;
     height: 4px;
     background: rgba(255, 255, 255, 0.1);
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;
 }
 
 .chartBar {
-    background: linear-gradient(90deg, #3b82f6, #06b6d4);
     border-radius: 0 2px 2px 0;
     transition: width 0.3s ease;
+    height: 100%;
 }
 
 /* Транзакции */
@@ -584,11 +668,14 @@
     font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .viewAllButton:hover {
     background: rgba(255, 255, 255, 0.1);
     color: white;
+    transform: translateX(2px);
 }
 
 .transactionsList {
@@ -610,6 +697,8 @@
 
 .transactionItem:hover {
     background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
 }
 
 .transactionIcon {
@@ -622,6 +711,11 @@
     justify-content: center;
     font-size: 1.25rem;
     flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.transactionItem:hover .transactionIcon {
+    transform: scale(1.1);
 }
 
 .transactionInfo {
@@ -661,7 +755,13 @@
     color: #ef4444;
 }
 
-/* Платежи */
+.emptyTransactions {
+    text-align: center;
+    padding: 2rem;
+    color: #94a3b8;
+}
+
+/* Быстрая информация */
 .paymentsList {
     display: flex;
     flex-direction: column;
@@ -676,6 +776,13 @@
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.paymentItem:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
 }
 
 .paymentIcon {
@@ -688,6 +795,11 @@
     justify-content: center;
     font-size: 1.25rem;
     flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.paymentItem:hover .paymentIcon {
+    transform: scale(1.1);
 }
 
 .paymentInfo {
@@ -709,10 +821,25 @@
     font-weight: 500;
 }
 
-.paymentAmount {
-    color: #ef4444;
-    font-size: 1rem;
-    font-weight: 700;
+.paymentAction {
+    padding: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+}
+
+.paymentAction:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transform: translateX(2px);
 }
 
 /* Адаптивность */
@@ -750,6 +877,14 @@
     .statsGrid {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .balanceAmount {
+        font-size: 2rem;
+    }
+
+    .welcomeTitle {
+        font-size: 2rem;
+    }
 }
 
 @media (max-width: 768px) {
@@ -758,11 +893,11 @@
     }
 
     .welcomeTitle {
-        font-size: 2rem;
+        font-size: 1.75rem;
     }
 
     .balanceAmount {
-        font-size: 2rem;
+        font-size: 1.75rem;
     }
 
     .actionsGrid {
@@ -778,14 +913,28 @@
         gap: 0.75rem;
     }
 
-    .quickAmounts {
-        flex-wrap: wrap;
+    .balanceCard,
+    .cardsSection,
+    .quickActions,
+    .quickTransfer,
+    .statsSection,
+    .transactionsSection,
+    .paymentsSection {
+        padding: 1.5rem;
+    }
+
+    .cardBackground {
+        padding: 1.25rem;
+    }
+
+    .cardNumber {
+        font-size: 1.1rem;
     }
 }
 
 @media (max-width: 480px) {
     .dashboardContainer {
-        padding: 0.5rem;
+        padding: 0.75rem;
     }
 
     .balanceCard,
@@ -799,7 +948,11 @@
     }
 
     .welcomeTitle {
-        font-size: 1.75rem;
+        font-size: 1.5rem;
+    }
+
+    .balanceAmount {
+        font-size: 1.5rem;
     }
 
     .cardBackground {
@@ -824,12 +977,18 @@
         width: 280px;
         height: 280px;
     }
-}
 
-/* Темная тема поддержка */
-@media (prefers-color-scheme: dark) {
-    .dashboardContainer {
-        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    .headerMain {
+        gap: 1rem;
+    }
+
+    .dateSection {
+        gap: 1rem;
+    }
+
+    .notificationBell {
+        font-size: 1.25rem;
+        padding: 0.4rem;
     }
 }
 

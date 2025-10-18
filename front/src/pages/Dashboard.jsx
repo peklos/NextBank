@@ -1,92 +1,171 @@
-import React, { useState } from 'react';
-import styles from '../styles/dashboard.module.css';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+import styles from '../styles/dashboard.module.css';
 
 const Dashboard = () => {
     const [quickAmount, setQuickAmount] = useState('');
-    const [activeCard, setActiveCard] = useState(0);
-    const user = useSelector(state => state.auth)
+    const [selectedCardIndex, setSelectedCardIndex] = useState(0);
 
-    // Моковые данные
-    const userData = {
-        name: 'Александр',
-        totalBalance: '2 421 350 ₽',
-        monthlyIncome: '185 000 ₽',
-        monthlyExpenses: '134 560 ₽',
-        savings: '50 440 ₽'
+    // Получаем данные из Redux
+    const user = useSelector(state => state.auth);
+    const accounts = useSelector(state => state.accounts.list || []);
+    const cards = useSelector(state => state.cards.cards || []);
+    const loans = useSelector(state => state.loans.list || []);
+    const transactions = useSelector(state => state.transactions.list || []);
+    const transactionsStats = useSelector(state => state.transactions.stats);
+
+    // Вычисляем статистику
+    const totalBalance = accounts.reduce((sum, acc) => sum + (acc.balance || 0), 0);
+    const activeCards = cards.filter(card => card.is_active);
+    const activeLoans = loans.filter(loan => !loan.is_paid);
+
+    // Группируем транзакции по месяцам для расчета доходов/расходов
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+
+    const monthlyTransactions = transactions.filter(t => {
+        const transDate = new Date(t.created_at);
+        return transDate.getMonth() === currentMonth &&
+            transDate.getFullYear() === currentYear &&
+            t.status === 'completed';
+    });
+
+    const monthlyIncome = monthlyTransactions
+        .filter(t => ['deposit', 'transfer'].includes(t.transaction_type) && t.amount > 0)
+        .reduce((sum, t) => sum + t.amount, 0);
+
+    const monthlyExpenses = monthlyTransactions
+        .filter(t => ['withdraw', 'loan_payment'].includes(t.transaction_type))
+        .reduce((sum, t) => sum + t.amount, 0);
+
+    const monthlySavings = monthlyIncome - monthlyExpenses;
+
+    // Последние 4 транзакции
+    const recentTransactions = [...transactions]
+        .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        .slice(0, 4);
+
+    // Форматирование суммы
+    const formatAmount = (amount) => {
+        return new Intl.NumberFormat('ru-RU', {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(amount);
     };
 
-    const cards = [
-        {
-            id: 1,
-            number: '5536 9142 6743 4321',
-            holder: 'ALEXANDER PETROV',
-            expiry: '12/25',
-            balance: '245 670 ₽',
-            type: 'visa',
-            color: '#3b82f6'
-        },
-        {
-            id: 2,
-            number: '4478 2345 6789 7821',
-            holder: 'ALEXANDER PETROV',
-            expiry: '09/26',
-            balance: '1 250 340 ₽',
-            type: 'mastercard',
-            color: '#10b981'
-        }
-    ];
+    // Форматирование времени
+    const formatTime = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleTimeString('ru-RU', {
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
 
+    // Форматирование даты
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(yesterday.getDate() - 1);
+
+        if (date.toDateString() === today.toDateString()) {
+            return 'Сегодня';
+        } else if (date.toDateString() === yesterday.toDateString()) {
+            return 'Вчера';
+        } else {
+            return date.toLocaleDateString('ru-RU', {
+                day: 'numeric',
+                month: 'short'
+            });
+        }
+    };
+
+    // Получение иконки для типа транзакции
+    const getTransactionIcon = (type) => {
+        const icons = {
+            deposit: '💰',
+            withdraw: '💸',
+            transfer: '🔄',
+            loan_payment: '🏦'
+        };
+        return icons[type] || '💳';
+    };
+
+    // Получение названия транзакции
+    const getTransactionName = (transaction) => {
+        const names = {
+            deposit: 'Пополнение счета',
+            withdraw: 'Снятие средств',
+            transfer: 'Перевод',
+            loan_payment: 'Погашение кредита'
+        };
+        return transaction.description || names[transaction.transaction_type] || 'Операция';
+    };
+
+    // Быстрые действия
     const quickActions = [
-        { id: 1, icon: '🔄', label: 'Перевод', description: 'Между счетами' },
-        { id: 2, icon: '💳', label: 'Платеж', description: 'Оплатить услуги' },
-        { id: 3, icon: '📱', label: 'QR-платеж', description: 'Быстрая оплата' },
-        { id: 4, icon: '📄', label: 'Выписка', description: 'История операций' }
-    ];
-
-    const recentTransactions = [
-        {
-            id: 1,
-            name: 'Супермаркет "Пятерочка"',
-            amount: '-3 450 ₽',
-            time: '18:45',
-            icon: '🛒',
-            type: 'outcome'
-        },
-        {
-            id: 2,
-            name: 'Перевод от А.С. Петров',
-            amount: '+25 000 ₽',
-            time: '14:30',
-            icon: '💸',
-            type: 'income'
-        },
-        {
-            id: 3,
-            name: 'YouTube Premium',
-            amount: '-459 ₽',
-            time: '09:00',
-            icon: '🎬',
-            type: 'outcome'
-        },
-        {
-            id: 4,
-            name: 'Зарплата',
-            amount: '+85 000 ₽',
-            time: '08:00',
-            icon: '💰',
-            type: 'income'
-        }
-    ];
-
-    const stats = [
-        { label: 'Доходы за месяц', value: '185 000 ₽', change: '+12%', trend: 'up' },
-        { label: 'Расходы за месяц', value: '134 560 ₽', change: '+5%', trend: 'up' },
-        { label: 'Экономия', value: '50 440 ₽', change: '+8%', trend: 'up' },
-        { label: 'Кэшбэк', value: '3 245 ₽', change: '+15%', trend: 'up' }
+        { id: 1, icon: '🔄', label: 'Перевод', description: 'Между картами', link: '/accounts' },
+        { id: 2, icon: '💳', label: 'Карты', description: 'Управление картами', link: '/accounts' },
+        { id: 3, icon: '💰', label: 'Кредиты', description: 'Мои кредиты', link: '/loans' },
+        { id: 4, icon: '📄', label: 'История', description: 'Все операции', link: '/transfers' }
     ];
 
     const quickAmounts = ['500', '1000', '2000', '5000'];
+
+    // Статистика
+    const stats = [
+        {
+            label: 'Доходы за месяц',
+            value: `${formatAmount(monthlyIncome)} ₽`,
+            change: monthlyIncome > 0 ? '+' : '',
+            trend: 'up'
+        },
+        {
+            label: 'Расходы за месяц',
+            value: `${formatAmount(monthlyExpenses)} ₽`,
+            change: monthlyExpenses > 0 ? '+' : '',
+            trend: 'up'
+        },
+        {
+            label: 'Экономия',
+            value: `${formatAmount(monthlySavings)} ₽`,
+            change: monthlySavings > 0 ? '+' : '',
+            trend: monthlySavings > 0 ? 'up' : 'down'
+        },
+        {
+            label: 'Активных карт',
+            value: activeCards.length.toString(),
+            change: '',
+            trend: 'up'
+        }
+    ];
+
+    // Получение цвета карты
+    const getCardColor = (index) => {
+        const colors = [
+            'linear-gradient(135deg, #3b82f6, #1d4ed8)',
+            'linear-gradient(135deg, #10b981, #059669)',
+            'linear-gradient(135deg, #f59e0b, #d97706)',
+            'linear-gradient(135deg, #8b5cf6, #6366f1)'
+        ];
+        return colors[index % colors.length];
+    };
+
+    // Форматирование номера карты
+    const formatCardNumber = (number) => {
+        return number.replace(/(\d{4})/g, '$1 ').trim();
+    };
+
+    // Форматирование даты карты
+    const formatCardDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('ru-RU', {
+            month: '2-digit',
+            year: '2-digit'
+        });
+    };
 
     return (
         <div className={styles.dashboardContainer}>
@@ -132,23 +211,25 @@ const Dashboard = () => {
                             <section className={styles.balanceCard}>
                                 <div className={styles.balanceHeader}>
                                     <h2 className={styles.balanceTitle}>Общий баланс</h2>
-                                    <div className={styles.balanceTrend}>+5.2% за месяц</div>
+                                    <div className={styles.balanceTrend}>
+                                        {accounts.length} {accounts.length === 1 ? 'счет' : 'счетов'}
+                                    </div>
                                 </div>
                                 <div className={styles.balanceAmount}>
-                                    {userData.totalBalance}
+                                    {formatAmount(totalBalance)} ₽
                                 </div>
                                 <div className={styles.balanceStats}>
                                     <div className={styles.balanceStat}>
                                         <span className={styles.statLabel}>Доходы</span>
-                                        <span className={styles.statValue}>{userData.monthlyIncome}</span>
+                                        <span className={styles.statValue}>{formatAmount(monthlyIncome)} ₽</span>
                                     </div>
                                     <div className={styles.balanceStat}>
                                         <span className={styles.statLabel}>Расходы</span>
-                                        <span className={styles.statValue}>{userData.monthlyExpenses}</span>
+                                        <span className={styles.statValue}>{formatAmount(monthlyExpenses)} ₽</span>
                                     </div>
                                     <div className={styles.balanceStat}>
                                         <span className={styles.statLabel}>Экономия</span>
-                                        <span className={styles.statValue}>{userData.savings}</span>
+                                        <span className={styles.statValue}>{formatAmount(monthlySavings)} ₽</span>
                                     </div>
                                 </div>
                             </section>
@@ -157,43 +238,58 @@ const Dashboard = () => {
                             <section className={styles.cardsSection}>
                                 <div className={styles.sectionHeader}>
                                     <h2 className={styles.sectionTitle}>Мои карты</h2>
-                                    <button className={styles.addCardButton}>+ Добавить карту</button>
+                                    <NavLink to="/accounts" className={styles.addCardButton}>
+                                        + Управление
+                                    </NavLink>
                                 </div>
                                 <div className={styles.cardsContainer}>
-                                    {cards.map((card, index) => (
-                                        <div
-                                            key={card.id}
-                                            className={`${styles.cardItem} ${index === activeCard ? styles.cardActive : ''}`}
-                                            onClick={() => setActiveCard(index)}
-                                        >
-                                            <div className={styles.cardBackground} style={{ background: card.color }}>
-                                                <div className={styles.cardContent}>
-                                                    <div className={styles.cardHeader}>
-                                                        <div className={styles.cardType}>
-                                                            {card.type === 'visa' ? 'VISA' : 'MasterCard'}
+                                    {activeCards.length === 0 ? (
+                                        <div className={styles.emptyCards}>
+                                            <p>У вас пока нет активных карт</p>
+                                            <NavLink to="/accounts" className={styles.addCardButton}>
+                                                Добавить карту
+                                            </NavLink>
+                                        </div>
+                                    ) : (
+                                        activeCards.slice(0, 3).map((card, index) => (
+                                            <div
+                                                key={card.id}
+                                                className={`${styles.cardItem} ${index === selectedCardIndex ? styles.cardActive : ''}`}
+                                                onClick={() => setSelectedCardIndex(index)}
+                                            >
+                                                <div className={styles.cardBackground} style={{ background: getCardColor(index) }}>
+                                                    <div className={styles.cardContent}>
+                                                        <div className={styles.cardHeader}>
+                                                            <div className={styles.cardType}>
+                                                                {card.card_type}
+                                                            </div>
+                                                            <div className={styles.cardChip}>◘◘◘◘</div>
                                                         </div>
-                                                        <div className={styles.cardChip}>◘◘◘◘</div>
-                                                    </div>
-                                                    <div className={styles.cardNumber}>
-                                                        {card.number}
-                                                    </div>
-                                                    <div className={styles.cardFooter}>
-                                                        <div className={styles.cardHolder}>
-                                                            <div className={styles.holderLabel}>Владелец</div>
-                                                            <div className={styles.holderName}>{card.holder}</div>
+                                                        <div className={styles.cardNumber}>
+                                                            •••• •••• •••• {card.card_number.slice(-4)}
                                                         </div>
-                                                        <div className={styles.cardExpiry}>
-                                                            <div className={styles.expiryLabel}>Срок действия</div>
-                                                            <div className={styles.expiryDate}>{card.expiry}</div>
+                                                        <div className={styles.cardFooter}>
+                                                            <div className={styles.cardHolder}>
+                                                                <div className={styles.holderLabel}>Владелец</div>
+                                                                <div className={styles.holderName}>
+                                                                    {user.first_name} {user.last_name}
+                                                                </div>
+                                                            </div>
+                                                            <div className={styles.cardExpiry}>
+                                                                <div className={styles.expiryLabel}>Срок действия</div>
+                                                                <div className={styles.expiryDate}>
+                                                                    {formatCardDate(card.expiration_date)}
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div className={styles.cardBalance}>
+                                                    Баланс: {formatAmount(card.account?.balance || 0)} ₽
+                                                </div>
                                             </div>
-                                            <div className={styles.cardBalance}>
-                                                Баланс: {card.balance}
-                                            </div>
-                                        </div>
-                                    ))}
+                                        ))
+                                    )}
                                 </div>
                             </section>
                         </div>
@@ -205,57 +301,51 @@ const Dashboard = () => {
                                 <h2 className={styles.sectionTitle}>Быстрые действия</h2>
                                 <div className={styles.actionsGrid}>
                                     {quickActions.map((action) => (
-                                        <button key={action.id} className={styles.actionButton}>
+                                        <NavLink
+                                            key={action.id}
+                                            to={action.link}
+                                            className={styles.actionButton}
+                                        >
                                             <div className={styles.actionIcon}>{action.icon}</div>
                                             <div className={styles.actionInfo}>
                                                 <div className={styles.actionLabel}>{action.label}</div>
                                                 <div className={styles.actionDescription}>{action.description}</div>
                                             </div>
-                                        </button>
+                                        </NavLink>
                                     ))}
                                 </div>
                             </section>
 
-                            {/* Быстрый перевод */}
-                            <section className={styles.quickTransfer}>
-                                <h2 className={styles.sectionTitle}>Быстрый перевод</h2>
-                                <div className={styles.transferCard}>
-                                    <div className={styles.transferHeader}>
-                                        <div className={styles.contactAvatar}>AP</div>
-                                        <div className={styles.contactInfo}>
-                                            <div className={styles.contactName}>Анна Петрова</div>
-                                            <div className={styles.contactBank}>Тинькофф •• 7845</div>
-                                        </div>
+                            {/* Статистика кредитов */}
+                            {activeLoans.length > 0 && (
+                                <section className={styles.quickTransfer}>
+                                    <h2 className={styles.sectionTitle}>Активные кредиты</h2>
+                                    <div className={styles.transferCard}>
+                                        {activeLoans.slice(0, 2).map(loan => {
+                                            const totalAmount = loan.amount * (1 + loan.interest_rate / 100);
+                                            const remaining = totalAmount - (loan.paid_amount || 0);
+                                            return (
+                                                <div key={loan.id} className={styles.loanItem}>
+                                                    <div className={styles.loanInfo}>
+                                                        <div className={styles.loanName}>
+                                                            Кредит {formatAmount(loan.amount)} ₽
+                                                        </div>
+                                                        <div className={styles.loanStatus}>
+                                                            Осталось: {formatAmount(remaining)} ₽
+                                                        </div>
+                                                    </div>
+                                                    <NavLink to="/loans" className={styles.loanAction}>
+                                                        →
+                                                    </NavLink>
+                                                </div>
+                                            );
+                                        })}
+                                        <NavLink to="/loans" className={styles.transferButton}>
+                                            Все кредиты
+                                        </NavLink>
                                     </div>
-                                    <div className={styles.amountSection}>
-                                        <label className={styles.amountLabel}>Сумма перевода</label>
-                                        <div className={styles.amountInputWrapper}>
-                                            <input
-                                                type="text"
-                                                value={quickAmount}
-                                                onChange={(e) => setQuickAmount(e.target.value)}
-                                                placeholder="0"
-                                                className={styles.amountInput}
-                                            />
-                                            <span className={styles.currency}>₽</span>
-                                        </div>
-                                        <div className={styles.quickAmounts}>
-                                            {quickAmounts.map((amount) => (
-                                                <button
-                                                    key={amount}
-                                                    className={styles.quickAmountButton}
-                                                    onClick={() => setQuickAmount(amount)}
-                                                >
-                                                    {amount} ₽
-                                                </button>
-                                            ))}
-                                        </div>
-                                    </div>
-                                    <button className={styles.transferButton}>
-                                        Перевести деньги
-                                    </button>
-                                </div>
-                            </section>
+                                </section>
+                            )}
                         </div>
 
                         {/* Правая колонка - Статистика и транзакции */}
@@ -268,13 +358,23 @@ const Dashboard = () => {
                                         <div key={index} className={styles.statCard}>
                                             <div className={styles.statHeader}>
                                                 <span className={styles.statLabel}>{stat.label}</span>
-                                                <span className={`${styles.statChange} ${styles[stat.trend]}`}>
-                                                    {stat.change}
-                                                </span>
+                                                {stat.change && (
+                                                    <span className={`${styles.statChange} ${styles[stat.trend]}`}>
+                                                        {stat.change}
+                                                    </span>
+                                                )}
                                             </div>
                                             <div className={styles.statValue}>{stat.value}</div>
                                             <div className={styles.statChart}>
-                                                <div className={styles.chartBar} style={{ height: `${70 + index * 10}%` }}></div>
+                                                <div
+                                                    className={styles.chartBar}
+                                                    style={{
+                                                        height: `${60 + index * 10}%`,
+                                                        background: stat.trend === 'up'
+                                                            ? 'linear-gradient(90deg, #10b981, #059669)'
+                                                            : 'linear-gradient(90deg, #ef4444, #dc2626)'
+                                                    }}
+                                                ></div>
                                             </div>
                                         </div>
                                     ))}
@@ -285,51 +385,71 @@ const Dashboard = () => {
                             <section className={styles.transactionsSection}>
                                 <div className={styles.sectionHeader}>
                                     <h2 className={styles.sectionTitle}>Последние операции</h2>
-                                    <button className={styles.viewAllButton}>Все операции →</button>
+                                    <NavLink to="/transfers" className={styles.viewAllButton}>
+                                        Все операции →
+                                    </NavLink>
                                 </div>
                                 <div className={styles.transactionsList}>
-                                    {recentTransactions.map((transaction) => (
-                                        <div key={transaction.id} className={styles.transactionItem}>
-                                            <div className={styles.transactionIcon}>
-                                                <span>{transaction.icon}</span>
-                                            </div>
-                                            <div className={styles.transactionInfo}>
-                                                <div className={styles.transactionName}>
-                                                    {transaction.name}
-                                                </div>
-                                                <div className={styles.transactionTime}>
-                                                    {transaction.time}
-                                                </div>
-                                            </div>
-                                            <div className={styles.transactionAmount}>
-                                                <span className={`${styles.amount} ${transaction.type === 'income' ? styles.income : styles.outcome}`}>
-                                                    {transaction.amount}
-                                                </span>
-                                            </div>
+                                    {recentTransactions.length === 0 ? (
+                                        <div className={styles.emptyTransactions}>
+                                            <p>Пока нет транзакций</p>
                                         </div>
-                                    ))}
+                                    ) : (
+                                        recentTransactions.map((transaction) => (
+                                            <div key={transaction.id} className={styles.transactionItem}>
+                                                <div className={styles.transactionIcon}>
+                                                    <span>{getTransactionIcon(transaction.transaction_type)}</span>
+                                                </div>
+                                                <div className={styles.transactionInfo}>
+                                                    <div className={styles.transactionName}>
+                                                        {getTransactionName(transaction)}
+                                                    </div>
+                                                    <div className={styles.transactionTime}>
+                                                        {formatDate(transaction.created_at)}, {formatTime(transaction.created_at)}
+                                                    </div>
+                                                </div>
+                                                <div className={styles.transactionAmount}>
+                                                    <span className={`${styles.amount} ${['deposit'].includes(transaction.transaction_type)
+                                                        ? styles.income
+                                                        : styles.outcome
+                                                        }`}>
+                                                        {['deposit'].includes(transaction.transaction_type) ? '+' : '-'}
+                                                        {formatAmount(transaction.amount)} ₽
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        ))
+                                    )}
                                 </div>
                             </section>
 
-                            {/* Ближайшие платежи */}
+                            {/* Ближайшие события */}
                             <section className={styles.paymentsSection}>
-                                <h2 className={styles.sectionTitle}>Ближайшие платежи</h2>
+                                <h2 className={styles.sectionTitle}>Быстрая информация</h2>
                                 <div className={styles.paymentsList}>
                                     <div className={styles.paymentItem}>
-                                        <div className={styles.paymentIcon}>🏠</div>
+                                        <div className={styles.paymentIcon}>💳</div>
                                         <div className={styles.paymentInfo}>
-                                            <div className={styles.paymentName}>Аренда квартиры</div>
-                                            <div className={styles.paymentDate}>Завтра, 10:00</div>
+                                            <div className={styles.paymentName}>Счетов</div>
+                                            <div className={styles.paymentDate}>{accounts.length}</div>
                                         </div>
-                                        <div className={styles.paymentAmount}>-45 000 ₽</div>
+                                        <NavLink to="/accounts" className={styles.paymentAction}>→</NavLink>
                                     </div>
                                     <div className={styles.paymentItem}>
-                                        <div className={styles.paymentIcon}>📡</div>
+                                        <div className={styles.paymentIcon}>🏦</div>
                                         <div className={styles.paymentInfo}>
-                                            <div className={styles.paymentName}>Интернет</div>
-                                            <div className={styles.paymentDate}>15 дек</div>
+                                            <div className={styles.paymentName}>Кредитов</div>
+                                            <div className={styles.paymentDate}>{activeLoans.length}</div>
                                         </div>
-                                        <div className={styles.paymentAmount}>-1 200 ₽</div>
+                                        <NavLink to="/loans" className={styles.paymentAction}>→</NavLink>
+                                    </div>
+                                    <div className={styles.paymentItem}>
+                                        <div className={styles.paymentIcon}>📊</div>
+                                        <div className={styles.paymentInfo}>
+                                            <div className={styles.paymentName}>Транзакций</div>
+                                            <div className={styles.paymentDate}>{transactions.length}</div>
+                                        </div>
+                                        <NavLink to="/transfers" className={styles.paymentAction}>→</NavLink>
                                     </div>
                                 </div>
                             </section>

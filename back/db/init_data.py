@@ -1,6 +1,10 @@
+import os
 from sqlalchemy.orm import Session
 from db import models
 from passlib.context import CryptContext
+from dotenv import load_dotenv
+
+load_dotenv()
 
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 
@@ -71,12 +75,21 @@ def init_branches(db: Session):
 
 def create_superadmin(db: Session):
     """
-    🆕 Создание SuperAdmin через SQL
+    🆕 Автоматическое создание SuperAdmin из .env
 
-    ВАЖНО: Этот супер-администратор создается только один раз
-    и только через прямой SQL запрос в базу данных
+    Учетные данные берутся из переменных окружения:
+    - SUPERADMIN_EMAIL
+    - SUPERADMIN_PASSWORD
     """
-    # Проверяем, есть ли уже SuperAdmin
+    # Получаем учетные данные из .env
+    superadmin_email = os.getenv("SUPERADMIN_EMAIL", "superadmin@nextbank.ru")
+    superadmin_password = os.getenv("SUPERADMIN_PASSWORD")
+
+    if not superadmin_password:
+        print("❌ ОШИБКА: SUPERADMIN_PASSWORD не найден в .env файле!")
+        return
+
+    # Проверяем, есть ли роль SuperAdmin
     superadmin_role = db.query(models.Role).filter(
         models.Role.name == "SuperAdmin"
     ).first()
@@ -85,6 +98,7 @@ def create_superadmin(db: Session):
         print("❌ Роль SuperAdmin не найдена!")
         return
 
+    # Проверяем, существует ли уже SuperAdmin
     existing_superadmin = db.query(models.Employee).filter(
         models.Employee.role_id == superadmin_role.id
     ).first()
@@ -99,38 +113,40 @@ def create_superadmin(db: Session):
         print("❌ Отделения не найдены! Сначала создайте отделения.")
         return
 
+    # 🆕 Создаем SuperAdmin автоматически
     print("\n" + "="*60)
-    print("⚠️  ВНИМАНИЕ: SuperAdmin НЕ СОЗДАН автоматически!")
+    print("👑 Создание SuperAdmin...")
     print("="*60)
-    print("\n📝 Для создания SuperAdmin выполните SQL запрос в вашей БД:\n")
-    print("--- НАЧАЛО SQL ---")
-    print(f"""
-INSERT INTO employees (
-    first_name, 
-    last_name, 
-    patronymic, 
-    email, 
-    hashed_password, 
-    is_active, 
-    role_id, 
-    branch_id
-)
-VALUES (
-    'Супер',
-    'Админ',
-    'Администраторович',
-    'superadmin@nextbank.ru',
-    '{hash_password("SuperAdmin2024!")}',
-    true,
-    {superadmin_role.id},
-    {first_branch.id}
-);
-    """.strip())
-    print("--- КОНЕЦ SQL ---\n")
-    print("📧 Email: superadmin@nextbank.ru")
-    print("🔑 Пароль: SuperAdmin2024!")
-    print("\n⚠️  После создания ОБЯЗАТЕЛЬНО смените пароль!\n")
-    print("="*60 + "\n")
+
+    try:
+        # Хешируем пароль
+        hashed_password = hash_password(superadmin_password)
+
+        # Создаем сотрудника
+        superadmin = models.Employee(
+            first_name="Супер",
+            last_name="Админ",
+            patronymic="Администраторович",
+            email=superadmin_email,
+            hashed_password=hashed_password,
+            is_active=True,
+            role_id=superadmin_role.id,
+            branch_id=first_branch.id
+        )
+
+        db.add(superadmin)
+        db.commit()
+        db.refresh(superadmin)
+
+        print(f"✅ SuperAdmin успешно создан!")
+        print(f"📧 Email: {superadmin_email}")
+        print(f"🔑 Пароль: {superadmin_password}")
+        print("⚠️  ВАЖНО: Смените пароль после первого входа!")
+        print("="*60 + "\n")
+
+    except Exception as e:
+        print(f"❌ Ошибка при создании SuperAdmin: {e}")
+        db.rollback()
 
 
 def initialize_database(db: Session):
@@ -145,7 +161,7 @@ def initialize_database(db: Session):
     print("\n🏢 Создание отделений...")
     init_branches(db)
 
-    print("\n👑 Инструкция по созданию SuperAdmin...")
+    print("\n👑 Создание SuperAdmin...")
     create_superadmin(db)
 
     print("="*50)

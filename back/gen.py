@@ -11,3 +11,8 @@ print("="*60)
 print(f"Пароль: {password}")
 print(f"Хеш: {hashed}")
 print("="*60 + "\n")
+
+# Проверка, что хеш работает
+verification = pwd_context.verify(password, hashed)
+print(f"✅ Проверка хеша: {'SUCCESS' if verification else 'FAILED'}")
+print("\n📋 Скопируйте этот хеш и вставьте в init_data.py в переменную password_hash\n")
