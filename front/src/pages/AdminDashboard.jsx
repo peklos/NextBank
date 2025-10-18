@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../styles/admin.module.css";
-import AdminHeader from "../components/AdminHeader";
+import AdminHeader from "../adm_db_components/AdminHeader";
 import {
   getAllEmployees,
   getAllRoles,

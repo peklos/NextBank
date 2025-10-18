@@ -8,6 +8,7 @@ from jose import jwt
 from schemas.employee import EmployeeCreateSchema, EmployeeLoginSchema
 from sqlalchemy.orm import Session, joinedload
 from db import models, database
+from pydantic import BaseModel, Field
 
 load_dotenv()
 
@@ -229,4 +230,43 @@ def create_employee(
         'branch_id': db_employee.branch_id,
         'created_at': db_employee.created_at,
         'message': 'Сотрудник успешно зарегистрирован'
+    }
+
+
+class ChangePasswordSchema(BaseModel):
+    """Схема для смены пароля"""
+    current_password: str = Field(..., min_length=6)
+    new_password: str = Field(..., min_length=6)
+
+
+@router.patch('/change-password', summary='Изменить пароль')
+def change_employee_password(
+    data: ChangePasswordSchema,
+    db: Session = Depends(database.get_db),
+    current_employee: models.Employee = Depends(get_current_employee)
+):
+    """
+    Изменить пароль текущего сотрудника
+    """
+    # Проверяем текущий пароль
+    if not verify_password(data.current_password, current_employee.hashed_password):
+        raise HTTPException(
+            status_code=400,
+            detail='Неверный текущий пароль'
+        )
+
+    # Проверяем, что новый пароль отличается от старого
+    if verify_password(data.new_password, current_employee.hashed_password):
+        raise HTTPException(
+            status_code=400,
+            detail='Новый пароль должен отличаться от текущего'
+        )
+
+    # Обновляем пароль
+    current_employee.hashed_password = hash_password(data.new_password)
+    db.commit()
+
+    return {
+        "message": "Пароль успешно изменен",
+        "employee_id": current_employee.id
     }

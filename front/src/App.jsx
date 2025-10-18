@@ -1,5 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 // Клиентские страницы
@@ -7,20 +7,22 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Accounts from './pages/Accounts';
-import Cards from './pages/Cards';
 import Loans from './pages/Loans';
-import Transactions from './pages/Transactions';
+import Transfers from './pages/Transactions';
 import Profile from './pages/Profile';
 
 // Админские страницы
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
+import EmployeeProfile from './pages/EmployeeProfile';
 
 // Компоненты
 import PrivateLayout from './components/PrivateLayout';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
-import AdminProtectedRoute from './components/AdminProtectedRoute';
+
+// Админские компоненты из adm_db_components
+import { AdminProtectedRoute, AdminPublicRoute } from './adm_db_components';
 
 // Сервисы
 import { autoLogin } from './services/authService';
@@ -28,65 +30,90 @@ import { autoLoginEmployee } from './services/employeeAuthService';
 
 function App() {
   const dispatch = useDispatch();
-  const clientAuth = useSelector(state => state.auth);
-  const employeeAuth = useSelector(state => state.employee);
+  const clientToken = useSelector(state => state.auth.access_token);
+  const employeeToken = useSelector(state => state.employee.access_token);
 
   useEffect(() => {
-    // Проверяем автологин для клиента
-    const clientToken = localStorage.getItem('access_token');
-    if (clientToken && !clientAuth.isLoggedIn) {
+    // Автологин для клиента
+    if (localStorage.getItem('access_token') && !clientToken) {
       autoLogin(dispatch);
     }
 
-    // Проверяем автологин для сотрудника
-    const employeeToken = localStorage.getItem('employee_token');
-    if (employeeToken && !employeeAuth?.isLoggedIn) {
+    // Автологин для сотрудника
+    if (localStorage.getItem('employee_token') && !employeeToken) {
       autoLoginEmployee(dispatch);
     }
-  }, [dispatch]);
+  }, [dispatch, clientToken, employeeToken]);
 
   return (
     <BrowserRouter>
       <Routes>
-        {/* Публичные роуты - клиент */}
-        <Route path="/login" element={
-          <PublicRoute>
-            <Login />
-          </PublicRoute>
-        } />
-        <Route path="/register" element={
-          <PublicRoute>
-            <Register />
-          </PublicRoute>
-        } />
+        {/* Главная страница */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
-        {/* Защищённые роуты - клиент */}
-        <Route element={
-          <ProtectedRoute>
-            <PrivateLayout />
-          </ProtectedRoute>
-        }>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/accounts" element={<Accounts />} />
-          <Route path="/cards" element={<Cards />} />
-          <Route path="/loans" element={<Loans />} />
-          <Route path="/transfers" element={<Transactions />} />
-          <Route path="/profile" element={<Profile />} />
+        {/* Клиентские публичные роуты */}
+        <Route
+          path="/login"
+          element={
+            <PublicRoute>
+              <Login />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <Register />
+            </PublicRoute>
+          }
+        />
+
+        {/* Клиентские защищенные роуты */}
+        <Route
+          path="/*"
+          element={
+            <ProtectedRoute>
+              <PrivateLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="accounts" element={<Accounts />} />
+          <Route path="loans" element={<Loans />} />
+          <Route path="transfers" element={<Transfers />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
 
-        {/* Публичный роут - админ */}
-        <Route path="/admin/login" element={<AdminLogin />} />
+        {/* Админские публичные роуты */}
+        <Route
+          path="/admin/login"
+          element={
+            <AdminPublicRoute>
+              <AdminLogin />
+            </AdminPublicRoute>
+          }
+        />
 
-        {/* Защищённые роуты - админ */}
-        <Route path="/admin/dashboard" element={
-          <AdminProtectedRoute>
-            <AdminDashboard />
-          </AdminProtectedRoute>
-        } />
+        {/* Админские защищенные роуты */}
+        <Route
+          path="/admin/dashboard"
+          element={
+            <AdminProtectedRoute>
+              <AdminDashboard />
+            </AdminProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/profile"
+          element={
+            <AdminProtectedRoute>
+              <EmployeeProfile />
+            </AdminProtectedRoute>
+          }
+        />
 
-        {/* Редиректы */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/admin" element={<Navigate to="/admin/login" replace />} />
+        {/* 404 */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>

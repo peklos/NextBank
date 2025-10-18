@@ -36,3 +36,17 @@ export const getEmployeeMe = async () => {
         return { data: null, error: detail };
     }
 };
+
+// 🆕 Изменить пароль сотрудника
+export const changeEmployeePassword = async (currentPassword, newPassword) => {
+    try {
+        const res = await axios.patch('/admin/auth/change-password', {
+            current_password: currentPassword,
+            new_password: newPassword
+        });
+        return { data: res.data, error: null };
+    } catch (err) {
+        const detail = err.response?.data?.detail || 'Не удалось изменить пароль';
+        return { data: null, error: detail };
+    }
+};
