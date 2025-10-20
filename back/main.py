@@ -9,6 +9,7 @@ from routers import cards as cards_router
 from routers import loans as loans_router
 from routers import processes as processes_router
 from routers import transactions as transactions_router
+from routers import profile as profile_router
 
 # Роутеры для администраторов
 from routers import employee_auth as employee_auth_router
@@ -30,7 +31,7 @@ app = FastAPI(
 # Создание таблиц
 Base.metadata.create_all(bind=engine)
 
-# 🆕 Инициализация начальных данных
+# Инициализация начальных данных
 db = SessionLocal()
 try:
     initialize_database(db)
@@ -53,6 +54,7 @@ app.include_router(cards_router.router)
 app.include_router(loans_router.router)
 app.include_router(processes_router.router)
 app.include_router(transactions_router.router)
+app.include_router(profile_router.router)
 
 # === АДМИНИСТРАТИВНЫЕ РОУТЕРЫ ===
 app.include_router(employee_auth_router.router)
@@ -69,11 +71,6 @@ def root():
         "message": "NextBank API работает",
         "version": "2.0.0",
         "docs": "/docs",
-        "client_endpoints": "/auth, /accounts, /cards, /loans, /processes, /transactions",
+        "client_endpoints": "/auth, /accounts, /cards, /loans, /processes, /transactions, /profile",
         "admin_endpoints": "/admin/auth, /roles, /branches, /employees, /admin/processes, /admin/clients"
     }
-
-
-# uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-# http://http://172.18.0.1:8000/docs
-# psycopg2-binary
