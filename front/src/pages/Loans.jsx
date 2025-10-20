@@ -415,18 +415,20 @@ const Loans = () => {
 
                             <div className={styles.formGroup}>
                                 <label className={styles.formLabel}>Выберите карту</label>
-                                <select
-                                    className={styles.formInput}
-                                    value={paymentForm.card_id}
-                                    onChange={(e) => setPaymentForm({ ...paymentForm, card_id: e.target.value })}
-                                >
-                                    <option value="">Выберите карту</option>
-                                    {cards.filter(c => c.is_active).map(card => (
-                                        <option key={card.id} value={card.id}>
-                                            •••• {card.card_number.slice(-4)} - {card.account.balance.toLocaleString('ru-RU')} ₽
-                                        </option>
-                                    ))}
-                                </select>
+                                <div className={styles.customSelect}> 
+                                    <select
+                                        className={styles.formInput}
+                                        value={paymentForm.card_id}
+                                        onChange={(e) => setPaymentForm({ ...paymentForm, card_id: e.target.value })}
+                                    >
+                                        <option value="">Выберите карту</option>
+                                        {cards.filter(c => c.is_active).map(card => (
+                                            <option key={card.id} value={card.id}>
+                                                •••• {card.card_number.slice(-4)} - {card.account.balance.toLocaleString('ru-RU')} ₽
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
                             </div>
 
                             <div className={styles.formGroup}>

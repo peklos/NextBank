@@ -6,7 +6,6 @@
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
 }
 
-/* Анимированный фон */
 .background {
     position: fixed;
     top: 0;
@@ -67,7 +66,6 @@
     }
 }
 
-/* Основной контент */
 .accountsContent {
     max-width: 1400px;
     margin: 0 auto;
@@ -75,7 +73,6 @@
     z-index: 10;
 }
 
-/* Хедер страницы */
 .pageHeader {
     margin-bottom: 3rem;
 }
@@ -148,7 +145,6 @@
     font-weight: 700;
 }
 
-/* Основной контент */
 .accountsMain {
     margin-bottom: 2rem;
 }
@@ -160,7 +156,6 @@
     align-items: start;
 }
 
-/* Карточки */
 .actionsCard {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(20px);
@@ -192,7 +187,6 @@
     font-size: 1.5rem;
 }
 
-/* Быстрые действия */
 .actionsList {
     display: flex;
     flex-direction: column;
@@ -230,7 +224,6 @@
     flex: 1;
 }
 
-/* Правая колонка */
 .accountsHeader {
     display: flex;
     justify-content: space-between;
@@ -289,7 +282,6 @@
     font-size: 1rem;
 }
 
-/* Сетка счетов */
 .accountsGrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
@@ -464,7 +456,6 @@
     color: #fca5a5;
 }
 
-/* Кнопка добавления счета */
 .addAccountSection {
     display: flex;
     justify-content: center;
@@ -498,7 +489,6 @@
     font-weight: 700;
 }
 
-/* Состояние пустого списка */
 .emptyState {
     display: flex;
     flex-direction: column;
@@ -534,7 +524,6 @@
     max-width: 300px;
 }
 
-/* Модальные окна */
 .modalOverlay {
     position: fixed;
     top: 0;
@@ -617,11 +606,6 @@
     color: white;
 }
 
-.modalClose svg {
-    width: 20px;
-    height: 20px;
-}
-
 .modalBody {
     padding: 2rem;
     box-sizing: border-box;
@@ -675,7 +659,6 @@
     box-shadow: 0 8px 20px -4px rgba(239, 68, 68, 0.4);
 }
 
-/* Контент модальных окон */
 .confirmContent,
 .successContent {
     display: flex;
@@ -718,7 +701,6 @@
     color: #f59e0b;
 }
 
-/* Предпросмотр счета */
 .accountPreview {
     display: flex;
     align-items: center;
@@ -760,7 +742,6 @@
     font-weight: 500;
 }
 
-/* Стили для модального окна карт */
 .accountInfoHeader {
     margin-bottom: 2rem;
 }
@@ -954,7 +935,6 @@
     color: #64748b;
 }
 
-/* Форма добавления карты */
 .formGroup {
     margin-bottom: 2rem;
 }
@@ -1022,7 +1002,216 @@
     width: 300px;
 }
 
-/* Адаптивность */
+.notification {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    color: white;
+    font-weight: 600;
+    z-index: 1001;
+    animation: slideIn 0.3s ease-out;
+    max-width: 400px;
+    box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.3);
+}
+
+.notification.success {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.notification.error {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.cardNumberContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 1rem 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.75rem;
+}
+
+.cardNumber {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    font-family: 'Courier New', monospace;
+    flex: 1;
+}
+
+.cardNumberActions {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: 1rem;
+}
+
+.eyeButton,
+.copyButton {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.eyeButton:hover,
+.copyButton:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.cardActions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.cardActionBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: left;
+}
+
+.cardActionBtn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.cardActionBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.cardManagementActions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.managementBtn {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    color: #cbd5e1;
+    font-size: 0.75rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.managementBtn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.managementBtn.danger {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+}
+
+.managementBtn.danger:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+}
+
+.managementBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.formInput {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #f1f5f9;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.formInput:focus {
+    outline: none;
+    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.formInput::placeholder {
+    color: #94a3b8;
+}
+
+.selectedCard {
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #f1f5f9;
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+}
+
+.copyButton.copied {
+    background-color: #10b981 !important;
+    transform: scale(1.1);
+    transition: all 0.2s ease;
+}
+
+.closeButton {
+    padding: 0.75rem 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    color: #cbd5e1;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.closeButton:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
 @media (max-width: 1200px) {
     .contentGrid {
         grid-template-columns: 300px 1fr;
@@ -1196,6 +1385,36 @@
         align-items: flex-start;
         gap: 0.25rem;
     }
+
+    .notification {
+        right: 1rem;
+        left: 1rem;
+        max-width: none;
+    }
+
+    .cardNumberContainer {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: stretch;
+    }
+
+    .cardNumberActions {
+        margin-left: 0;
+        justify-content: center;
+    }
+
+    .cardManagementActions {
+        flex-direction: column;
+    }
+
+    .cardActions {
+        gap: 0.5rem;
+    }
+
+    .cardActionBtn {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.8rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1292,232 +1511,7 @@
     .noCards {
         padding: 2rem 1rem;
     }
-}
 
-/* Уведомления */
-.notification {
-    position: fixed;
-    top: 2rem;
-    right: 2rem;
-    padding: 1rem 1.5rem;
-    border-radius: 10px;
-    color: white;
-    font-weight: 600;
-    z-index: 1001;
-    animation: slideIn 0.3s ease-out;
-    max-width: 400px;
-    box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.3);
-}
-
-.notification.success {
-    background: linear-gradient(135deg, #10b981, #059669);
-}
-
-.notification.error {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-/* Контейнер номера карты с действиями */
-.cardNumberContainer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 1rem 0;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    padding: 0.75rem;
-}
-
-.cardNumber {
-    font-size: 1.1rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    font-family: 'Courier New', monospace;
-    flex: 1;
-}
-
-.cardNumberActions {
-    display: flex;
-    gap: 0.5rem;
-    margin-left: 1rem;
-}
-
-.eyeButton,
-.copyButton {
-    background: rgba(255, 255, 255, 0.2);
-    border: none;
-    border-radius: 6px;
-    padding: 0.5rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.eyeButton:hover,
-.copyButton:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: scale(1.05);
-}
-
-/* Действия с картой */
-.cardActions {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin-top: 1rem;
-}
-
-.cardActionBtn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    color: #cbd5e1;
-    font-size: 0.85rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: left;
-}
-
-.cardActionBtn:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-.cardActionBtn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.cardManagementActions {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.managementBtn {
-    flex: 1;
-    padding: 0.5rem 0.75rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
-    color: #cbd5e1;
-    font-size: 0.75rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.managementBtn:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-.managementBtn.danger {
-    background: rgba(239, 68, 68, 0.1);
-    border-color: rgba(239, 68, 68, 0.3);
-    color: #ef4444;
-}
-
-.managementBtn.danger:hover {
-    background: rgba(239, 68, 68, 0.2);
-    color: #fca5a5;
-}
-
-.managementBtn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-/* Формы в модальных окнах */
-.formInput {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    color: #f1f5f9;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-}
-
-.formInput:focus {
-    outline: none;
-    border-color: rgba(59, 130, 246, 0.4);
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.formInput::placeholder {
-    color: #94a3b8;
-}
-
-.selectedCard {
-    padding: 0.75rem 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    color: #f1f5f9;
-    font-family: 'Courier New', monospace;
-    font-weight: 600;
-}
-
-/* Адаптивность для новых элементов */
-@media (max-width: 768px) {
-    .notification {
-        right: 1rem;
-        left: 1rem;
-        max-width: none;
-    }
-
-    .cardNumberContainer {
-        flex-direction: column;
-        gap: 0.75rem;
-        align-items: stretch;
-    }
-
-    .cardNumberActions {
-        margin-left: 0;
-        justify-content: center;
-    }
-
-    .cardManagementActions {
-        flex-direction: column;
-    }
-
-    .cardActions {
-        gap: 0.5rem;
-    }
-
-    .cardActionBtn {
-        padding: 0.6rem 0.8rem;
-        font-size: 0.8rem;
-    }
-}
-
-@media (max-width: 480px) {
     .notification {
         top: 1rem;
         right: 0.5rem;
@@ -1536,273 +1530,4 @@
         height: 32px;
         font-size: 0.8rem;
     }
-}
-
-/* Уведомления */
-.notification {
-    position: fixed;
-    top: 2rem;
-    right: 2rem;
-    padding: 1rem 1.5rem;
-    border-radius: 10px;
-    color: white;
-    font-weight: 600;
-    z-index: 1001;
-    animation: slideIn 0.3s ease-out;
-    max-width: 400px;
-    box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.3);
-}
-
-.notification.success {
-    background: linear-gradient(135deg, #10b981, #059669);
-}
-
-.notification.error {
-    background: linear-gradient(135deg, #ef4444, #dc2626);
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-/* Контейнер номера карты с действиями */
-.cardNumberContainer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 1rem 0;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    padding: 0.75rem;
-}
-
-.cardNumber {
-    font-size: 1.1rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    font-family: 'Courier New', monospace;
-    flex: 1;
-}
-
-.cardNumberActions {
-    display: flex;
-    gap: 0.5rem;
-    margin-left: 1rem;
-}
-
-.eyeButton,
-.copyButton {
-    background: rgba(255, 255, 255, 0.2);
-    border: none;
-    border-radius: 6px;
-    padding: 0.5rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.eyeButton:hover,
-.copyButton:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: scale(1.05);
-}
-
-/* Действия с картой */
-.cardActions {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin-top: 1rem;
-}
-
-.cardActionBtn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    color: #cbd5e1;
-    font-size: 0.85rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: left;
-}
-
-.cardActionBtn:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-.cardActionBtn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.cardManagementActions {
-    display: flex;
-    gap: 0.5rem;
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.managementBtn {
-    flex: 1;
-    padding: 0.5rem 0.75rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
-    color: #cbd5e1;
-    font-size: 0.75rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.managementBtn:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-}
-
-.managementBtn.danger {
-    background: rgba(239, 68, 68, 0.1);
-    border-color: rgba(239, 68, 68, 0.3);
-    color: #ef4444;
-}
-
-.managementBtn.danger:hover {
-    background: rgba(239, 68, 68, 0.2);
-    color: #fca5a5;
-}
-
-.managementBtn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-/* Формы в модальных окнах */
-.formInput {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    color: #f1f5f9;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
-}
-
-.formInput:focus {
-    outline: none;
-    border-color: rgba(59, 130, 246, 0.4);
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.formInput::placeholder {
-    color: #94a3b8;
-}
-
-.selectedCard {
-    padding: 0.75rem 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    color: #f1f5f9;
-    font-family: 'Courier New', monospace;
-    font-weight: 600;
-}
-
-/* Адаптивность для новых элементов */
-@media (max-width: 768px) {
-    .notification {
-        right: 1rem;
-        left: 1rem;
-        max-width: none;
-    }
-
-    .cardNumberContainer {
-        flex-direction: column;
-        gap: 0.75rem;
-        align-items: stretch;
-    }
-
-    .cardNumberActions {
-        margin-left: 0;
-        justify-content: center;
-    }
-
-    .cardManagementActions {
-        flex-direction: column;
-    }
-
-    .cardActions {
-        gap: 0.5rem;
-    }
-
-    .cardActionBtn {
-        padding: 0.6rem 0.8rem;
-        font-size: 0.8rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .notification {
-        top: 1rem;
-        right: 0.5rem;
-        left: 0.5rem;
-        padding: 0.75rem 1rem;
-        font-size: 0.9rem;
-    }
-
-    .cardNumber {
-        font-size: 1rem;
-    }
-
-    .eyeButton,
-    .copyButton {
-        width: 32px;
-        height: 32px;
-        font-size: 0.8rem;
-    }
-}
-
-/* Добавьте в accounts.module.css */
-.copyButton.copied {
-    background-color: #10b981 !important;
-    transform: scale(1.1);
-    transition: all 0.2s ease;
-}
-
-.closeButton {
-    padding: 0.75rem 1.5rem;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 12px;
-    color: #cbd5e1;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    min-width: 120px;
-}
-
-.closeButton:hover {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
 }

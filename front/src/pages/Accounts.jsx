@@ -5,8 +5,7 @@ import { createClientAccount, deleteClientAccount } from '../api/accounts';
 import { addAccount, removeAccount, setAccounts } from '../features/accounts/accSlice';
 import { addCard, setCards } from '../features/cards/cardSlice';
 import { fetchMyAccounts } from '../api/accounts';
-// Добавьте импорт API функций для операций с картами
-import { depositToCard, withdrawFromCard, transferBetweenCards, getClientCards, createClientCard } from '../api/cards'; // предположительный путь
+import { depositToCard, withdrawFromCard, transferBetweenCards, getClientCards, createClientCard } from '../api/cards';
 
 // Компоненты
 import AccountStats from '../components/AccountStats';
@@ -150,10 +149,11 @@ const Accounts = () => {
                     showNotification('Введите номер карты получателя', 'error');
                     return;
                 }
+                const cleanCardNumber = toCardNumber.replace(/\s/g, '');
                 res = await transferBetweenCards(
-                    selectedCard.id,  // from_card_id
-                    toCardNumber,     // to_card_number
-                    numericAmount     // amount
+                    selectedCard.id,
+                    cleanCardNumber,
+                    numericAmount
                 );
             } else if (operationType === 'deposit') {
                 // Операция пополнения - передаем параметры отдельно

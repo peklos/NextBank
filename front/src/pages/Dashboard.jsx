@@ -13,11 +13,16 @@ const Dashboard = () => {
     const cards = useSelector(state => state.cards.cards || []);
     const loans = useSelector(state => state.loans.list || []);
     const transactions = useSelector(state => state.transactions.list || []);
-    const transactionsStats = useSelector(state => state.transactions.stats);
+
+    const cardsWithAccounts = cards.map(card => ({
+        ...card,
+        account: accounts.find(acc => acc.id === card.account_id)
+    }));
+
 
     // Вычисляем статистику
     const totalBalance = accounts.reduce((sum, acc) => sum + (acc.balance || 0), 0);
-    const activeCards = cards.filter(card => card.is_active);
+    const activeCards = cardsWithAccounts.filter(card => card.is_active);
     const activeLoans = loans.filter(loan => !loan.is_paid);
 
     // Группируем транзакции по месяцам для расчета доходов/расходов
@@ -285,7 +290,7 @@ const Dashboard = () => {
                                                     </div>
                                                 </div>
                                                 <div className={styles.cardBalance}>
-                                                    Баланс: {formatAmount(card.account?.balance || 0)} ₽
+                                                    Баланс: {formatAmount(card.account ? card.account.balance : 0)} ₽
                                                 </div>
                                             </div>
                                         ))
