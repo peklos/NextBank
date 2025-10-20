@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import styles from '../styles/accounts.module.css';
 import { createClientAccount, deleteClientAccount } from '../api/accounts';
 import { addAccount, removeAccount, setAccounts } from '../features/accounts/accSlice';
-import { addCard, setCards } from '../features/cards/cardSlice';
+import { addCard, setCards, removeCard } from '../features/cards/cardSlice';
 import { fetchMyAccounts } from '../api/accounts';
 import { depositToCard, withdrawFromCard, transferBetweenCards, getClientCards, createClientCard } from '../api/cards';
 
@@ -77,11 +77,23 @@ const Accounts = () => {
 
     const handleConfirmDelete = async () => {
         setShowDeleteAccountConfirm(false);
+
+        // 🔥 ВАЖНО: Сначала находим все карты, связанные с этим счетом
+        const cardsToDelete = cardsData.filter(card => card.account_id === accountToDelete.id);
+
+        // Удаляем счет на сервере
         const res = await deleteClientAccount(accountToDelete.id);
 
         if (res.data != null) {
+            // Удаляем счет из Redux
             dispatch(removeAccount(accountToDelete.id));
-            showNotification('Счет успешно удален', 'success');
+
+            // 🔥 КРИТИЧНО: Удаляем все карты этого счета из Redux
+            cardsToDelete.forEach(card => {
+                dispatch(removeCard(card.id));
+            });
+
+            showNotification('Счет и связанные карты успешно удалены', 'success');
         } else {
             showNotification('Ошибка при удалении счета: ' + res.error, 'error');
         }

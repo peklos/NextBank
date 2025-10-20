@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '../styles/accounts.module.css';
+import { NavLink } from 'react-router-dom';
 
 const QuickActions = ({ onCreateAccount }) => {
     return (
@@ -19,10 +20,10 @@ const QuickActions = ({ onCreateAccount }) => {
                     <span className={styles.actionIcon}>💸</span>
                     <span className={styles.actionText}>Перевод между счетами</span>
                 </button>
-                <button className={styles.actionButton}>
+                <NavLink to='/transfers' className={styles.actionButton}>
                     <span className={styles.actionIcon}>🔍</span>
                     <span className={styles.actionText}>История операций</span>
-                </button>
+                </NavLink>
             </div>
         </section>
     );

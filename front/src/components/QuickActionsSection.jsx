@@ -1,5 +1,6 @@
 // src/components/QuickActionsSection.jsx
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from '../styles/profile.module.css';
 
 const QuickActionsSection = ({
@@ -9,6 +10,7 @@ const QuickActionsSection = ({
     onChangePhone
 }) => {
     const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+    const navigate = useNavigate()
 
     const quickActions = [
         {
@@ -33,7 +35,8 @@ const QuickActionsSection = ({
         },
         {
             icon: '📊',
-            text: 'История операций'
+            text: 'История операций',
+            action: () => navigate('/transfers')
         },
         {
             icon: '📄',

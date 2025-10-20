@@ -122,8 +122,7 @@
   background: linear-gradient(135deg, #ffffff, #cbd5e1);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin: 0;
-  margin-top: 40px;
+  margin: 40px 0 0 0;
 }
 
 .titleIcon {
@@ -187,6 +186,8 @@
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
 }
 
 .sectionTitle {
@@ -194,6 +195,12 @@
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0;
+}
+
+.headerActions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
 }
 
 /* Overview Grid */
@@ -303,6 +310,7 @@
 .actionButtons {
   display: flex;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .btnEdit,
@@ -318,7 +326,7 @@
   cursor: pointer;
   font-size: 1rem;
   transition: all 0.3s ease;
-  color: white
+  color: white;
 }
 
 .btnEdit {
@@ -447,23 +455,25 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: none;
   border-radius: 12px;
   color: white;
-  font-size: 0.9rem;
   font-weight: 600;
+  font-size: 0.875rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
 }
 
 .btnCreate:hover {
-  background: linear-gradient(135deg, #2563eb, #1e40af);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
 }
 
 .btnIcon {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
+  font-weight: 700;
 }
 
 /* Поиск */
@@ -516,6 +526,7 @@
   justify-content: center;
   z-index: 1000;
   padding: 1rem;
+  animation: fadeIn 0.2s ease-out;
 }
 
 .modalContent {
@@ -534,12 +545,22 @@
 @keyframes modalSlideIn {
   from {
     opacity: 0;
-    transform: translateY(-20px) scale(0.95);
+    transform: translateY(-20px);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
   }
 }
 
@@ -547,7 +568,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem 2rem 1rem;
+  padding: 1.5rem 2rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -587,13 +608,14 @@
   display: flex;
   gap: 1rem;
   justify-content: flex-end;
-  padding: 1rem 2rem 2rem;
+  padding: 1.5rem 2rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Формы - ИСПРАВЛЕННЫЕ СТИЛИ */
+/* Формы */
 .formGroup {
   margin-bottom: 1.5rem;
+  position: relative;
 }
 
 .formLabel {
@@ -613,6 +635,7 @@
   color: #f1f5f9;
   font-size: 0.9rem;
   transition: all 0.3s ease;
+  font-family: inherit;
 }
 
 .formInput:focus {
@@ -628,12 +651,6 @@
 
 .formInput option {
   background: #1e293b;
-  color: #f1f5f9;
-  padding: 0.5rem;
-}
-
-.formInput select {
-  background: rgba(255, 255, 255, 0.08);
   color: #f1f5f9;
 }
 
@@ -679,7 +696,8 @@
   text-transform: uppercase;
 }
 
-.statusActive {
+.statusActive,
+.statusSuccess {
   background: rgba(16, 185, 129, 0.2);
   border: 1px solid rgba(16, 185, 129, 0.4);
   color: #10b981;
@@ -695,12 +713,6 @@
   background: rgba(245, 158, 11, 0.2);
   border: 1px solid rgba(245, 158, 11, 0.4);
   color: #f59e0b;
-}
-
-.statusSuccess {
-  background: rgba(16, 185, 129, 0.2);
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  color: #10b981;
 }
 
 .statusDanger {
@@ -801,7 +813,7 @@
   color: white;
   font-weight: 600;
   z-index: 1001;
-  animation: slideIn 0.3s ease-out;
+  animation: notificationSlideIn 0.3s ease-out, notificationFadeOut 0.3s ease-out 3.7s forwards;
   max-width: 400px;
   box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.3);
 }
@@ -814,7 +826,7 @@
   background: linear-gradient(135deg, #ef4444, #dc2626);
 }
 
-@keyframes slideIn {
+@keyframes notificationSlideIn {
   from {
     transform: translateX(100%);
     opacity: 0;
@@ -823,6 +835,86 @@
   to {
     transform: translateX(0);
     opacity: 1;
+  }
+}
+
+@keyframes notificationFadeOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Пароль инпут */
+.passwordInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.passwordInputWrapper .formInput {
+  padding-right: 3rem !important;
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 0.375rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.passwordToggle:hover {
+  color: #64748b;
+  background: rgba(148, 163, 184, 0.15);
+}
+
+/* Валидация */
+.inputError {
+  border-color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.05) !important;
+}
+
+.inputError:focus {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
+}
+
+.errorText {
+  display: block;
+  color: #ef4444;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 0.375rem;
+  animation: errorSlideIn 0.2s ease-out;
+}
+
+@keyframes errorSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -860,7 +952,6 @@
 }
 
 @media (max-width: 768px) {
-
   .pageTitle {
     font-size: 2rem;
   }
@@ -873,20 +964,9 @@
     padding: 1.5rem;
   }
 
-  .overviewGrid {
-    grid-template-columns: 1fr;
-  }
-
+  .overviewGrid,
   .cardsGrid {
     grid-template-columns: 1fr;
-  }
-
-  .tableContainer {
-    overflow-x: auto;
-  }
-
-  .dataTable {
-    font-size: 0.85rem;
   }
 
   .dataTable th,
@@ -922,12 +1002,18 @@
     width: 100%;
   }
 
-  .filterButtons {
+  .headerActions {
+    flex-direction: column;
     width: 100%;
   }
 
-  .filterBtn {
-    flex: 1;
+  .searchBox {
+    width: 100%;
+  }
+
+  .btnCreate {
+    width: 100%;
+    justify-content: center;
   }
 
   .notification {
@@ -935,10 +1021,19 @@
     left: 1rem;
     max-width: none;
   }
+
+  .passwordToggle {
+    right: 0.5rem;
+    padding: 0.25rem;
+    font-size: 1.1rem;
+  }
+
+  .passwordInputWrapper .formInput {
+    padding-right: 2.5rem !important;
+  }
 }
 
 @media (max-width: 480px) {
-
   .pageTitle {
     font-size: 1.75rem;
     gap: 0.75rem;
@@ -969,10 +1064,6 @@
     font-size: 1.1rem;
   }
 
-  .dataTable {
-    font-size: 0.8rem;
-  }
-
   .btnEdit,
   .btnDelete,
   .btnToggle,
@@ -983,15 +1074,10 @@
     font-size: 0.9rem;
     padding: 0.4rem;
   }
-}
 
-/* Плавные переходы */
-.card,
-.statCard,
-.tab,
-.filterBtn,
-.actionButtons button {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  .passwordToggle {
+    font-size: 1rem;
+  }
 }
 
 /* Скроллбары */
@@ -1018,21 +1104,6 @@
   background: rgba(255, 255, 255, 0.3);
 }
 
-/* Анимация для пустых состояний */
-.noActions {
-  animation: fadeIn 0.3s ease-in;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
 /* Улучшенная доступность */
 @media (prefers-reduced-motion: reduce) {
 
@@ -1045,7 +1116,6 @@
   }
 }
 
-/* Фокус для доступности */
 .tab:focus,
 .filterBtn:focus,
 .btnCreate:focus,
@@ -1053,657 +1123,7 @@
 .btnDelete:focus,
 .btnToggle:focus,
 .searchInput:focus,
-.formInput:focus {
-  outline: 2px solid #3b82f6;
-  outline-offset: 2px;
-}
-
-/* Темная тема поддержка */
-@media (prefers-color-scheme: dark) {
-  .adminContainer {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  }
-}
-
-/* Стили для хедера секции с действиями */
-.headerActions {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-
-.sectionHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-/* Улучшенная кнопка создания */
-.btnCreate {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  border-radius: 12px;
-  color: white;
-  font-weight: 600;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-}
-
-.btnCreate:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-}
-
-.btnCreate:active {
-  transform: translateY(0);
-}
-
-.btnIcon {
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-/* Стили для модального окна */
-.modalOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2000;
-  padding: 1rem;
-}
-
-.modalContent {
-  background: #1e293b;
-  border-radius: 20px;
-  max-width: 600px;
-  width: 100%;
-  max-height: 90vh;
-  overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  animation: modalSlideIn 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-@keyframes modalSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.modalHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 2rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.modalTitle {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #f1f5f9;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.modalIcon {
-  font-size: 1.75rem;
-}
-
-.modalClose {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  border: none;
-  background: rgba(255, 255, 255, 0.1);
-  color: #cbd5e1;
-  font-size: 1.25rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modalClose:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #f1f5f9;
-}
-
-.modalBody {
-  padding: 2rem;
-}
-
-.formGroup {
-  margin-bottom: 1.5rem;
-}
-
-.formLabel {
-  display: block;
-  font-weight: 600;
-  color: #f1f5f9;
-  margin-bottom: 0.5rem;
-  font-size: 0.875rem;
-}
-
-.formInput {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  color: #f1f5f9;
-  font-size: 0.875rem;
-  transition: all 0.2s ease;
-  font-family: inherit;
-}
-
-.formInput:focus {
-  outline: none;
-  border-color: #667eea;
-  background: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-}
-
-.formInput::placeholder {
-  color: #94a3b8;
-}
-
-.formInput option {
-  background: #1e293b;
-  color: #f1f5f9;
-  padding: 0.5rem;
-}
-
-select.formInput {
-  background: rgba(255, 255, 255, 0.08);
-  color: #f1f5f9;
-}
-
-select.formInput option {
-  background: #1e293b;
-  color: #f1f5f9;
-}
-
-.modalFooter {
-  display: flex;
-  gap: 1rem;
-  padding: 1.5rem 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  justify-content: flex-end;
-}
-
-.btnCancel {
-  padding: 0.75rem 1.5rem;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
-  color: #cbd5e1;
-  font-weight: 600;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btnCancel:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #f1f5f9;
-}
-
-.btnSave {
-  padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: none;
-  border-radius: 10px;
-  color: white;
-  font-weight: 600;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-}
-
-.btnSave:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-}
-
-.btnSave:active {
-  transform: translateY(0);
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .headerActions {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .searchBox {
-    width: 100%;
-  }
-
-  .btnCreate {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .modalContent {
-    margin: 1rem;
-    max-height: calc(100vh - 2rem);
-  }
-}
-
-
-/* ========== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ ВАЛИДАЦИИ И ГЛАЗИКА ========== */
-
-/* Стили для инпута с глазком пароля */
-.passwordInputWrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.passwordInputWrapper .formInput {
-  padding-right: 3rem !important;
-  width: 100%;
-}
-
-.passwordToggle {
-  position: absolute;
-  right: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: #94a3b8;
-  cursor: pointer;
-  padding: 0.375rem;
-  border-radius: 6px;
-  transition: all 0.2s ease;
-  font-size: 1.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  line-height: 1;
-  min-width: 2rem;
-  min-height: 2rem;
-}
-
-.passwordToggle:hover {
-  color: #64748b;
-  background: rgba(148, 163, 184, 0.15);
-  transform: translateY(-50%) scale(1.05);
-}
-
-.passwordToggle:active {
-  transform: translateY(-50%) scale(0.95);
-}
-
-/* Стили для ошибок валидации */
-.inputError {
-  border-color: #ef4444 !important;
-  background: rgba(239, 68, 68, 0.05) !important;
-}
-
-.inputError:focus {
-  border-color: #ef4444 !important;
-  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15) !important;
-  background: rgba(239, 68, 68, 0.08) !important;
-}
-
-.errorText {
-  display: block;
-  color: #ef4444;
-  font-size: 0.75rem;
-  font-weight: 600;
-  margin-top: 0.375rem;
-  animation: errorSlideIn 0.2s ease-out;
-  padding-left: 0.25rem;
-}
-
-@keyframes errorSlideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Улучшенные стили модального окна для больших форм */
-.modalContent {
-  max-height: 90vh;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(148, 163, 184, 0.3) transparent;
-}
-
-.modalContent::-webkit-scrollbar {
-  width: 8px;
-}
-
-.modalContent::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.modalContent::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.3);
-  border-radius: 4px;
-}
-
-.modalContent::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.5);
-}
-
-/* Улучшенные формы с отступами */
-.modalBody .formGroup {
-  margin-bottom: 1.25rem;
-}
-
-.modalBody .formGroup:last-child {
-  margin-bottom: 0;
-}
-
-/* Адаптивность для мобильных */
-@media (max-width: 768px) {
-  .passwordToggle {
-    right: 0.5rem;
-    padding: 0.25rem;
-    font-size: 1.1rem;
-    min-width: 1.75rem;
-    min-height: 1.75rem;
-  }
-
-  .passwordInputWrapper .formInput {
-    padding-right: 2.5rem !important;
-  }
-
-  .errorText {
-    font-size: 0.7rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .passwordToggle {
-    font-size: 1rem;
-    min-width: 1.5rem;
-    min-height: 1.5rem;
-  }
-}
-
-/* Улучшенная анимация для уведомлений */
-.notification {
-  animation: notificationSlideIn 0.3s ease-out, notificationFadeOut 0.3s ease-out 3.7s forwards;
-}
-
-@keyframes notificationSlideIn {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes notificationFadeOut {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-
-  to {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-}
-
-/* Стили для выделения обязательных полей */
-.formLabel:has(+ .formInput[required])::after,
-.formLabel:has(+ .passwordInputWrapper .formInput[required])::after {
-  content: ' *';
-  color: #ef4444;
-  font-weight: 700;
-}
-
-/* Улучшенный фокус для select */
-.formInput[type="select"]:focus,
-select.formInput:focus {
-  outline: none;
-  border-color: #3b82f6;
-  background: rgba(255, 255, 255, 0.12);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-/* Стили для disabled кнопок */
-.btnSave:disabled,
-.btnCreate:disabled {
-  background: #9ca3af !important;
-  cursor: not-allowed !important;
-  opacity: 0.6;
-  transform: none !important;
-  box-shadow: none !important;
-}
-
-.btnSave:disabled:hover,
-.btnCreate:disabled:hover {
-  transform: none !important;
-  box-shadow: none !important;
-}
-
-/* Улучшенные placeholder для темной темы */
-@media (prefers-color-scheme: dark) {
-  .formInput::placeholder {
-    color: #64748b;
-  }
-
-  .passwordToggle {
-    color: #cbd5e1;
-  }
-
-  .passwordToggle:hover {
-    color: #f1f5f9;
-    background: rgba(203, 213, 225, 0.1);
-  }
-
-  .errorText {
-    color: #fca5a5;
-  }
-
-  .inputError {
-    border-color: #dc2626 !important;
-    background: rgba(220, 38, 38, 0.1) !important;
-  }
-
-  .inputError:focus {
-    border-color: #dc2626 !important;
-    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2) !important;
-  }
-}
-
-/* Стили для успешной валидации (опционально) */
-.inputSuccess {
-  border-color: #10b981 !important;
-  background: rgba(16, 185, 129, 0.05) !important;
-}
-
-.inputSuccess:focus {
-  border-color: #10b981 !important;
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
-}
-
-/* Плавная анимация для модальных окон */
-.modalOverlay {
-  animation: fadeIn 0.2s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
-}
-
-.modalContent {
-  animation: modalSlideUp 0.3s ease-out;
-}
-
-@keyframes modalSlideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Улучшение читаемости в формах */
-.formInput {
-  font-family: inherit;
-  line-height: 1.5;
-}
-
-.formInput:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  background: rgba(148, 163, 184, 0.1) !important;
-}
-
-/* Стили для подсказок при ошибках */
-.formGroup {
-  position: relative;
-}
-
-.errorText {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.errorText::before {
-  content: '⚠️';
-  font-size: 0.875rem;
-}
-
-/* Улучшенные стили для кнопок действий в таблице */
-.actionButtons {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.actionButtons button {
-  flex-shrink: 0;
-}
-
-/* Адаптивность таблиц для мобильных */
-@media (max-width: 768px) {
-  .actionButtons {
-    flex-direction: column;
-    gap: 0.25rem;
-  }
-
-  .actionButtons button {
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-/* Стили для loading состояния кнопок */
-.btnSave.loading,
-.btnCreate.loading {
-  position: relative;
-  color: transparent !important;
-  pointer-events: none;
-}
-
-.btnSave.loading::after,
-.btnCreate.loading::after {
-  content: '';
-  position: absolute;
-  width: 1rem;
-  height: 1rem;
-  top: 50%;
-  left: 50%;
-  margin-left: -0.5rem;
-  margin-top: -0.5rem;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: white;
-  border-radius: 50%;
-  animation: spin 0.6s linear infinite;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Стили для пустых состояний */
-.emptyState {
-  text-align: center;
-  padding: 3rem 1rem;
-  color: #94a3b8;
-}
-
-.emptyState svg {
-  width: 4rem;
-  height: 4rem;
-  margin-bottom: 1rem;
-  opacity: 0.5;
-}
-
-.emptyStateTitle {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #cbd5e1;
-  margin-bottom: 0.5rem;
-}
-
-.emptyStateText {
-  font-size: 0.875rem;
-  color: #94a3b8;
-}
-
-/* Accessibility improvements */
-.formInput:focus-visible,
+.formInput:focus,
 .passwordToggle:focus-visible,
 .btnSave:focus-visible,
 .btnCancel:focus-visible {
@@ -1711,20 +1131,11 @@ select.formInput:focus {
   outline-offset: 2px;
 }
 
-/* Анимация при успешном сохранении */
-@keyframes successPulse {
-
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
-  }
-
-  50% {
-    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
-  }
-}
-
-.btnSave.success {
-  background: linear-gradient(135deg, #10b981, #059669) !important;
-  animation: successPulse 0.6s ease-out;
+/* Плавные переходы */
+.card,
+.statCard,
+.tab,
+.filterBtn,
+.actionButtons button {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

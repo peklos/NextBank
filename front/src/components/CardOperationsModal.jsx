@@ -43,9 +43,7 @@ const CardOperationsModal = ({ isOpen, card, operationType, amount, onAmountChan
                         {config.title}
                     </h2>
                     <button className={styles.modalClose} onClick={onClose}>
-                        <svg viewBox="0 0 24 24" fill="none">
-                            <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" />
-                        </svg>
+                        X
                     </button>
                 </div>
 
