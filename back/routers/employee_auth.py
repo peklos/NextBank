@@ -9,6 +9,7 @@ from schemas.employee import EmployeeCreateSchema, EmployeeLoginSchema
 from sqlalchemy.orm import Session, joinedload
 from db import models, database
 from pydantic import BaseModel, Field
+from typing import Optional
 
 load_dotenv()
 
@@ -269,4 +270,87 @@ def change_employee_password(
     return {
         "message": "Пароль успешно изменен",
         "employee_id": current_employee.id
+    }
+
+
+class UpdateProfileSchema(BaseModel):
+    """Схема для обновления своего профиля"""
+    first_name: Optional[str] = Field(None, min_length=1, max_length=50)
+    last_name: Optional[str] = Field(None, min_length=1, max_length=50)
+    patronymic: Optional[str] = Field(None, max_length=50)
+    email: Optional[str] = Field(None)
+
+
+@router.patch('/update-profile', summary='Обновить свой профиль')
+def update_my_profile(
+    data: UpdateProfileSchema,
+    db: Session = Depends(database.get_db),
+    current_employee: models.Employee = Depends(get_current_employee)
+):
+    """
+    Обновить свой профиль (имя, фамилия, отчество, email)
+
+    ⚠️ ВАЖНО: Сотрудник может менять только свои личные данные,
+    но НЕ может менять роль, отделение или статус активности
+    """
+
+    # Обновляем имя
+    if data.first_name is not None:
+        current_employee.first_name = data.first_name
+
+    # Обновляем фамилию
+    if data.last_name is not None:
+        current_employee.last_name = data.last_name
+
+    # Обновляем отчество
+    if data.patronymic is not None:
+        current_employee.patronymic = data.patronymic
+
+    # Обновляем email (с проверкой уникальности)
+    if data.email is not None:
+        # Проверка уникальности email
+        existing = db.query(models.Employee).filter(
+            models.Employee.email == data.email,
+            models.Employee.id != current_employee.id
+        ).first()
+
+        if existing:
+            raise HTTPException(
+                status_code=400,
+                detail='Этот email уже используется другим сотрудником'
+            )
+
+        current_employee.email = data.email
+
+    db.commit()
+    db.refresh(current_employee)
+
+    # Загружаем связи для полного ответа
+    employee = (
+        db.query(models.Employee)
+        .options(
+            joinedload(models.Employee.role),
+            joinedload(models.Employee.branch)
+        )
+        .filter(models.Employee.id == current_employee.id)
+        .first()
+    )
+
+    return {
+        'id': employee.id,
+        'first_name': employee.first_name,
+        'last_name': employee.last_name,
+        'patronymic': employee.patronymic,
+        'email': employee.email,
+        'is_active': employee.is_active,
+        'created_at': employee.created_at,
+        'role': {
+            'id': employee.role.id,
+            'name': employee.role.name
+        } if employee.role else None,
+        'branch': {
+            'id': employee.branch.id,
+            'name': employee.branch.name,
+            'address': employee.branch.address
+        } if employee.branch else None
     }

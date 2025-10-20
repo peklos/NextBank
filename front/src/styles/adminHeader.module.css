@@ -970,3 +970,70 @@
   color: white;
   transform: translateY(-1px);
 }
+
+/* Стили для полей ввода пароля */
+.passwordInputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.passwordInputWrapper .formInput {
+  width: 100%;
+  padding-right: 3rem !important;
+  box-sizing: border-box;
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  z-index: 10;
+  flex-shrink: 0;
+}
+
+.passwordToggle:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #cbd5e1;
+}
+
+.passwordToggle:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+  .passwordToggle {
+    width: 32px;
+    height: 32px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .passwordInputWrapper .formInput {
+    padding-right: 2.75rem !important;
+  }
+
+  .passwordToggle {
+    width: 30px;
+    height: 30px;
+    font-size: 0.95rem;
+    right: 0.5rem;
+  }
+}

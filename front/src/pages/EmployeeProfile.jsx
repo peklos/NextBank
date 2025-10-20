@@ -107,7 +107,9 @@ const EmployeeProfile = () => {
         }
 
         try {
-            const res = await axios.patch(`/employees/${employee.id}`, {
+            // 🆕 ИСПРАВЛЕНО: Используем новый эндпоинт для обновления своего профиля
+            const { updateEmployeeProfile } = await import('../api/employee');
+            const res = await updateEmployeeProfile({
                 first_name: infoForm.first_name,
                 last_name: infoForm.last_name,
                 patronymic: infoForm.patronymic,
@@ -120,6 +122,8 @@ const EmployeeProfile = () => {
                     ...res.data
                 }));
                 showNotification('Профиль успешно обновлен', 'success');
+            } else {
+                showNotification(res.error, 'error');
             }
         } catch (err) {
             const error = err.response?.data?.detail || 'Не удалось обновить профиль';

@@ -50,3 +50,14 @@ export const changeEmployeePassword = async (currentPassword, newPassword) => {
         return { data: null, error: detail };
     }
 };
+
+// 🆕 Обновить свой профиль
+export const updateEmployeeProfile = async (profileData) => {
+    try {
+        const res = await axios.patch('/admin/auth/update-profile', profileData);
+        return { data: res.data, error: null };
+    } catch (err) {
+        const detail = err.response?.data?.detail || 'Не удалось обновить профиль';
+        return { data: null, error: detail };
+    }
+};

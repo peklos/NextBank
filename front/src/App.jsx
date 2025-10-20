@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+// front/src/App.jsx
+import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -20,6 +21,7 @@ import EmployeeProfile from './pages/EmployeeProfile';
 import PrivateLayout from './components/PrivateLayout';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
+import LoadingScreen from './components/LoadingScreen';
 
 // Админские компоненты из adm_db_components
 import { AdminProtectedRoute, AdminPublicRoute } from './adm_db_components';
@@ -32,18 +34,38 @@ function App() {
   const dispatch = useDispatch();
   const clientToken = useSelector(state => state.auth.access_token);
   const employeeToken = useSelector(state => state.employee.access_token);
+  const [isInitializing, setIsInitializing] = useState(true);
 
   useEffect(() => {
-    // Автологин для клиента
-    if (localStorage.getItem('access_token') && !clientToken) {
-      autoLogin(dispatch);
-    }
+    const initializeAuth = async () => {
+      const promises = [];
 
-    // Автологин для сотрудника
-    if (localStorage.getItem('employee_token') && !employeeToken) {
-      autoLoginEmployee(dispatch);
-    }
+      // Автологин для клиента
+      if (localStorage.getItem('access_token') && !clientToken) {
+        promises.push(autoLogin(dispatch));
+      }
+
+      // Автологин для сотрудника
+      if (localStorage.getItem('employee_token') && !employeeToken) {
+        promises.push(autoLoginEmployee(dispatch));
+      }
+
+      // Ждем завершения всех автологинов
+      await Promise.all(promises);
+
+      // Минимальная задержка для плавности (опционально)
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      setIsInitializing(false);
+    };
+
+    initializeAuth();
   }, [dispatch, clientToken, employeeToken]);
+
+  // Показываем LoadingScreen во время инициализации
+  if (isInitializing) {
+    return <LoadingScreen />;
+  }
 
   return (
     <BrowserRouter>

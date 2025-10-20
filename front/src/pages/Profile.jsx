@@ -4,6 +4,7 @@ import PersonalInfoSection from '../components/PersonalInfoSection';
 import AccountsSection from '../components/AccountsSection';
 import QuickActionsSection from '../components/QuickActionsSection';
 import LogoutSection from '../components/LogoutSection';
+import EditNameModal from '../components/EditNameModal';
 import PersonalInfoModal from '../components/PersonalInfoModal';
 import ChangePasswordModal from '../components/ChangePasswordModal';
 import ChangeEmailModal from '../components/ChangeEmailModal';
@@ -37,6 +38,13 @@ const Profile = () => {
         setSuccess
     } = useProfileModals();
 
+    const handleEditName = () => {
+        updateForm('name', 'firstName', userData.firstName);
+        updateForm('name', 'lastName', userData.lastName);
+        updateForm('name', 'patronymic', userData.patronymic);
+        openModal('editName');
+    };
+
     return (
         <div className={styles.profileContainer}>
             <div className={styles.background}>
@@ -57,7 +65,7 @@ const Profile = () => {
                         <div className={styles.leftColumn}>
                             <PersonalInfoSection
                                 userData={userData}
-                                onEditPersonalInfo={() => openModal('personalInfo')}
+                                onEditName={handleEditName}
                             />
 
                             <AccountsSection
@@ -82,7 +90,18 @@ const Profile = () => {
                 </main>
             </div>
 
-            {/* Модальные окна */}
+            <EditNameModal
+                isOpen={modals.editName}
+                onClose={() => closeModal('editName')}
+                userData={userData}
+                forms={forms}
+                error={error}
+                success={success}
+                onUpdateForm={updateForm}
+                onSetError={setError}
+                onSetSuccess={setSuccess}
+            />
+
             <PersonalInfoModal
                 isOpen={modals.personalInfo}
                 onClose={() => closeModal('personalInfo')}

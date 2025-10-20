@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 export const useProfileModals = () => {
     const [modals, setModals] = useState({
+        editName: false,
         personalInfo: false,
         changePassword: false,
         changeEmail: false,
@@ -10,6 +11,11 @@ export const useProfileModals = () => {
     });
 
     const [forms, setForms] = useState({
+        name: {
+            firstName: '',
+            lastName: '',
+            patronymic: ''
+        },
         personalInfo: {
             passport_number: '',
             address: '',
@@ -46,27 +52,51 @@ export const useProfileModals = () => {
         setSuccess('');
 
         // Сброс формы при закрытии
-        setForms(prev => ({
-            ...prev,
-            [modalName === 'personalInfo' ? 'personalInfo' :
-                modalName === 'changePassword' ? 'password' :
-                    modalName === 'changeEmail' ? 'email' : 'phone']:
-                modalName === 'personalInfo' ? {
+        if (modalName === 'editName') {
+            setForms(prev => ({
+                ...prev,
+                name: {
+                    firstName: '',
+                    lastName: '',
+                    patronymic: ''
+                }
+            }));
+        } else if (modalName === 'personalInfo') {
+            setForms(prev => ({
+                ...prev,
+                personalInfo: {
                     passport_number: '',
                     address: '',
                     birth_date: '',
                     employment_status: ''
-                } : {
-                    ...(modalName === 'changePassword' ? {
-                        currentPassword: '',
-                        newPassword: '',
-                        confirmPassword: ''
-                    } : {
-                        newEmail: '',
-                        password: ''
-                    })
                 }
-        }));
+            }));
+        } else if (modalName === 'changePassword') {
+            setForms(prev => ({
+                ...prev,
+                password: {
+                    currentPassword: '',
+                    newPassword: '',
+                    confirmPassword: ''
+                }
+            }));
+        } else if (modalName === 'changeEmail') {
+            setForms(prev => ({
+                ...prev,
+                email: {
+                    newEmail: '',
+                    password: ''
+                }
+            }));
+        } else if (modalName === 'changePhone') {
+            setForms(prev => ({
+                ...prev,
+                phone: {
+                    newPhone: '',
+                    password: ''
+                }
+            }));
+        }
     };
 
     const updateForm = (formName, field, value) => {

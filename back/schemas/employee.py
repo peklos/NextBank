@@ -67,3 +67,10 @@ class EmployeeResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class UpdateProfileSchema(BaseModel):
+    """Схема для обновления своего профиля"""
+    first_name: Optional[str] = Field(None, min_length=1, max_length=50)
+    last_name: Optional[str] = Field(None, min_length=1, max_length=50)
+    patronymic: Optional[str] = Field(None, max_length=50)
+    email: Optional[str] = Field(None)
