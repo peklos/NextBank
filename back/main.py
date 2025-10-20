@@ -77,5 +77,6 @@ def root():
 
 
 # uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-# http://http://172.18.0.1:8000/docs
+# http://172.18.0.1:8000/docs
+# http://192.168.1.135:8000/docs
 # psycopg2-binary
