@@ -1322,3 +1322,380 @@
         justify-content: center;
     }
 }
+
+/* Добавьте эти стили в конец вашего profile.module.css файла */
+
+/* Информация о текущих данных */
+.currentInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.currentLabel {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.currentValue {
+    color: #f1f5f9;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+/* Контейнеры для сообщений */
+.errorContainer {
+    padding: 1rem;
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 12px;
+    margin-top: 1rem;
+}
+
+.errorMessage {
+    color: #fca5a5;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.errorMessage::before {
+    content: '⚠️';
+    font-size: 1rem;
+}
+
+.successContainer {
+    padding: 1rem;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 12px;
+    margin-top: 1rem;
+}
+
+.successMessage {
+    color: #6ee7b7;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.successMessage::before {
+    content: '✅';
+    font-size: 1rem;
+}
+
+/* Стили для форм */
+.formTextarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #f1f5f9;
+    font-size: 0.9rem;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+    transition: all 0.3s ease;
+}
+
+.formTextarea:focus {
+    outline: none;
+    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.formTextarea::placeholder {
+    color: #94a3b8;
+}
+
+.customSelect {
+    position: relative;
+}
+
+.formSelect {
+    width: 100%;
+    padding: 0.75rem 2.5rem 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #f1f5f9;
+    font-size: 0.9rem;
+    cursor: pointer;
+    appearance: none;
+    transition: all 0.3s ease;
+}
+
+.formSelect:focus {
+    outline: none;
+    border-color: rgba(59, 130, 246, 0.4);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.formSelectError {
+    border-color: rgba(239, 68, 68, 0.4);
+}
+
+.selectArrow {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #94a3b8;
+}
+
+.selectArrow svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Улучшения для модальных окон */
+.modalOverlay {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modalContent {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Адаптация для мобильных устройств */
+@media (max-width: 768px) {
+    .currentInfo {
+        padding: 0.75rem;
+    }
+
+    .currentLabel {
+        font-size: 0.8rem;
+    }
+
+    .currentValue {
+        font-size: 0.9rem;
+    }
+
+    .errorContainer,
+    .successContainer {
+        padding: 0.75rem;
+    }
+
+    .errorMessage,
+    .successMessage {
+        font-size: 0.85rem;
+    }
+
+    .formTextarea {
+        min-height: 70px;
+    }
+}
+
+@media (max-width: 480px) {
+    .currentInfo {
+        padding: 0.6rem;
+        margin-bottom: 1rem;
+    }
+
+    .errorContainer,
+    .successContainer {
+        padding: 0.6rem;
+        margin-top: 0.75rem;
+    }
+
+    .errorMessage::before,
+    .successMessage::before {
+        font-size: 0.9rem;
+    }
+}
+
+/* Дополнительные стили для улучшения UX */
+.formInput:disabled,
+.formTextarea:disabled,
+.formSelect:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.saveButton:disabled,
+.cancelButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Анимация для кнопок */
+.saveButton:active:not(:disabled),
+.cancelButton:active:not(:disabled) {
+    transform: scale(0.98);
+}
+
+/* Подсказки для полей ввода */
+.formGroup {
+    position: relative;
+}
+
+.formLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Стили для подсказок */
+.tooltip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    cursor: help;
+}
+
+.tooltipIcon {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.tooltipText {
+    visibility: hidden;
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(30, 41, 59, 0.95);
+    color: #f1f5f9;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tooltip:hover .tooltipText {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Прогресс-бар для надежности пароля */
+.passwordStrength {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.strengthBar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.strengthFill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.strengthLabel {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+/* Цвета для индикатора надежности */
+.strengthWeak {
+    background: #ef4444;
+}
+
+.strengthMedium {
+    background: #f59e0b;
+}
+
+.strengthStrong {
+    background: #10b981;
+}
+
+/* Индикатор загрузки */
+.loading {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Стили для фокуса (доступность) */
+.formInput:focus-visible,
+.formTextarea:focus-visible,
+.formSelect:focus-visible {
+    outline: 2px solid rgba(59, 130, 246, 0.6);
+    outline-offset: 2px;
+}
+
+.saveButton:focus-visible,
+.cancelButton:focus-visible,
+.actionButton:focus-visible {
+    outline: 2px solid rgba(59, 130, 246, 0.6);
+    outline-offset: 2px;
+}
+
+/* Плавные переходы */
+* {
+    transition: background-color 0.3s ease,
+        border-color 0.3s ease,
+        color 0.3s ease,
+        transform 0.3s ease,
+        opacity 0.3s ease;
+}
