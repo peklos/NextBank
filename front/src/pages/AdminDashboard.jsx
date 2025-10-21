@@ -145,9 +145,11 @@ const AdminDashboard = () => {
       requests.push(getAllProcesses());
     }
 
-    if (currentPermissions.canViewStats) {
+    // ✅ ИСПРАВЛЕНИЕ: Статистика сотрудников только для SuperAdmin
+    if (employee.role?.name === "SuperAdmin") {
       requests.push(getEmployeesStats(), getClientsStats(), getProcessesStats());
     } else if (currentPermissions.canViewOverview) {
+      // Для остальных ролей загружаем только статистику клиентов и процессов
       requests.push(getClientsStats(), getProcessesStats());
     }
 
@@ -174,7 +176,8 @@ const AdminDashboard = () => {
       resultIndex++;
     }
 
-    if (currentPermissions.canViewStats) {
+    // ✅ ИСПРАВЛЕНИЕ: Обработка статистики в зависимости от роли
+    if (employee.role?.name === "SuperAdmin") {
       const employeesStatsRes = results[resultIndex];
       resultIndex++;
       const clientsStatsRes = results[resultIndex];
@@ -198,7 +201,13 @@ const AdminDashboard = () => {
       if (clientsStatsRes?.data && processesStatsRes?.data) {
         dispatch(
           setStats({
-            employees: { active_employees: 0, total_employees: 0, inactive_employees: 0 },
+            employees: {
+              active_employees: 0,
+              total_employees: 0,
+              inactive_employees: 0,
+              by_role: {},
+              by_branch: {}
+            },
             clients: clientsStatsRes.data,
             processes: processesStatsRes.data,
           })

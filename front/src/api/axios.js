@@ -1,3 +1,4 @@
+// front/src/api/axios.js
 import axios from "axios";
 import { store } from "../app/store";
 import { fullLogout } from "../features/auth/logoutThunk";
@@ -9,6 +10,10 @@ const api = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+// Флаги для предотвращения множественных редиректов
+let isClientLogoutInProgress = false;
+let isEmployeeLogoutInProgress = false;
 
 // Interceptor для запросов - добавляет токен
 api.interceptors.request.use(
@@ -41,39 +46,55 @@ api.interceptors.request.use(
 // Interceptor для ответов - обрабатывает 401 ошибки
 api.interceptors.response.use(
   (response) => {
-    // Если ответ успешный, просто возвращаем его
     return response;
   },
   (error) => {
     // Проверяем статус ошибки
     if (error.response && error.response.status === 401) {
-      console.log("❌ 401 Unauthorized - выполняется логаут");
-
-      // Определяем, какой тип пользователя - клиент или сотрудник
       const url = error.config?.url || "";
 
-      if (
+      console.log("❌ 401 Unauthorized обнаружен для:", url);
+
+      // Определяем тип запроса - админский или клиентский
+      const isAdminRequest =
         url.startsWith("/admin") ||
         url.startsWith("/employees") ||
         url.startsWith("/roles") ||
-        url.startsWith("/branches")
-      ) {
-        // Логаут сотрудника
-        store.dispatch(logoutEmployee());
-        localStorage.removeItem("employee_token");
+        url.startsWith("/branches");
 
-        // Перенаправляем на страницу входа для сотрудников
-        if (window.location.pathname !== "/admin/login") {
-          window.location.href = "/admin/login";
+      if (isAdminRequest) {
+        // Логаут сотрудника
+        if (!isEmployeeLogoutInProgress) {
+          isEmployeeLogoutInProgress = true;
+          console.log("🔓 Выполняется логаут сотрудника из-за 401");
+
+          store.dispatch(logoutEmployee());
+          localStorage.removeItem("employee_token");
+
+          // Перенаправляем на страницу входа для сотрудников
+          setTimeout(() => {
+            if (window.location.pathname !== "/admin/login") {
+              window.location.href = "/admin/login";
+            }
+            isEmployeeLogoutInProgress = false;
+          }, 100);
         }
       } else {
         // Логаут клиента
-        store.dispatch(fullLogout());
-        localStorage.removeItem("access_token");
+        if (!isClientLogoutInProgress) {
+          isClientLogoutInProgress = true;
+          console.log("🔓 Выполняется логаут клиента из-за 401");
 
-        // Перенаправляем на страницу входа
-        if (window.location.pathname !== "/login") {
-          window.location.href = "/login";
+          store.dispatch(fullLogout());
+          localStorage.removeItem("access_token");
+
+          // Перенаправляем на страницу входа
+          setTimeout(() => {
+            if (window.location.pathname !== "/login") {
+              window.location.href = "/login";
+            }
+            isClientLogoutInProgress = false;
+          }, 100);
         }
       }
     }

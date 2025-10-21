@@ -1,7 +1,7 @@
 // front/src/App.jsx
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 // Клиентские страницы
 import Login from './pages/Login';
@@ -32,8 +32,6 @@ import { autoLoginEmployee } from './services/employeeAuthService';
 
 function App() {
   const dispatch = useDispatch();
-  const clientToken = useSelector(state => state.auth.access_token);
-  const employeeToken = useSelector(state => state.employee.access_token);
   const [isInitializing, setIsInitializing] = useState(true);
 
   useEffect(() => {
@@ -52,6 +50,10 @@ function App() {
             } else {
               console.log("❌ Невалидный токен клиента");
             }
+            return success;
+          }).catch(err => {
+            console.error("❌ Критическая ошибка автологина клиента:", err);
+            return false;
           })
         );
       }
@@ -66,22 +68,26 @@ function App() {
             } else {
               console.log("❌ Невалидный токен сотрудника");
             }
+            return success;
+          }).catch(err => {
+            console.error("❌ Критическая ошибка автологина сотрудника:", err);
+            return false;
           })
         );
       }
 
       // Ждем завершения всех автологинов
-      await Promise.all(promises);
+      await Promise.allSettled(promises);
 
       // Минимальная задержка для плавности (опционально)
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       console.log("✅ Инициализация завершена");
       setIsInitializing(false);
     };
 
     initializeAuth();
-  }, [dispatch]); // Убрал clientToken и employeeToken из зависимостей
+  }, [dispatch]);
 
   // Показываем LoadingScreen во время инициализации
   if (isInitializing) {

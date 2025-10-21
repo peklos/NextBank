@@ -17,7 +17,6 @@ import { fullLogout } from "../features/auth/logoutThunk";
 // Функция для загрузки всех данных пользователя
 const loadUserData = async (dispatch, userId) => {
     try {
-        // Параллельно загружаем все данные
         const [accRes, cardsRes, loansRes, processesRes, transactionsRes] = await Promise.all([
             fetchMyAccounts(),
             getClientCards(),
@@ -26,14 +25,14 @@ const loadUserData = async (dispatch, userId) => {
             getMyTransactions()
         ]);
 
-        // Обновляем состояние Redux
         if (accRes.data) dispatch(setAccounts(accRes.data));
         if (cardsRes.data) dispatch(setCards(cardsRes.data));
         if (loansRes.data) dispatch(setLoans(loansRes.data));
         if (processesRes.data) dispatch(setProcesses(processesRes.data));
         if (transactionsRes.data) dispatch(setTransactions(transactionsRes.data));
     } catch (error) {
-        console.error('Ошибка загрузки данных пользователя:', error);
+        console.error('❌ Ошибка загрузки данных пользователя:', error);
+        // Не пробрасываем ошибку дальше, чтобы не ломать автологин
     }
 };
 
@@ -41,7 +40,6 @@ const loadUserData = async (dispatch, userId) => {
 export const handleLogin = async (dispatch, email, password) => {
     const res = await loginClient(email, password);
     if (res.data) {
-        // Сначала сохраняем основные данные пользователя
         dispatch(setUser({
             id: res.data.client_id,
             access_token: res.data.access_token,
@@ -121,17 +119,17 @@ export const autoLogin = async (dispatch) => {
     const token = localStorage.getItem("access_token");
 
     if (!token) {
-        console.log("❌ Токен не найден - выполняется разлогин");
-        dispatch(fullLogout());
-        return false; // ❌ Токен не найден
+        console.log("ℹ️ Токен клиента не найден");
+        return false;
     }
 
     try {
-        console.log("🔍 Проверка токена...");
+        console.log("🔍 Проверка токена клиента...");
         const res = await getMe();
 
         if (res.data) {
-            console.log("✅ Токен валидный - автологин успешен");
+            console.log("✅ Токен клиента валидный - автологин успешен");
+
             dispatch(setUser({
                 access_token: token,
                 ...res.data
@@ -146,17 +144,27 @@ export const autoLogin = async (dispatch) => {
                 }));
             }
 
-            // Загружаем остальные данные параллельно
-            await loadUserData(dispatch, res.data.id);
+            // Загружаем остальные данные параллельно (НЕ блокируем UI)
+            loadUserData(dispatch, res.data.id).catch(err => {
+                console.error('⚠️ Не удалось загрузить дополнительные данные:', err);
+            });
+
             return true; // ✅ Успешный автологин
         } else {
-            console.log("❌ Невалидный токен - выполняется разлогин");
+            console.log("❌ Невалидный ответ от /auth/me");
             dispatch(fullLogout());
-            return false; // ❌ Невалидный токен
+            return false;
         }
     } catch (error) {
-        console.error('❌ Ошибка автологина:', error);
+        // Если ошибка 401 - axios interceptor уже обработал логаут
+        if (error.response?.status === 401) {
+            console.log("⚠️ 401 при автологине - интерцептор обработал");
+            return false;
+        }
+
+        // Для других ошибок делаем логаут вручную
+        console.error('❌ Ошибка автологина клиента:', error.message);
         dispatch(fullLogout());
-        return false; // ❌ Ошибка автологина
+        return false;
     }
 };

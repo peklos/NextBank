@@ -36,7 +36,8 @@ const loadAdminData = async (dispatch) => {
     if (clientsRes.data) dispatch(setClients(clientsRes.data));
     if (processesRes.data) dispatch(setProcesses(processesRes.data));
   } catch (error) {
-    console.error('Ошибка загрузки данных админ-панели:', error);
+    console.error('❌ Ошибка загрузки данных админ-панели:', error);
+    // Не пробрасываем ошибку дальше
   }
 };
 
@@ -45,17 +46,17 @@ export const autoLoginEmployee = async (dispatch) => {
   const token = localStorage.getItem("employee_token");
 
   if (!token) {
-    console.log("❌ Employee токен не найден - выполняется разлогин");
-    dispatch(logoutEmployee());
-    return false; // ❌ Токен не найден
+    console.log("ℹ️ Токен сотрудника не найден");
+    return false;
   }
 
   try {
-    console.log("🔍 Проверка employee токена...");
+    console.log("🔍 Проверка токена сотрудника...");
     const res = await getEmployeeMe();
 
     if (res.data) {
-      console.log("✅ Employee токен валидный - автологин успешен");
+      console.log("✅ Токен сотрудника валидный - автологин успешен");
+
       dispatch(
         setEmployee({
           access_token: token,
@@ -63,21 +64,30 @@ export const autoLoginEmployee = async (dispatch) => {
         })
       );
 
-      // Загружаем данные для админ-панели параллельно
-      await loadAdminData(dispatch);
+      // Загружаем данные для админ-панели параллельно (НЕ блокируем UI)
+      loadAdminData(dispatch).catch(err => {
+        console.error('⚠️ Не удалось загрузить данные админ-панели:', err);
+      });
 
       return true; // ✅ Успешный автологин
     } else {
-      console.log("❌ Невалидный employee токен - выполняется разлогин");
+      console.log("❌ Невалидный ответ от /admin/auth/me");
       dispatch(logoutEmployee());
       localStorage.removeItem("employee_token");
-      return false; // ❌ Невалидный токен
+      return false;
     }
   } catch (error) {
-    console.error('❌ Ошибка автологина сотрудника:', error);
+    // Если ошибка 401 - axios interceptor уже обработал логаут
+    if (error.response?.status === 401) {
+      console.log("⚠️ 401 при автологине сотрудника - интерцептор обработал");
+      return false;
+    }
+
+    // Для других ошибок делаем логаут вручную
+    console.error('❌ Ошибка автологина сотрудника:', error.message);
     dispatch(logoutEmployee());
     localStorage.removeItem("employee_token");
-    return false; // ❌ Ошибка автологина
+    return false;
   }
 };
 
