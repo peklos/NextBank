@@ -1,6 +1,7 @@
 from pydantic import BaseModel, EmailStr, field_validator, Field
 from datetime import datetime
 from typing import Optional
+from utils.validators import validate_strong_password
 
 
 class ClientCreateSchema(BaseModel):
@@ -14,16 +15,16 @@ class ClientCreateSchema(BaseModel):
     @field_validator('password')
     @classmethod
     def validate_password(cls, v: str) -> str:
-        if len(v) < 6:
-            raise ValueError('Пароль должен быть не менее 6 символов')
-        if not any(char.isdigit() for char in v):
-            raise ValueError('Пароль должен содержать хотя бы одну цифру')
+        # ✅ Используем усиленную валидацию
+        is_valid, message = validate_strong_password(v)
+        if not is_valid:
+            raise ValueError(message)
         return v
 
     @field_validator('first_name', 'last_name', 'patronymic')
     @classmethod
     def validate_name(cls, v: str) -> str:
-        if v is not None and not v.replace(' ', '').isalpha():
+        if v is not None and not v.replace(' ', '').replace('-', '').isalpha():
             raise ValueError(
                 'Имя, фамилия и отчество должны содержать только буквы')
         return v
@@ -45,5 +46,6 @@ class ClientResponseSchema(BaseModel):
 
 
 class ClientLoginSchema(BaseModel):
+    """✅ Схема для логина клиента"""
     email: EmailStr
     password: str

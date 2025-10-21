@@ -1,18 +1,17 @@
-/* Базовые стили - убираем скролл */
-.registerContainer {
+/* Контейнер */
+.container {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  padding: 1rem;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-  height: 100vh;
 }
 
 /* Анимированный фон */
-.registerBackground {
+.background {
   position: absolute;
   top: 0;
   left: 0;
@@ -21,17 +20,17 @@
   z-index: 0;
 }
 
-.gradientBlob {
+.blob {
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
-  opacity: 0.1;
+  opacity: 0.15;
   animation: float 15s ease-in-out infinite;
 }
 
 .blob1 {
-  width: 600px;
-  height: 600px;
+  width: 500px;
+  height: 500px;
   background: linear-gradient(45deg, #3b82f6, #06b6d4);
   top: 10%;
   left: 10%;
@@ -39,8 +38,8 @@
 }
 
 .blob2 {
-  width: 500px;
-  height: 500px;
+  width: 450px;
+  height: 450px;
   background: linear-gradient(45deg, #6366f1, #8b5cf6);
   top: 60%;
   right: 10%;
@@ -48,8 +47,8 @@
 }
 
 .blob3 {
-  width: 550px;
-  height: 550px;
+  width: 480px;
+  height: 480px;
   background: linear-gradient(45deg, #06b6d4, #10b981);
   bottom: 10%;
   left: 20%;
@@ -72,296 +71,261 @@
   }
 }
 
-/* Карточка регистрации - шире для ФИО */
-.registerCard {
-  background: rgba(255, 255, 255, 0.95);
+/* Карточка */
+.card {
+  background: rgba(30, 41, 59, 0.95);
   backdrop-filter: blur(30px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(148, 163, 184, 0.2);
   border-radius: 24px;
-  padding: 2.5rem 3rem;
-  box-shadow:
-    0 40px 80px -20px rgba(0, 0, 0, 0.25),
-    0 0 0 1px rgba(255, 255, 255, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  padding: 2rem;
   width: 100%;
-  max-width: 580px;
+  max-width: 480px;
+  box-shadow:
+    0 40px 80px -20px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(148, 163, 184, 0.1),
+    inset 0 1px 0 rgba(148, 163, 184, 0.1);
   position: relative;
   z-index: 10;
   transition: all 0.4s ease;
-  margin: 2rem;
 }
 
-.registerCard:hover {
+.card:hover {
   box-shadow:
-    0 50px 100px -25px rgba(0, 0, 0, 0.35),
-    0 0 0 1px rgba(255, 255, 255, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    0 50px 100px -25px rgba(0, 0, 0, 0.6),
+    0 0 0 1px rgba(148, 163, 184, 0.2),
+    inset 0 1px 0 rgba(148, 163, 184, 0.15);
 }
 
 /* Заголовок */
-.textCenter {
+.header {
   text-align: center;
   margin-bottom: 1.5rem;
 }
 
-.bankLogo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  margin-bottom: 0.5rem;
-}
-
-.logoIcon {
-  width: 48px;
-  height: 48px;
+.logo {
+  width: 60px;
+  height: 60px;
   background: linear-gradient(135deg, #3b82f6, #2563eb);
-  border-radius: 12px;
+  border-radius: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 auto 0.75rem;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
   color: white;
-  padding: 0.5rem;
-  box-shadow: 0 8px 20px -4px rgba(59, 130, 246, 0.4);
 }
 
-.bankName {
-  font-size: 2.5rem;
+.logo svg {
+  width: 32px;
+  height: 32px;
+}
+
+.title {
+  font-size: 2rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #1e40af, #3b82f6);
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  margin: 0 0 0.25rem 0;
   letter-spacing: -0.025em;
+}
+
+.subtitle {
+  color: #94a3b8;
+  font-size: 0.875rem;
   margin: 0;
-}
-
-.registerSubtitle {
-  color: #1e293b;
-  font-size: 1.375rem;
-  font-weight: 600;
-  margin-bottom: 0.25rem;
-  margin: 0;
-}
-
-/* Форма - компактные поля */
-.registerForm {
-  margin-top: 2rem;
-}
-
-.formGroup {
-  margin-bottom: 1.25rem;
-}
-
-.mb4 {
-  margin-bottom: 1rem;
-}
-
-.formLabel {
-  display: block;
-  margin-bottom: 0.5rem;
-  color: #374151;
-  font-weight: 600;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.inputContainer {
-  position: relative;
-}
-
-.formInput {
-  width: 100%;
-  padding: 0.875rem 0.875rem 0.875rem 2.75rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 12px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  background: white;
-  color: #1f2937;
   font-weight: 500;
-  height: 48px;
+}
+
+/* Форма */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #334155;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  transition: all 0.3s;
   box-sizing: border-box;
+  background: #1e293b;
+  color: #f1f5f9;
+  font-weight: 500;
 }
 
-.formInput:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow:
-    0 0 0 3px rgba(59, 130, 246, 0.15),
-    0 2px 8px rgba(59, 130, 246, 0.1);
-  transform: translateY(-1px);
-}
-
-.formInput::placeholder {
-  color: #9ca3af;
+.input::placeholder {
+  color: #64748b;
   font-weight: 400;
 }
 
-.inputIcon {
+.input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  transform: translateY(-1px);
+}
+
+.inputError {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #ef4444;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  transition: all 0.3s;
+  box-sizing: border-box;
+  background: #1e293b;
+  color: #f1f5f9;
+  font-weight: 500;
+}
+
+.inputError::placeholder {
+  color: #64748b;
+  font-weight: 400;
+}
+
+.inputError:focus {
+  outline: none;
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
+.error {
+  color: #fca5a5;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+/* Пароль с глазиком */
+.passwordWrapper {
+  position: relative;
+}
+
+.passwordWrapper .input,
+.passwordWrapper .inputError {
+  padding-right: 2.75rem;
+}
+
+.eyeButton {
   position: absolute;
-  left: 0.875rem;
+  right: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
   color: #64748b;
+  transition: all 0.3s;
+  border-radius: 6px;
+}
+
+.eyeButton svg {
   width: 1.25rem;
   height: 1.25rem;
 }
 
-/* Строка с ФИО */
-.nameRow {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-}
-
-.nameGroup {
-  display: flex;
-  flex-direction: column;
-}
-
-.nameGroup .formLabel {
-  font-size: 0.8rem;
-  margin-bottom: 0.4rem;
-}
-
-.nameGroup .formInput {
-  height: 46px;
-  padding: 0.75rem 0.75rem 0.75rem 2.5rem;
-  font-size: 0.95rem;
-}
-
-.nameGroup .inputIcon {
-  left: 0.75rem;
-  width: 1.1rem;
-  height: 1.1rem;
-}
-
-/* Строка с паролями */
-.passwordRow {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-}
-
-.passwordGroup {
-  display: flex;
-  flex-direction: column;
-}
-
-.passwordGroup .formLabel {
-  font-size: 0.8rem;
-  margin-bottom: 0.4rem;
-}
-
-.passwordGroup .formInput {
-  height: 46px;
-  padding: 0.75rem 0.75rem 0.75rem 2.5rem;
-  font-size: 0.95rem;
-}
-
-.passwordGroup .inputIcon {
-  left: 0.75rem;
-  width: 1.1rem;
-  height: 1.1rem;
+.eyeButton:hover {
+  color: #94a3b8;
+  background: rgba(148, 163, 184, 0.1);
 }
 
 /* Чекбокс */
-.checkboxLabel {
+.checkbox {
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
   cursor: pointer;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin: 0.25rem 0;
   line-height: 1.4;
 }
 
-.checkboxInput {
+.checkbox input[type="checkbox"] {
   display: none;
 }
 
 .checkboxCustom {
   width: 1.25rem;
   height: 1.25rem;
-  border: 2px solid #d1d5db;
-  border-radius: 5px;
+  border: 2px solid #334155;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
   position: relative;
   flex-shrink: 0;
-  margin-top: 0.1rem;
+  margin-top: 0.125rem;
 }
 
-.checkboxInput:checked+.checkboxCustom {
+.checkbox input[type="checkbox"]:checked+.checkboxCustom {
   background: #3b82f6;
   border-color: #3b82f6;
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
-.checkboxInput:checked+.checkboxCustom::after {
+.checkbox input[type="checkbox"]:checked+.checkboxCustom::after {
   content: '✓';
   color: white;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   font-weight: bold;
 }
 
-.checkboxText {
-  color: #374151;
-  font-size: 0.85rem;
-  font-weight: 500;
-  line-height: 1.3;
-}
-
-.termsLink {
+.checkbox a {
   color: #3b82f6;
-  font-weight: 600;
   text-decoration: none;
-  transition: color 0.3s ease;
+  font-weight: 600;
 }
 
-.termsLink:hover {
-  color: #2563eb;
+.checkbox a:hover {
+  color: #60a5fa;
   text-decoration: underline;
 }
 
-/* Кнопка регистрации */
-.registerButton {
+/* Кнопка */
+.button {
   width: 100%;
+  padding: 0.875rem 1.5rem;
   background: linear-gradient(135deg, #3b82f6, #2563eb);
   color: white;
   border: none;
-  padding: 1rem 2rem;
   border-radius: 12px;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+  margin-top: 0.25rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  gap: 0.5rem;
   position: relative;
   overflow: hidden;
-  height: 52px;
-  box-sizing: border-box;
 }
 
-.registerButton:disabled {
-  background: #9ca3af;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-
-.registerButton:disabled::before {
-  display: none;
-}
-
-.registerButton::before {
+.button::before {
   content: '';
   position: absolute;
   top: 0;
@@ -372,14 +336,20 @@
   transition: left 0.5s;
 }
 
-.registerButton:hover:not(:disabled)::before {
+.button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(59, 130, 246, 0.4);
+}
+
+.button:hover:not(:disabled)::before {
   left: 100%;
 }
 
-.registerButton:hover:not(:disabled) {
-  box-shadow:
-    0 12px 25px -8px rgba(59, 130, 246, 0.5),
-    0 4px 15px rgba(59, 130, 246, 0.3);
+.button:disabled {
+  background: #475569;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
 .buttonIcon {
@@ -387,28 +357,52 @@
   height: 1.25rem;
 }
 
+/* Ошибка отправки */
+.submitError {
+  padding: 0.875rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 12px;
+  color: #fca5a5;
+  font-size: 0.875rem;
+  text-align: center;
+  animation: slideIn 0.3s ease-out;
+  font-weight: 500;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Футер */
-.registerFooter {
-  margin-top: 2rem;
+.footer {
+  margin-top: 1.5rem;
   text-align: center;
 }
 
-.footerText {
+.footer p {
   color: #64748b;
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   margin-bottom: 1rem;
   font-weight: 500;
 }
 
-.footerLink {
+.footer a {
   color: #3b82f6;
-  font-weight: 600;
   text-decoration: none;
-  transition: color 0.3s ease;
+  font-weight: 600;
 }
 
-.footerLink:hover {
-  color: #2563eb;
+.footer a:hover {
+  color: #60a5fa;
   text-decoration: underline;
 }
 
@@ -426,363 +420,48 @@
   border: 1px solid rgba(16, 185, 129, 0.2);
 }
 
-.securityIcon {
-  width: 0.875rem;
-  height: 0.875rem;
+.securityBadge svg {
+  width: 1rem;
+  height: 1rem;
 }
 
-/* Адаптивность для больших экранов */
-@media (min-width: 1920px) {
-  .registerCard {
-    max-width: 620px;
-    padding: 3rem 3.5rem;
-  }
-
-  .gradientBlob {
-    filter: blur(100px);
-  }
-
-  .blob1 {
-    width: 700px;
-    height: 700px;
-  }
-
-  .blob2 {
-    width: 600px;
-    height: 600px;
-  }
-
-  .blob3 {
-    width: 650px;
-    height: 650px;
-  }
-}
-
-@media (max-width: 768px) {
-  .registerContainer {
-    padding: 1rem;
-    height: auto;
-    min-height: 100vh;
-  }
-
-  .registerCard {
+/* Адаптивность */
+@media (max-width: 640px) {
+  .card {
+    padding: 1.5rem;
     margin: 1rem;
-    padding: 2rem 1.5rem;
-    max-width: 450px;
   }
 
-  .bankName {
-    font-size: 2.25rem;
-  }
-
-  .nameRow {
+  .row {
     grid-template-columns: 1fr;
-    gap: 1rem;
   }
 
-  .passwordRow {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .gradientBlob {
+  .blob1,
+  .blob2,
+  .blob3 {
+    width: 300px;
+    height: 300px;
     filter: blur(50px);
   }
 
-  .blob1 {
-    width: 350px;
-    height: 350px;
-  }
-
-  .blob2 {
-    width: 300px;
-    height: 300px;
-  }
-
-  .blob3 {
-    width: 320px;
-    height: 320px;
+  .title {
+    font-size: 1.75rem;
   }
 }
 
 @media (max-width: 480px) {
-  .registerCard {
-    padding: 1.5rem 1.25rem;
-    margin: 0.5rem;
+  .card {
+    padding: 1.25rem;
   }
 
-  .formInput {
-    padding: 0.75rem 0.75rem 0.75rem 2.5rem;
-    height: 44px;
+  .input,
+  .inputError {
+    padding: 0.7rem;
+    font-size: 0.8125rem;
   }
 
-  .inputIcon {
-    left: 0.75rem;
-  }
-
-  .checkboxText {
-    font-size: 0.8rem;
-  }
-
-  .nameGroup .formInput,
-  .passwordGroup .formInput {
-    height: 42px;
-    padding: 0.7rem 0.7rem 0.7rem 2.3rem;
-  }
-}
-
-/* Темная тема поддержка */
-@media (prefers-color-scheme: dark) {
-  .registerCard {
-    background: rgba(15, 23, 42, 0.95);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: white;
-  }
-
-  .formInput {
-    background: #1e293b;
-    border-color: #334155;
-    color: white;
-  }
-
-  .formLabel {
-    color: #cbd5e1;
-  }
-
-  .checkboxText {
-    color: #cbd5e1;
-  }
-
-  .footerText {
-    color: #94a3b8;
-  }
-
-  .registerSubtitle {
-    color: #f1f5f9;
-  }
-}
-
-/* Блок ошибки */
-.errorContainer {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  padding: 1rem;
-  background: linear-gradient(135deg, #fef2f2, #fecaca);
-  border: 1px solid #fca5a5;
-  border-radius: 12px;
-  margin-top: 1.5rem;
-  position: relative;
-  animation: slideIn 0.3s ease-out;
-}
-
-.errorIcon {
-  flex-shrink: 0;
-  width: 1.5rem;
-  height: 1.5rem;
-  color: #dc2626;
-  margin-top: 0.125rem;
-}
-
-.errorContent {
-  flex: 1;
-}
-
-.errorTitle {
-  color: #dc2626;
-  font-size: 0.875rem;
-  font-weight: 700;
-  margin: 0 0 0.25rem 0;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.errorMessage {
-  color: #b91c1c;
-  font-size: 0.8rem;
-  font-weight: 500;
-  margin: 0;
-  line-height: 1.4;
-}
-
-.errorClose {
-  flex-shrink: 0;
-  width: 1.25rem;
-  height: 1.25rem;
-  color: #dc2626;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  transition: all 0.2s ease;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.errorClose:hover {
-  background: rgba(220, 38, 38, 0.1);
-  transform: scale(1.1);
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Адаптивность для блока ошибки */
-@media (max-width: 768px) {
-  .errorContainer {
-    padding: 0.875rem;
-    gap: 0.625rem;
-  }
-
-  .errorIcon {
-    width: 1.25rem;
-    height: 1.25rem;
-  }
-
-  .errorTitle {
-    font-size: 0.8rem;
-  }
-
-  .errorMessage {
-    font-size: 0.75rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .errorContainer {
-    padding: 0.75rem;
-    gap: 0.5rem;
-  }
-
-  .errorIcon {
-    width: 1.125rem;
-    height: 1.125rem;
-  }
-
-  .errorClose {
-    width: 1.125rem;
-    height: 1.125rem;
-  }
-}
-
-/* Блок ошибки */
-.errorContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 1rem;
-  background: linear-gradient(135deg, #fef2f2, #fecaca);
-  border: 1px solid #fca5a5;
-  border-radius: 12px;
-  margin-top: 1.5rem;
-  animation: slideIn 0.3s ease-out;
-}
-
-.errorMessage {
-  color: #b91c1c;
-  font-size: 0.875rem;
-  font-weight: 500;
-  margin: 0;
-  line-height: 1.4;
-  text-align: center;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Адаптивность для блока ошибки */
-@media (max-width: 768px) {
-  .errorContainer {
-    padding: 0.875rem;
-  }
-
-  .errorMessage {
-    font-size: 0.8rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .errorContainer {
-    padding: 0.75rem;
-  }
-
-  .errorMessage {
-    font-size: 0.75rem;
-  }
-}
-
-/* Темная тема для блока ошибки */
-@media (prefers-color-scheme: dark) {
-  .errorContainer {
-    background: linear-gradient(135deg, #431313, #7f1d1d);
-    border-color: #dc2626;
-  }
-
-  .errorMessage {
-    color: #ffffff;
-  }
-}
-
-/* Стили для глазка пароля */
-.passwordToggle {
-  position: absolute;
-  right: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  color: #64748b;
-  cursor: pointer;
-  padding: 0.25rem;
-  border-radius: 4px;
-  transition: color 0.3s ease;
-  width: 1.5rem;
-  height: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.passwordToggle:hover {
-  color: #374151;
-  background: rgba(0, 0, 0, 0.05);
-}
-
-.passwordToggle svg {
-  width: 1.25rem;
-  height: 1.25rem;
-}
-
-/* Увеличиваем правый отступ для полей с паролем */
-.passwordGroup .formInput {
-  padding-right: 3rem !important;
-}
-
-/* Для темной темы */
-@media (prefers-color-scheme: dark) {
-  .passwordToggle:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #cbd5e1;
+  .button {
+    padding: 0.8rem 1.25rem;
+    font-size: 0.875rem;
   }
 }

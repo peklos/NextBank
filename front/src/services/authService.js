@@ -121,13 +121,17 @@ export const autoLogin = async (dispatch) => {
     const token = localStorage.getItem("access_token");
 
     if (!token) {
+        console.log("❌ Токен не найден - выполняется разлогин");
         dispatch(fullLogout());
-        return;
+        return false; // ❌ Токен не найден
     }
 
     try {
+        console.log("🔍 Проверка токена...");
         const res = await getMe();
+
         if (res.data) {
+            console.log("✅ Токен валидный - автологин успешен");
             dispatch(setUser({
                 access_token: token,
                 ...res.data
@@ -144,11 +148,15 @@ export const autoLogin = async (dispatch) => {
 
             // Загружаем остальные данные параллельно
             await loadUserData(dispatch, res.data.id);
+            return true; // ✅ Успешный автологин
         } else {
+            console.log("❌ Невалидный токен - выполняется разлогин");
             dispatch(fullLogout());
+            return false; // ❌ Невалидный токен
         }
     } catch (error) {
-        console.error('Ошибка автологина:', error);
+        console.error('❌ Ошибка автологина:', error);
         dispatch(fullLogout());
+        return false; // ❌ Ошибка автологина
     }
 };

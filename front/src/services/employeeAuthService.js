@@ -45,14 +45,17 @@ export const autoLoginEmployee = async (dispatch) => {
   const token = localStorage.getItem("employee_token");
 
   if (!token) {
+    console.log("❌ Employee токен не найден - выполняется разлогин");
     dispatch(logoutEmployee());
-    return false;
+    return false; // ❌ Токен не найден
   }
 
   try {
+    console.log("🔍 Проверка employee токена...");
     const res = await getEmployeeMe();
 
     if (res.data) {
+      console.log("✅ Employee токен валидный - автологин успешен");
       dispatch(
         setEmployee({
           access_token: token,
@@ -63,17 +66,18 @@ export const autoLoginEmployee = async (dispatch) => {
       // Загружаем данные для админ-панели параллельно
       await loadAdminData(dispatch);
 
-      return true;
+      return true; // ✅ Успешный автологин
     } else {
+      console.log("❌ Невалидный employee токен - выполняется разлогин");
       dispatch(logoutEmployee());
       localStorage.removeItem("employee_token");
-      return false;
+      return false; // ❌ Невалидный токен
     }
   } catch (error) {
-    console.error('Ошибка автологина сотрудника:', error);
+    console.error('❌ Ошибка автологина сотрудника:', error);
     dispatch(logoutEmployee());
     localStorage.removeItem("employee_token");
-    return false;
+    return false; // ❌ Ошибка автологина
   }
 };
 

@@ -38,29 +38,50 @@ function App() {
 
   useEffect(() => {
     const initializeAuth = async () => {
+      console.log("🚀 Инициализация аутентификации...");
+
       const promises = [];
 
-      // Автологин для клиента
-      if (localStorage.getItem('access_token') && !clientToken) {
-        promises.push(autoLogin(dispatch));
+      // ✅ Автологин для клиента
+      if (localStorage.getItem('access_token')) {
+        console.log("🔍 Найден токен клиента - проверяем...");
+        promises.push(
+          autoLogin(dispatch).then(success => {
+            if (success) {
+              console.log("✅ Клиент успешно авторизован");
+            } else {
+              console.log("❌ Невалидный токен клиента");
+            }
+          })
+        );
       }
 
-      // Автологин для сотрудника
-      if (localStorage.getItem('employee_token') && !employeeToken) {
-        promises.push(autoLoginEmployee(dispatch));
+      // ✅ Автологин для сотрудника
+      if (localStorage.getItem('employee_token')) {
+        console.log("🔍 Найден токен сотрудника - проверяем...");
+        promises.push(
+          autoLoginEmployee(dispatch).then(success => {
+            if (success) {
+              console.log("✅ Сотрудник успешно авторизован");
+            } else {
+              console.log("❌ Невалидный токен сотрудника");
+            }
+          })
+        );
       }
 
       // Ждем завершения всех автологинов
       await Promise.all(promises);
 
       // Минимальная задержка для плавности (опционально)
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 300));
 
+      console.log("✅ Инициализация завершена");
       setIsInitializing(false);
     };
 
     initializeAuth();
-  }, [dispatch, clientToken, employeeToken]);
+  }, [dispatch]); // Убрал clientToken и employeeToken из зависимостей
 
   // Показываем LoadingScreen во время инициализации
   if (isInitializing) {
