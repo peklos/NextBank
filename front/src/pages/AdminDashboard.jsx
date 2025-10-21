@@ -1,3 +1,4 @@
+// front/src/pages/AdminDashboard.jsx
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../styles/admin.module.css";
@@ -45,7 +46,7 @@ import {
 
 // Импорт всех компонентов из adm_db_components
 import {
-  OverviewTab,
+  EnhancedOverviewTab, // 🆕 Используем новый компонент с графиками
   EmployeesTab,
   RolesTab,
   BranchesTab,
@@ -444,7 +445,7 @@ const AdminDashboard = () => {
 
         <main className={styles.tabContent}>
           {activeTab === "overview" && currentPermissions.canViewStats && (
-            <OverviewTab stats={admin.stats} />
+            <EnhancedOverviewTab stats={admin.stats} />
           )}
           {activeTab === "employees" && currentPermissions.canManageEmployees && (
             <EmployeesTab

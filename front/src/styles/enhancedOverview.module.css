@@ -1,0 +1,253 @@
+/* front/src/styles/enhancedOverview.module.css */
+
+.container {
+    width: 100%;
+    padding: 0;
+}
+
+.loadingText {
+    color: #94a3b8;
+    font-size: 1rem;
+    text-align: center;
+    padding: 2rem;
+}
+
+/* Сетка статистических карточек */
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.statCard {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.statCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+.statCard:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px -5px rgba(59, 130, 246, 0.2);
+}
+
+.statCard:hover::before {
+    transform: translateX(0);
+}
+
+.statIcon {
+    font-size: 3rem;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+.statContent {
+    flex: 1;
+}
+
+.statTitle {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.statValue {
+    color: #f1f5f9;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+}
+
+.statChange {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.statChange.positive {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+}
+
+.statChange.negative {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+/* Сетка графиков */
+.chartsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.chartCard {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.chartCard:hover {
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 25px -8px rgba(0, 0, 0, 0.3);
+}
+
+.chartCardWide {
+    grid-column: 1 / -1;
+}
+
+.chartHeader {
+    margin-bottom: 1.5rem;
+}
+
+.chartHeader h3 {
+    color: #f1f5f9;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+}
+
+.chartHeader p {
+    color: #94a3b8;
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+/* Кастомный тултип */
+.customTooltip {
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+}
+
+.tooltipLabel {
+    color: #f1f5f9;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.customTooltip p {
+    color: #cbd5e1;
+    font-size: 0.875rem;
+    margin: 0.25rem 0;
+}
+
+/* Адаптивность */
+@media (max-width: 1400px) {
+    .chartsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .chartCardWide {
+        grid-column: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .statsGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .statCard {
+        padding: 1.25rem;
+    }
+
+    .statIcon {
+        font-size: 2.5rem;
+    }
+
+    .statValue {
+        font-size: 1.75rem;
+    }
+
+    .chartCard {
+        padding: 1.25rem;
+    }
+
+    .chartHeader h3 {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .statIcon {
+        font-size: 2rem;
+    }
+
+    .statValue {
+        font-size: 1.5rem;
+    }
+
+    .statChange {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+    }
+
+    .chartHeader h3 {
+        font-size: 1rem;
+    }
+
+    .chartHeader p {
+        font-size: 0.8rem;
+    }
+}
+
+/* Плавные переходы */
+@media (prefers-reduced-motion: reduce) {
+
+    .statIcon,
+    .statCard,
+    .chartCard {
+        animation: none !important;
+        transition: none !important;
+    }
+}
