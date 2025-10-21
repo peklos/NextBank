@@ -1070,3 +1070,81 @@
     background: #1e293b !important;
     color: #f1f5f9 !important;
 }
+
+/* Добавьте эти стили в файл front/src/styles/loans.module.css */
+
+/* Прогресс-бар для отображения выплаченной суммы */
+.progressBar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 15px;
+}
+
+.progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981, #059669);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.progressText {
+    text-align: center;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+/* Стили для детальной информации о кредите */
+.loanDetails .detailItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.loanDetails .detailItem:last-child {
+    border-bottom: none;
+}
+
+.loanDetails .detailLabel {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.loanDetails .detailValue {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+/* Стили для суммарной информации в модалке оплаты */
+.loanSummary {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.summaryItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.summaryItem span:first-child {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.875rem;
+}
+
+.summaryItem span:last-child {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+}

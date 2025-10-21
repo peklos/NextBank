@@ -39,6 +39,22 @@ const Loans = () => {
         setTimeout(() => setNotification({ show: false, message: '', type: '' }), 4000);
     };
 
+    // Загрузка кредитов при монтировании
+    useEffect(() => {
+        const loadLoans = async () => {
+            const loansRes = await getMyLoans();
+            if (loansRes.data) {
+                dispatch(setLoans(loansRes.data));
+            }
+        };
+
+        loadLoans();
+
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [dispatch]);
+
     // Подать заявку на кредит
     const handleApplyLoan = async () => {
         if (!personalInfo.passport_number) {
@@ -82,19 +98,27 @@ const Loans = () => {
         if (res.data) {
             // Обновляем список кредитов
             const loansRes = await getMyLoans();
-            if (loansRes.data) dispatch(setLoans(loansRes.data));
+            if (loansRes.data) {
+                dispatch(setLoans(loansRes.data));
+
+                // Обновляем selectedLoan для корректного отображения
+                const updatedLoan = loansRes.data.find(l => l.id === selectedLoan.id);
+                if (updatedLoan) {
+                    setSelectedLoan(updatedLoan);
+                }
+            }
 
             // Обновляем карты (баланс изменился)
             const cardsRes = await getClientCards();
             if (cardsRes.data) dispatch(setCards(cardsRes.data));
 
-            // 🆕 Обновляем счета (баланс на счетах тоже изменился)
+            // Обновляем счета (баланс на счетах тоже изменился)
             const accountsRes = await fetchMyAccounts();
             if (accountsRes.data) dispatch(setAccounts(accountsRes.data));
 
             setShowPaymentModal(false);
             setPaymentForm({ payment_amount: '', card_id: '' });
-            setSelectedLoan(null);
+
             showNotification(res.data.message, 'success');
         } else {
             showNotification(res.error, 'error');
@@ -134,10 +158,10 @@ const Loans = () => {
         return loan.amount * (1 + loan.interest_rate / 100);
     };
 
-    // 🆕 Расчёт оставшейся суммы
+    // Расчёт оставшейся суммы
     const calculateRemainingAmount = (loan) => {
         const total = calculateTotalAmount(loan);
-        return total - (loan.paid_amount || 0);
+        return Math.max(0, total - (loan.paid_amount || 0));
     };
 
     // Статистика
@@ -145,13 +169,7 @@ const Loans = () => {
     const activeLoans = loans.filter(l => !l.is_paid).length;
     const totalDebt = loans
         .filter(l => !l.is_paid)
-        .reduce((sum, l) => sum + calculateTotalAmount(l), 0);
-
-    useEffect(() => {
-        return () => {
-            document.body.style.overflow = 'unset';
-        };
-    }, []);
+        .reduce((sum, l) => sum + calculateRemainingAmount(l), 0);
 
     return (
         <div className={styles.loansContainer}>
@@ -260,62 +278,95 @@ const Loans = () => {
                                 </div>
                             ) : (
                                 <div className={styles.loansGrid}>
-                                    {loans.map((loan) => (
-                                        <div key={loan.id} className={styles.loanCard}>
-                                            <div className={styles.loanHeader}>
-                                                <div className={styles.loanIcon}>💳</div>
-                                                <div className={styles.loanInfo}>
-                                                    <h3 className={styles.loanName}>Кредит #{loan.id}</h3>
-                                                    <span className={styles.loanDate}>
-                                                        {new Date(loan.issued_at).toLocaleDateString('ru-RU')}
+                                    {loans.map((loan) => {
+                                        const totalAmount = calculateTotalAmount(loan);
+                                        const paidAmount = loan.paid_amount || 0;
+                                        const remainingAmount = calculateRemainingAmount(loan);
+                                        const progressPercent = totalAmount > 0 ? ((paidAmount / totalAmount) * 100).toFixed(1) : 0;
+
+                                        return (
+                                            <div key={loan.id} className={styles.loanCard}>
+                                                <div className={styles.loanHeader}>
+                                                    <div className={styles.loanIcon}>💳</div>
+                                                    <div className={styles.loanInfo}>
+                                                        <h3 className={styles.loanName}>Кредит #{loan.id}</h3>
+                                                        <span className={styles.loanDate}>
+                                                            {new Date(loan.issued_at).toLocaleDateString('ru-RU')}
+                                                        </span>
+                                                    </div>
+                                                    <span className={`${styles.statusBadge} ${loan.is_paid ? styles.statusPaid : styles.statusActive}`}>
+                                                        {loan.is_paid ? 'Оплачен' : 'Активен'}
                                                     </span>
                                                 </div>
-                                                <span className={`${styles.statusBadge} ${loan.is_paid ? styles.statusPaid : styles.statusActive}`}>
-                                                    {loan.is_paid ? 'Оплачен' : 'Активен'}
-                                                </span>
-                                            </div>
 
-                                            <div className={styles.loanAmount}>
-                                                <span className={styles.amount}>
-                                                    {loan.amount.toLocaleString('ru-RU')} ₽
-                                                </span>
-                                            </div>
-
-                                            <div className={styles.loanDetails}>
-                                                <div className={styles.detailItem}>
-                                                    <span className={styles.detailLabel}>Процентная ставка:</span>
-                                                    <span className={styles.detailValue}>{loan.interest_rate}%</span>
-                                                </div>
-                                                <div className={styles.detailItem}>
-                                                    <span className={styles.detailLabel}>Срок:</span>
-                                                    <span className={styles.detailValue}>{loan.term_months} мес.</span>
-                                                </div>
-                                                <div className={styles.detailItem}>
-                                                    <span className={styles.detailLabel}>К оплате:</span>
-                                                    <span className={styles.detailValue}>
-                                                        {calculateTotalAmount(loan).toLocaleString('ru-RU')} ₽
+                                                <div className={styles.loanAmount}>
+                                                    <span className={styles.amount}>
+                                                        {loan.amount.toLocaleString('ru-RU')} ₽
                                                     </span>
                                                 </div>
-                                            </div>
 
-                                            <div className={styles.loanActions}>
-                                                <button
-                                                    className={styles.actionBtn}
-                                                    onClick={() => handleShowSchedule(loan)}
-                                                >
-                                                    📊 График платежей
-                                                </button>
+                                                <div className={styles.loanDetails}>
+                                                    <div className={styles.detailItem}>
+                                                        <span className={styles.detailLabel}>Процентная ставка:</span>
+                                                        <span className={styles.detailValue}>{loan.interest_rate}%</span>
+                                                    </div>
+                                                    <div className={styles.detailItem}>
+                                                        <span className={styles.detailLabel}>Срок:</span>
+                                                        <span className={styles.detailValue}>{loan.term_months} мес.</span>
+                                                    </div>
+                                                    <div className={styles.detailItem}>
+                                                        <span className={styles.detailLabel}>Всего к оплате:</span>
+                                                        <span className={styles.detailValue}>
+                                                            {totalAmount.toLocaleString('ru-RU')} ₽
+                                                        </span>
+                                                    </div>
+                                                    <div className={styles.detailItem}>
+                                                        <span className={styles.detailLabel}>Оплачено:</span>
+                                                        <span className={styles.detailValue}>
+                                                            {paidAmount.toLocaleString('ru-RU')} ₽
+                                                        </span>
+                                                    </div>
+                                                    <div className={styles.detailItem}>
+                                                        <span className={styles.detailLabel}>Осталось оплатить:</span>
+                                                        <span className={styles.detailValue} style={{ fontWeight: 'bold', color: loan.is_paid ? '#10b981' : '#ef4444' }}>
+                                                            {remainingAmount.toLocaleString('ru-RU')} ₽
+                                                        </span>
+                                                    </div>
+                                                </div>
+
                                                 {!loan.is_paid && (
-                                                    <button
-                                                        className={`${styles.actionBtn} ${styles.primaryBtn}`}
-                                                        onClick={() => handleOpenPayment(loan)}
-                                                    >
-                                                        💰 Оплатить
-                                                    </button>
+                                                    <>
+                                                        <div className={styles.progressBar}>
+                                                            <div
+                                                                className={styles.progressFill}
+                                                                style={{ width: `${progressPercent}%` }}
+                                                            ></div>
+                                                        </div>
+                                                        <div className={styles.progressText}>
+                                                            Выплачено: {progressPercent}%
+                                                        </div>
+                                                    </>
                                                 )}
+
+                                                <div className={styles.loanActions}>
+                                                    <button
+                                                        className={styles.actionBtn}
+                                                        onClick={() => handleShowSchedule(loan)}
+                                                    >
+                                                        📊 График платежей
+                                                    </button>
+                                                    {!loan.is_paid && (
+                                                        <button
+                                                            className={`${styles.actionBtn} ${styles.primaryBtn}`}
+                                                            onClick={() => handleOpenPayment(loan)}
+                                                        >
+                                                            💰 Оплатить
+                                                        </button>
+                                                    )}
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                                 </div>
                             )}
                         </div>
@@ -415,8 +466,18 @@ const Loans = () => {
                                     <span>{selectedLoan.amount.toLocaleString('ru-RU')} ₽</span>
                                 </div>
                                 <div className={styles.summaryItem}>
-                                    <span>К оплате (с процентами):</span>
+                                    <span>Всего к оплате (с процентами):</span>
                                     <span>{calculateTotalAmount(selectedLoan).toLocaleString('ru-RU')} ₽</span>
+                                </div>
+                                <div className={styles.summaryItem}>
+                                    <span>Уже оплачено:</span>
+                                    <span>{(selectedLoan.paid_amount || 0).toLocaleString('ru-RU')} ₽</span>
+                                </div>
+                                <div className={styles.summaryItem} style={{ borderTop: '1px solid #e5e7eb', paddingTop: '10px', marginTop: '10px' }}>
+                                    <span style={{ fontWeight: 'bold' }}>Осталось оплатить:</span>
+                                    <span style={{ fontWeight: 'bold', color: '#ef4444' }}>
+                                        {calculateRemainingAmount(selectedLoan).toLocaleString('ru-RU')} ₽
+                                    </span>
                                 </div>
                             </div>
 
