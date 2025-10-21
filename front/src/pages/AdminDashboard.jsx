@@ -8,7 +8,7 @@ import {
   getAllRoles,
   getAllBranches,
   getAllClients,
-  getPendingProcesses,
+  getAllProcesses,
   getEmployeesStats,
   getClientsStats,
   getProcessesStats,
@@ -44,9 +44,8 @@ import {
   updateProcess,
 } from "../features/admin/adminSlice";
 
-// Импорт всех компонентов из adm_db_components
 import {
-  EnhancedOverviewTab, // 🆕 Используем новый компонент с графиками
+  UniversalOverviewTab,
   EmployeesTab,
   RolesTab,
   BranchesTab,
@@ -63,6 +62,7 @@ const ROLE_PERMISSIONS = {
     canViewClients: true,
     canManageProcesses: true,
     canViewStats: true,
+    canViewOverview: true,
   },
   Manager: {
     canManageEmployees: false,
@@ -71,6 +71,7 @@ const ROLE_PERMISSIONS = {
     canViewClients: true,
     canManageProcesses: true,
     canViewStats: true,
+    canViewOverview: true,
   },
   Support: {
     canManageEmployees: false,
@@ -79,6 +80,7 @@ const ROLE_PERMISSIONS = {
     canViewClients: true,
     canManageProcesses: false,
     canViewStats: false,
+    canViewOverview: true,
   },
   Cashier: {
     canManageEmployees: false,
@@ -87,6 +89,7 @@ const ROLE_PERMISSIONS = {
     canViewClients: true,
     canManageProcesses: false,
     canViewStats: false,
+    canViewOverview: true,
   },
   Loan_Officer: {
     canManageEmployees: false,
@@ -95,6 +98,7 @@ const ROLE_PERMISSIONS = {
     canViewClients: true,
     canManageProcesses: true,
     canViewStats: false,
+    canViewOverview: true,
   },
 };
 
@@ -110,7 +114,6 @@ const AdminDashboard = () => {
   const admin = useSelector((state) => state.admin);
   const employee = useSelector((state) => state.employee);
 
-  // Получаем права текущего сотрудника
   const currentPermissions = ROLE_PERMISSIONS[employee.role?.name] || {};
 
   const showNotification = (message, type = "success") => {
@@ -130,24 +133,22 @@ const AdminDashboard = () => {
 
     const requests = [];
 
-    // SuperAdmin видит всё
     if (currentPermissions.canManageEmployees) {
       requests.push(getAllEmployees(), getAllRoles(), getAllBranches());
     }
 
-    // Клиенты доступны всем
     if (currentPermissions.canViewClients) {
       requests.push(getAllClients());
     }
 
-    // Процессы доступны Manager и Loan_Officer
     if (currentPermissions.canManageProcesses || employee.role?.name === "SuperAdmin") {
-      requests.push(getPendingProcesses());
+      requests.push(getAllProcesses());
     }
 
-    // Статистика только для SuperAdmin и Manager
     if (currentPermissions.canViewStats) {
       requests.push(getEmployeesStats(), getClientsStats(), getProcessesStats());
+    } else if (currentPermissions.canViewOverview) {
+      requests.push(getClientsStats(), getProcessesStats());
     }
 
     const results = await Promise.all(requests);
@@ -189,12 +190,25 @@ const AdminDashboard = () => {
           })
         );
       }
+    } else if (currentPermissions.canViewOverview) {
+      const clientsStatsRes = results[resultIndex];
+      resultIndex++;
+      const processesStatsRes = results[resultIndex];
+
+      if (clientsStatsRes?.data && processesStatsRes?.data) {
+        dispatch(
+          setStats({
+            employees: { active_employees: 0, total_employees: 0, inactive_employees: 0 },
+            clients: clientsStatsRes.data,
+            processes: processesStatsRes.data,
+          })
+        );
+      }
     }
 
     setLoading(false);
   };
 
-  // Обработчики действий
   const handleEmployeeCreate = async (data) => {
     const res = await registerEmployee(data);
     if (res.data) {
@@ -395,7 +409,7 @@ const AdminDashboard = () => {
         </header>
 
         <div className={styles.tabsContainer}>
-          {currentPermissions.canViewStats && (
+          {currentPermissions.canViewOverview && (
             <button
               className={`${styles.tab} ${activeTab === "overview" ? styles.tabActive : ""}`}
               onClick={() => setActiveTab("overview")}
@@ -444,8 +458,15 @@ const AdminDashboard = () => {
         </div>
 
         <main className={styles.tabContent}>
-          {activeTab === "overview" && currentPermissions.canViewStats && (
-            <EnhancedOverviewTab stats={admin.stats} />
+          {activeTab === "overview" && currentPermissions.canViewOverview && (
+            <UniversalOverviewTab
+              stats={admin.stats}
+              employees={admin.employees}
+              branches={admin.branches}
+              clients={admin.clients}
+              processes={admin.processes}
+              currentRole={employee.role?.name}
+            />
           )}
           {activeTab === "employees" && currentPermissions.canManageEmployees && (
             <EmployeesTab
@@ -456,7 +477,6 @@ const AdminDashboard = () => {
               onUpdate={handleEmployeeUpdate}
               onDelete={handleEmployeeDelete}
               onToggleActive={handleEmployeeToggle}
-              showNotification={showNotification}
             />
           )}
           {activeTab === "roles" && currentPermissions.canManageRoles && (
@@ -465,7 +485,6 @@ const AdminDashboard = () => {
               onCreate={handleRoleCreate}
               onUpdate={handleRoleUpdate}
               onDelete={handleRoleDelete}
-              showNotification={showNotification}
             />
           )}
           {activeTab === "branches" && currentPermissions.canManageBranches && (
@@ -474,7 +493,6 @@ const AdminDashboard = () => {
               onCreate={handleBranchCreate}
               onUpdate={handleBranchUpdate}
               onDelete={handleBranchDelete}
-              showNotification={showNotification}
             />
           )}
           {activeTab === "clients" && currentPermissions.canViewClients && (
@@ -486,7 +504,6 @@ const AdminDashboard = () => {
               onApprove={handleProcessApprove}
               onReject={handleProcessReject}
               onComplete={handleProcessComplete}
-              showNotification={showNotification}
               canManage={currentPermissions.canManageProcesses || employee.role?.name === "SuperAdmin"}
             />
           )}

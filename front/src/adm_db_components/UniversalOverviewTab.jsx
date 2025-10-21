@@ -1,4 +1,4 @@
-// front/src/adm_db_components/EnhancedOverviewTab.jsx
+// front/src/adm_db_components/UniversalOverviewTab.jsx
 import React, { useState, useEffect } from 'react';
 import {
     LineChart, Line, BarChart, Bar, PieChart, Pie, Cell,
@@ -7,7 +7,7 @@ import {
 import styles from '../styles/enhancedOverview.module.css';
 
 // Компонент анимированной статистической карточки
-const AnimatedStatCard = ({ icon, title, value, change, prefix = '', suffix = '' }) => {
+const AnimatedStatCard = ({ icon, title, value, change, prefix = '', suffix = '', showChange = true }) => {
     const [displayValue, setDisplayValue] = useState(0);
     const isPositive = change >= 0;
 
@@ -45,9 +45,11 @@ const AnimatedStatCard = ({ icon, title, value, change, prefix = '', suffix = ''
                 <div className={styles.statValue}>
                     {prefix}{formatValue(displayValue)}{suffix}
                 </div>
-                <div className={`${styles.statChange} ${isPositive ? styles.positive : styles.negative}`}>
-                    {isPositive ? '↗️' : '↘️'} {Math.abs(change)}% за месяц
-                </div>
+                {showChange && (
+                    <div className={`${styles.statChange} ${isPositive ? styles.positive : styles.negative}`}>
+                        {isPositive ? '↗️' : '↘️'} {Math.abs(change)}% за месяц
+                    </div>
+                )}
             </div>
         </div>
     );
@@ -92,20 +94,26 @@ const CustomPieLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent })
     );
 };
 
-const EnhancedOverviewTab = ({ stats, employees, branches, clients, processes }) => {
+const UniversalOverviewTab = ({ stats, employees, branches, clients, processes, currentRole }) => {
     const [monthlyData, setMonthlyData] = useState([]);
     const [branchData, setBranchData] = useState([]);
-    const [loanData, setLoanData] = useState([]);
     const [roleData, setRoleData] = useState([]);
+    const [processData, setProcessData] = useState([]);
+
+    // Определяем уровень доступа
+    const isSuperAdmin = currentRole === 'SuperAdmin';
+    const isManager = currentRole === 'Manager';
+    const canViewFullStats = isSuperAdmin || isManager;
+    const canViewLimitedStats = currentRole === 'Support' || currentRole === 'Cashier' || currentRole === 'Loan_Officer';
 
     useEffect(() => {
-        if (stats && employees && branches && clients && processes) {
+        if (stats && clients && processes) {
             generateRealData();
         }
-    }, [stats, employees, branches, clients, processes]);
+    }, [stats, employees, branches, clients, processes, currentRole]);
 
     const generateRealData = () => {
-        // 📊 Генерация данных по месяцам (имитация роста)
+        // 📊 Генерация данных по месяцам
         const months = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
         const currentMonth = new Date().getMonth();
 
@@ -124,42 +132,22 @@ const EnhancedOverviewTab = ({ stats, employees, branches, clients, processes })
         });
         setMonthlyData(monthlyStats);
 
-        // 🏢 Распределение по отделениям (реальные данные)
-        if (branches && branches.length > 0 && employees && employees.length > 0) {
+        // 🏢 Распределение по отделениям (только для SuperAdmin и Manager)
+        if (canViewFullStats && branches && branches.length > 0 && employees && employees.length > 0) {
             const branchStats = branches.map((branch, index) => {
                 const employeesInBranch = employees.filter(emp => emp.branch_id === branch.id).length;
                 const colors = ['#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981'];
                 return {
                     name: branch.name,
-                    value: employeesInBranch || 1, // Минимум 1 для отображения
+                    value: employeesInBranch || 1,
                     color: colors[index % colors.length]
                 };
             });
             setBranchData(branchStats.filter(b => b.value > 0));
-        } else {
-            setBranchData([
-                { name: 'Нет данных', value: 1, color: '#64748b' }
-            ]);
         }
 
-        // 💰 Статистика кредитов по кварталам
-        const totalLoans = stats?.clients?.total_loans || 0;
-        const activeLoans = stats?.clients?.active_loans || 0;
-
-        const quarters = ['Q1 2024', 'Q2 2024', 'Q3 2024', 'Q4 2024'];
-        const loanStats = quarters.map((quarter, index) => {
-            const factor = (index + 1) / 4;
-            return {
-                quarter,
-                issued: Math.floor(totalLoans * factor * 0.3) || 0,
-                approved: Math.floor(totalLoans * factor * 0.5) || 0,
-                rejected: Math.floor(totalLoans * factor * 0.2) || 0
-            };
-        });
-        setLoanData(loanStats);
-
-        // 👥 Распределение сотрудников по ролям
-        if (employees && employees.length > 0) {
+        // 👥 Распределение сотрудников по ролям (только для SuperAdmin)
+        if (isSuperAdmin && employees && employees.length > 0) {
             const roleStats = {};
             employees.forEach(emp => {
                 const roleName = emp.role?.name || 'Без роли';
@@ -183,10 +171,29 @@ const EnhancedOverviewTab = ({ stats, employees, branches, clients, processes })
                 color: roleColors[name] || '#64748b'
             }));
             setRoleData(roleChartData);
-        } else {
-            setRoleData([
-                { name: 'Нет данных', value: 1, color: '#64748b' }
-            ]);
+        }
+
+        // 📋 Статистика процессов (доступна всем)
+        if (processes && processes.length > 0) {
+            const processStats = [
+                {
+                    status: 'В обработке',
+                    count: processes.filter(p => p.status === 'in_progress').length
+                },
+                {
+                    status: 'Одобрено',
+                    count: processes.filter(p => p.status === 'approved').length
+                },
+                {
+                    status: 'Отклонено',
+                    count: processes.filter(p => p.status === 'rejected').length
+                },
+                {
+                    status: 'Завершено',
+                    count: processes.filter(p => p.status === 'completed').length
+                }
+            ];
+            setProcessData(processStats);
         }
     };
 
@@ -194,65 +201,78 @@ const EnhancedOverviewTab = ({ stats, employees, branches, clients, processes })
         return <div className={styles.loadingText}>Статистика загружается...</div>;
     }
 
-    // Подготовка данных для карточек
-    const cardStats = {
-        totalClients: {
-            value: stats.clients.total_clients,
-            change: 15,
-            icon: '👥'
-        },
-        activeCards: {
-            value: stats.clients.total_cards,
-            change: 8,
-            icon: '💳'
-        },
-        totalBalance: {
-            value: stats.clients.total_balance.toLocaleString('ru-RU'),
-            change: 23,
-            icon: '💰',
-            suffix: ' ₽'
-        },
-        activeEmployees: {
-            value: stats.employees.active_employees,
-            change: 5,
-            icon: '👔'
+    // Карточки в зависимости от роли
+    const getStatsCards = () => {
+        const cards = [];
+
+        // Все видят клиентов
+        cards.push({
+            icon: '👥',
+            title: 'Всего клиентов',
+            value: stats.clients?.total_clients || 0,
+            change: 15
+        });
+
+        cards.push({
+            icon: '💳',
+            title: 'Активных карт',
+            value: stats.clients?.total_cards || 0,
+            change: 8
+        });
+
+        // Финансы видят только SuperAdmin и Manager
+        if (canViewFullStats) {
+            cards.push({
+                icon: '💰',
+                title: 'Общий баланс',
+                value: (stats.clients?.total_balance || 0).toLocaleString('ru-RU'),
+                change: 23,
+                suffix: ' ₽'
+            });
         }
+
+        // Сотрудники видят только SuperAdmin и Manager
+        if (canViewFullStats) {
+            cards.push({
+                icon: '👔',
+                title: 'Активных сотрудников',
+                value: stats.employees?.active_employees || 0,
+                change: 5
+            });
+        } else {
+            // Остальные видят количество процессов
+            cards.push({
+                icon: '📋',
+                title: 'Всего процессов',
+                value: processes?.length || 0,
+                change: 0,
+                showChange: false
+            });
+        }
+
+        return cards;
     };
 
     return (
         <div className={styles.container}>
             {/* Статистические карточки */}
             <div className={styles.statsGrid}>
-                <AnimatedStatCard
-                    icon={cardStats.totalClients.icon}
-                    title="Всего клиентов"
-                    value={cardStats.totalClients.value}
-                    change={cardStats.totalClients.change}
-                />
-                <AnimatedStatCard
-                    icon={cardStats.activeCards.icon}
-                    title="Активных карт"
-                    value={cardStats.activeCards.value}
-                    change={cardStats.activeCards.change}
-                />
-                <AnimatedStatCard
-                    icon={cardStats.totalBalance.icon}
-                    title="Общий баланс"
-                    value={cardStats.totalBalance.value}
-                    change={cardStats.totalBalance.change}
-                    suffix={cardStats.totalBalance.suffix}
-                />
-                <AnimatedStatCard
-                    icon={cardStats.activeEmployees.icon}
-                    title="Активных сотрудников"
-                    value={cardStats.activeEmployees.value}
-                    change={cardStats.activeEmployees.change}
-                />
+                {getStatsCards().map((card, index) => (
+                    <AnimatedStatCard
+                        key={index}
+                        icon={card.icon}
+                        title={card.title}
+                        value={card.value}
+                        change={card.change}
+                        suffix={card.suffix}
+                        showChange={card.showChange !== false}
+                    />
+                ))}
             </div>
 
             {/* Графики */}
             <div className={styles.chartsGrid}>
-                {/* Линейный график роста */}
+                {/* Линейный график - доступен всем */}
                 <div className={styles.chartCard}>
                     <div className={styles.chartHeader}>
                         <h3>📈 Рост клиентской базы</h3>
@@ -301,107 +321,94 @@ const EnhancedOverviewTab = ({ stats, employees, branches, clients, processes })
                     </ResponsiveContainer>
                 </div>
 
-                {/* Круговая диаграмма - Распределение по отделениям */}
-                <div className={styles.chartCard}>
-                    <div className={styles.chartHeader}>
-                        <h3>🏢 Распределение по отделениям</h3>
-                        <p>Сотрудники в каждом отделении</p>
+                {/* Круговая диаграмма - Отделения (только SuperAdmin и Manager) */}
+                {canViewFullStats && branchData.length > 0 && (
+                    <div className={styles.chartCard}>
+                        <div className={styles.chartHeader}>
+                            <h3>🏢 Распределение по отделениям</h3>
+                            <p>Сотрудники в каждом отделении</p>
+                        </div>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <PieChart>
+                                <Pie
+                                    data={branchData}
+                                    cx="50%"
+                                    cy="50%"
+                                    labelLine={false}
+                                    label={CustomPieLabel}
+                                    outerRadius={100}
+                                    fill="#8884d8"
+                                    dataKey="value"
+                                    animationBegin={0}
+                                    animationDuration={1000}
+                                >
+                                    {branchData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={entry.color} />
+                                    ))}
+                                </Pie>
+                                <Tooltip content={<CustomTooltip />} />
+                                <Legend
+                                    verticalAlign="bottom"
+                                    height={36}
+                                    formatter={(value, entry) => (
+                                        <span style={{ color: '#f1f5f9' }}>
+                                            {value} ({entry.payload.value})
+                                        </span>
+                                    )}
+                                />
+                            </PieChart>
+                        </ResponsiveContainer>
                     </div>
-                    <ResponsiveContainer width="100%" height={300}>
-                        <PieChart>
-                            <Pie
-                                data={branchData}
-                                cx="50%"
-                                cy="50%"
-                                labelLine={false}
-                                label={CustomPieLabel}
-                                outerRadius={100}
-                                fill="#8884d8"
-                                dataKey="value"
-                                animationBegin={0}
-                                animationDuration={1000}
-                            >
-                                {branchData.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={entry.color} />
-                                ))}
-                            </Pie>
-                            <Tooltip content={<CustomTooltip />} />
-                            <Legend
-                                verticalAlign="bottom"
-                                height={36}
-                                formatter={(value, entry) => (
-                                    <span style={{ color: '#f1f5f9' }}>
-                                        {value} ({entry.payload.value})
-                                    </span>
-                                )}
-                            />
-                        </PieChart>
-                    </ResponsiveContainer>
-                </div>
+                )}
 
-                {/* Круговая диаграмма - Распределение по ролям */}
-                <div className={styles.chartCard}>
-                    <div className={styles.chartHeader}>
-                        <h3>👥 Распределение по ролям</h3>
-                        <p>Структура команды</p>
+                {/* Круговая диаграмма - Роли (только SuperAdmin) */}
+                {isSuperAdmin && roleData.length > 0 && (
+                    <div className={styles.chartCard}>
+                        <div className={styles.chartHeader}>
+                            <h3>👥 Распределение по ролям</h3>
+                            <p>Структура команды</p>
+                        </div>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <PieChart>
+                                <Pie
+                                    data={roleData}
+                                    cx="50%"
+                                    cy="50%"
+                                    labelLine={false}
+                                    label={CustomPieLabel}
+                                    outerRadius={100}
+                                    fill="#8884d8"
+                                    dataKey="value"
+                                    animationBegin={0}
+                                    animationDuration={1000}
+                                >
+                                    {roleData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={entry.color} />
+                                    ))}
+                                </Pie>
+                                <Tooltip content={<CustomTooltip />} />
+                                <Legend
+                                    verticalAlign="bottom"
+                                    height={36}
+                                    formatter={(value, entry) => (
+                                        <span style={{ color: '#f1f5f9' }}>
+                                            {value} ({entry.payload.value})
+                                        </span>
+                                    )}
+                                />
+                            </PieChart>
+                        </ResponsiveContainer>
                     </div>
-                    <ResponsiveContainer width="100%" height={300}>
-                        <PieChart>
-                            <Pie
-                                data={roleData}
-                                cx="50%"
-                                cy="50%"
-                                labelLine={false}
-                                label={CustomPieLabel}
-                                outerRadius={100}
-                                fill="#8884d8"
-                                dataKey="value"
-                                animationBegin={0}
-                                animationDuration={1000}
-                            >
-                                {roleData.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={entry.color} />
-                                ))}
-                            </Pie>
-                            <Tooltip content={<CustomTooltip />} />
-                            <Legend
-                                verticalAlign="bottom"
-                                height={36}
-                                formatter={(value, entry) => (
-                                    <span style={{ color: '#f1f5f9' }}>
-                                        {value} ({entry.payload.value})
-                                    </span>
-                                )}
-                            />
-                        </PieChart>
-                    </ResponsiveContainer>
-                </div>
+                )}
 
-                {/* Столбчатая диаграмма - Процессы */}
+                {/* Столбчатая диаграмма - Процессы (доступна всем) */}
                 <div className={`${styles.chartCard} ${styles.chartCardWide}`}>
                     <div className={styles.chartHeader}>
                         <h3>📋 Статистика процессов</h3>
                         <p>Текущие процессы по статусам</p>
                     </div>
                     <ResponsiveContainer width="100%" height={300}>
-                        <BarChart data={[
-                            {
-                                status: 'В обработке',
-                                count: processes.filter(p => p.status === 'in_progress').length
-                            },
-                            {
-                                status: 'Одобрено',
-                                count: processes.filter(p => p.status === 'approved').length
-                            },
-                            {
-                                status: 'Отклонено',
-                                count: processes.filter(p => p.status === 'rejected').length
-                            },
-                            {
-                                status: 'Завершено',
-                                count: processes.filter(p => p.status === 'completed').length
-                            }
-                        ]}>
+                        <BarChart data={processData}>
                             <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
                             <XAxis dataKey="status" stroke="#94a3b8" />
                             <YAxis stroke="#94a3b8" />
@@ -416,4 +423,4 @@ const EnhancedOverviewTab = ({ stats, employees, branches, clients, processes })
     );
 };
 
-export default EnhancedOverviewTab;
+export default UniversalOverviewTab;

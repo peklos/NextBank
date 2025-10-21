@@ -2,7 +2,8 @@
 
 // Табы
 export { default as OverviewTab } from './OverviewTab';
-export { default as EnhancedOverviewTab } from './EnhancedOverviewTab'; 
+export { default as EnhancedOverviewTab } from './EnhancedOverviewTab';
+export { default as UniversalOverviewTab } from './UniversalOverviewTab';  
 export { default as EmployeesTab } from './EmployeesTab';
 export { default as RolesTab } from './RolesTab';
 export { default as BranchesTab } from './BranchesTab';
