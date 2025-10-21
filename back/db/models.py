@@ -116,7 +116,7 @@ class Card(Base):
     card_number = Column(String(16), unique=True, nullable=False)
     card_type = Column(String(20))  # debit / credit
     expiration_date = Column(DateTime)
-    cvv = Column(String(4))
+    cvv = Column(String(255))  # ✅ Изменено с String(4) на String(255)
     is_active = Column(Boolean, default=True)
 
     client_id = Column(Integer, ForeignKey('clients.id'))
