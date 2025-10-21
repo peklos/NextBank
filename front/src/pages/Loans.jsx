@@ -5,6 +5,8 @@ import { applyForLoan, payLoan, getLoanSchedule, getMyLoans } from '../api/loans
 import { addLoan, setLoans, updateLoan } from '../features/loans/loansSlice';
 import { getClientCards } from '../api/cards';
 import { setCards } from '../features/cards/cardSlice';
+import { fetchMyAccounts } from '../api/accounts';
+import { setAccounts } from '../features/accounts/accSlice';
 
 const Loans = () => {
     const [showApplyModal, setShowApplyModal] = useState(false);
@@ -86,8 +88,13 @@ const Loans = () => {
             const cardsRes = await getClientCards();
             if (cardsRes.data) dispatch(setCards(cardsRes.data));
 
+            // 🆕 Обновляем счета (баланс на счетах тоже изменился)
+            const accountsRes = await fetchMyAccounts();
+            if (accountsRes.data) dispatch(setAccounts(accountsRes.data));
+
             setShowPaymentModal(false);
             setPaymentForm({ payment_amount: '', card_id: '' });
+            setSelectedLoan(null);
             showNotification(res.data.message, 'success');
         } else {
             showNotification(res.error, 'error');
@@ -415,7 +422,7 @@ const Loans = () => {
 
                             <div className={styles.formGroup}>
                                 <label className={styles.formLabel}>Выберите карту</label>
-                                <div className={styles.customSelect}> 
+                                <div className={styles.customSelect}>
                                     <select
                                         className={styles.formInput}
                                         value={paymentForm.card_id}
