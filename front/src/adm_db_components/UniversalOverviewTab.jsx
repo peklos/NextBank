@@ -7,9 +7,8 @@ import {
 import styles from '../styles/enhancedOverview.module.css';
 
 // Компонент анимированной статистической карточки
-const AnimatedStatCard = ({ icon, title, value, change, prefix = '', suffix = '', showChange = true }) => {
+const AnimatedStatCard = ({ icon, title, value, prefix = '', suffix = '', showChange = false }) => {
     const [displayValue, setDisplayValue] = useState(0);
-    const isPositive = change >= 0;
 
     useEffect(() => {
         let start = 0;
@@ -45,11 +44,6 @@ const AnimatedStatCard = ({ icon, title, value, change, prefix = '', suffix = ''
                 <div className={styles.statValue}>
                     {prefix}{formatValue(displayValue)}{suffix}
                 </div>
-                {showChange && (
-                    <div className={`${styles.statChange} ${isPositive ? styles.positive : styles.negative}`}>
-                        {isPositive ? '↗️' : '↘️'} {Math.abs(change)}% за месяц
-                    </div>
-                )}
             </div>
         </div>
     );
@@ -104,7 +98,6 @@ const UniversalOverviewTab = ({ stats, employees, branches, clients, processes, 
     const isSuperAdmin = currentRole === 'SuperAdmin';
     const isManager = currentRole === 'Manager';
     const canViewFullStats = isSuperAdmin || isManager;
-    const canViewLimitedStats = currentRole === 'Support' || currentRole === 'Cashier' || currentRole === 'Loan_Officer';
 
     useEffect(() => {
         if (stats && clients && processes) {
@@ -113,40 +106,76 @@ const UniversalOverviewTab = ({ stats, employees, branches, clients, processes, 
     }, [stats, employees, branches, clients, processes, currentRole]);
 
     const generateRealData = () => {
-        // 📊 Генерация данных по месяцам
+        // 📊 Генерация РЕАЛЬНЫХ данных по месяцам на основе created_at клиентов
         const months = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
+        const currentYear = new Date().getFullYear();
+
+        // Инициализируем данные для всех месяцев текущего года
+        const monthlyStats = months.map((month, index) => ({
+            month,
+            clients: 0,
+            accounts: 0,
+            cards: 0
+        }));
+
+        // Подсчитываем реальное количество клиентов по месяцам
+        if (clients && clients.length > 0) {
+            clients.forEach(client => {
+                const createdDate = new Date(client.created_at);
+                if (createdDate.getFullYear() === currentYear) {
+                    const monthIndex = createdDate.getMonth();
+                    monthlyStats[monthIndex].clients += 1;
+                }
+            });
+
+            // Подсчитываем счета и карты (если данные доступны)
+            clients.forEach(client => {
+                const createdDate = new Date(client.created_at);
+                if (createdDate.getFullYear() === currentYear) {
+                    const monthIndex = createdDate.getMonth();
+                    // Предполагаем, что у каждого клиента может быть счет и карта
+                    // Если есть более точные данные - используйте их
+                    if (client.accounts) {
+                        monthlyStats[monthIndex].accounts += client.accounts.length || 0;
+                    }
+                    if (client.cards) {
+                        monthlyStats[monthIndex].cards += client.cards.length || 0;
+                    }
+                }
+            });
+        }
+
+        // Делаем данные накопительными (каждый месяц включает предыдущие)
+        for (let i = 1; i < monthlyStats.length; i++) {
+            monthlyStats[i].clients += monthlyStats[i - 1].clients;
+            monthlyStats[i].accounts += monthlyStats[i - 1].accounts;
+            monthlyStats[i].cards += monthlyStats[i - 1].cards;
+        }
+
+        // Показываем только месяцы до текущего
         const currentMonth = new Date().getMonth();
+        setMonthlyData(monthlyStats.slice(0, currentMonth + 1));
 
-        const totalClients = stats?.clients?.total_clients || 0;
-        const totalAccounts = stats?.clients?.total_accounts || 0;
-        const totalCards = stats?.clients?.total_cards || 0;
-
-        const monthlyStats = months.slice(0, currentMonth + 1).map((month, index) => {
-            const growthFactor = (index + 1) / (currentMonth + 1);
-            return {
-                month,
-                clients: Math.floor(totalClients * growthFactor),
-                accounts: Math.floor(totalAccounts * growthFactor),
-                cards: Math.floor(totalCards * growthFactor)
-            };
-        });
-        setMonthlyData(monthlyStats);
-
-        // 🏢 Распределение по отделениям (только для SuperAdmin и Manager)
+        // 🏢 РЕАЛЬНОЕ распределение по отделениям
         if (canViewFullStats && branches && branches.length > 0 && employees && employees.length > 0) {
             const branchStats = branches.map((branch, index) => {
                 const employeesInBranch = employees.filter(emp => emp.branch_id === branch.id).length;
                 const colors = ['#3b82f6', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981'];
                 return {
                     name: branch.name,
-                    value: employeesInBranch || 1,
+                    value: employeesInBranch,
                     color: colors[index % colors.length]
                 };
-            });
-            setBranchData(branchStats.filter(b => b.value > 0));
+            }).filter(b => b.value > 0); // Убираем отделения без сотрудников
+
+            if (branchStats.length > 0) {
+                setBranchData(branchStats);
+            } else {
+                setBranchData([{ name: 'Нет данных', value: 1, color: '#64748b' }]);
+            }
         }
 
-        // 👥 Распределение сотрудников по ролям (только для SuperAdmin)
+        // 👥 РЕАЛЬНОЕ распределение сотрудников по ролям (только для SuperAdmin)
         if (isSuperAdmin && employees && employees.length > 0) {
             const roleStats = {};
             employees.forEach(emp => {
@@ -170,10 +199,11 @@ const UniversalOverviewTab = ({ stats, employees, branches, clients, processes, 
                 value,
                 color: roleColors[name] || '#64748b'
             }));
+
             setRoleData(roleChartData);
         }
 
-        // 📋 Статистика процессов (доступна всем)
+        // 📋 РЕАЛЬНАЯ статистика процессов
         if (processes && processes.length > 0) {
             const processStats = [
                 {
@@ -201,7 +231,7 @@ const UniversalOverviewTab = ({ stats, employees, branches, clients, processes, 
         return <div className={styles.loadingText}>Статистика загружается...</div>;
     }
 
-    // Карточки в зависимости от роли
+    // Карточки в зависимости от роли (БЕЗ фейковых процентов)
     const getStatsCards = () => {
         const cards = [];
 
@@ -209,25 +239,21 @@ const UniversalOverviewTab = ({ stats, employees, branches, clients, processes, 
         cards.push({
             icon: '👥',
             title: 'Всего клиентов',
-            value: stats.clients?.total_clients || 0,
-            change: 15
+            value: stats.clients?.total_clients || 0
         });
 
         cards.push({
             icon: '💳',
             title: 'Активных карт',
-            value: stats.clients?.total_cards || 0,
-            change: 8
+            value: stats.clients?.total_cards || 0
         });
 
-        // Финансы видят только SuperAdmin и Manager
+        // Финансы видят только SuperAdmin и Manager (БЕЗ ФЕЙКОВЫХ ПРОЦЕНТОВ)
         if (canViewFullStats) {
             cards.push({
-                icon: '💰',
-                title: 'Общий баланс',
-                value: (stats.clients?.total_balance || 0).toLocaleString('ru-RU'),
-                change: 23,
-                suffix: ' ₽'
+                icon: '📊',
+                title: 'Счетов открыто',
+                value: stats.clients?.total_accounts || 0
             });
         }
 
@@ -236,17 +262,14 @@ const UniversalOverviewTab = ({ stats, employees, branches, clients, processes, 
             cards.push({
                 icon: '👔',
                 title: 'Активных сотрудников',
-                value: stats.employees?.active_employees || 0,
-                change: 5
+                value: stats.employees?.active_employees || 0
             });
         } else {
             // Остальные видят количество процессов
             cards.push({
                 icon: '📋',
                 title: 'Всего процессов',
-                value: processes?.length || 0,
-                change: 0,
-                showChange: false
+                value: processes?.length || 0
             });
         }
 
@@ -255,7 +278,7 @@ const UniversalOverviewTab = ({ stats, employees, branches, clients, processes, 
 
     return (
         <div className={styles.container}>
-            {/* Статистические карточки */}
+            {/* Статистические карточки БЕЗ фейковых процентов */}
             <div className={styles.statsGrid}>
                 {getStatsCards().map((card, index) => (
                     <AnimatedStatCard
@@ -263,20 +286,19 @@ const UniversalOverviewTab = ({ stats, employees, branches, clients, processes, 
                         icon={card.icon}
                         title={card.title}
                         value={card.value}
-                        change={card.change}
                         suffix={card.suffix}
-                        showChange={card.showChange !== false}
+                        showChange={false}
                     />
                 ))}
             </div>
 
-            {/* Графики */}
+            {/* Графики с реальными данными */}
             <div className={styles.chartsGrid}>
-                {/* Линейный график - доступен всем */}
+                {/* Линейный график - РЕАЛЬНЫЕ данные */}
                 <div className={styles.chartCard}>
                     <div className={styles.chartHeader}>
                         <h3>📈 Рост клиентской базы</h3>
-                        <p>Динамика за текущий год</p>
+                        <p>Реальная динамика за {new Date().getFullYear()} год</p>
                     </div>
                     <ResponsiveContainer width="100%" height={300}>
                         <LineChart data={monthlyData}>
@@ -321,12 +343,12 @@ const UniversalOverviewTab = ({ stats, employees, branches, clients, processes, 
                     </ResponsiveContainer>
                 </div>
 
-                {/* Круговая диаграмма - Отделения (только SuperAdmin и Manager) */}
+                {/* Круговая диаграмма - РЕАЛЬНОЕ распределение по отделениям */}
                 {canViewFullStats && branchData.length > 0 && (
                     <div className={styles.chartCard}>
                         <div className={styles.chartHeader}>
                             <h3>🏢 Распределение по отделениям</h3>
-                            <p>Сотрудники в каждом отделении</p>
+                            <p>Реальное количество сотрудников</p>
                         </div>
                         <ResponsiveContainer width="100%" height={300}>
                             <PieChart>
@@ -352,7 +374,7 @@ const UniversalOverviewTab = ({ stats, employees, branches, clients, processes, 
                                     height={36}
                                     formatter={(value, entry) => (
                                         <span style={{ color: '#f1f5f9' }}>
-                                            {value} ({entry.payload.value})
+                                            {value} ({entry.payload.value} сотр.)
                                         </span>
                                     )}
                                 />
@@ -361,12 +383,12 @@ const UniversalOverviewTab = ({ stats, employees, branches, clients, processes, 
                     </div>
                 )}
 
-                {/* Круговая диаграмма - Роли (только SuperAdmin) */}
+                {/* Круговая диаграмма - РЕАЛЬНОЕ распределение по ролям */}
                 {isSuperAdmin && roleData.length > 0 && (
                     <div className={styles.chartCard}>
                         <div className={styles.chartHeader}>
                             <h3>👥 Распределение по ролям</h3>
-                            <p>Структура команды</p>
+                            <p>Реальная структура команды</p>
                         </div>
                         <ResponsiveContainer width="100%" height={300}>
                             <PieChart>
@@ -401,11 +423,11 @@ const UniversalOverviewTab = ({ stats, employees, branches, clients, processes, 
                     </div>
                 )}
 
-                {/* Столбчатая диаграмма - Процессы (доступна всем) */}
+                {/* Столбчатая диаграмма - РЕАЛЬНЫЕ процессы */}
                 <div className={`${styles.chartCard} ${styles.chartCardWide}`}>
                     <div className={styles.chartHeader}>
                         <h3>📋 Статистика процессов</h3>
-                        <p>Текущие процессы по статусам</p>
+                        <p>Реальные данные по статусам</p>
                     </div>
                     <ResponsiveContainer width="100%" height={300}>
                         <BarChart data={processData}>
