@@ -109,6 +109,7 @@ const UniversalOverviewTab = ({ stats, employees, branches, clients, processes, 
         // 📊 Генерация РЕАЛЬНЫХ данных по месяцам на основе created_at клиентов
         const months = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
         const currentYear = new Date().getFullYear();
+        const currentMonth = new Date().getMonth();
 
         // Инициализируем данные для всех месяцев текущего года
         const monthlyStats = months.map((month, index) => ({
@@ -127,33 +128,31 @@ const UniversalOverviewTab = ({ stats, employees, branches, clients, processes, 
                     monthlyStats[monthIndex].clients += 1;
                 }
             });
-
-            // Подсчитываем счета и карты (если данные доступны)
-            clients.forEach(client => {
-                const createdDate = new Date(client.created_at);
-                if (createdDate.getFullYear() === currentYear) {
-                    const monthIndex = createdDate.getMonth();
-                    // Предполагаем, что у каждого клиента может быть счет и карта
-                    // Если есть более точные данные - используйте их
-                    if (client.accounts) {
-                        monthlyStats[monthIndex].accounts += client.accounts.length || 0;
-                    }
-                    if (client.cards) {
-                        monthlyStats[monthIndex].cards += client.cards.length || 0;
-                    }
-                }
-            });
         }
 
-        // Делаем данные накопительными (каждый месяц включает предыдущие)
+        // Делаем данные накопительными для клиентов (каждый месяц включает предыдущие)
         for (let i = 1; i < monthlyStats.length; i++) {
             monthlyStats[i].clients += monthlyStats[i - 1].clients;
-            monthlyStats[i].accounts += monthlyStats[i - 1].accounts;
-            monthlyStats[i].cards += monthlyStats[i - 1].cards;
+        }
+
+        // 📊 Распределяем счета и карты пропорционально клиентам
+        const totalClients = stats?.clients?.total_clients || 0;
+        const totalAccounts = stats?.clients?.total_accounts || 0;
+        const totalCards = stats?.clients?.total_cards || 0;
+
+        if (totalClients > 0) {
+            // Для каждого месяца вычисляем пропорцию
+            for (let i = 0; i <= currentMonth; i++) {
+                const clientsInMonth = monthlyStats[i].clients;
+                const proportion = clientsInMonth / totalClients;
+
+                // Распределяем счета и карты пропорционально количеству клиентов
+                monthlyStats[i].accounts = Math.round(totalAccounts * proportion);
+                monthlyStats[i].cards = Math.round(totalCards * proportion);
+            }
         }
 
         // Показываем только месяцы до текущего
-        const currentMonth = new Date().getMonth();
         setMonthlyData(monthlyStats.slice(0, currentMonth + 1));
 
         // 🏢 РЕАЛЬНОЕ распределение по отделениям
