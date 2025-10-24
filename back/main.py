@@ -1,6 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+# 🔒 Rate Limiting (добавить эти строки)
+from rate_limit import limiter, rate_limit_exceeded_handler  
+from slowapi.errors import RateLimitExceeded
+from slowapi.middleware import SlowAPIMiddleware
+
 # Роутеры для клиентов
 from routers import auth as auth_router
 from routers import personal_info as pers_inf_router
@@ -38,6 +43,11 @@ try:
 finally:
     db.close()
 
+# 🔒 Rate Limiter (добавить эти 2 строки!)
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, rate_limit_exceeded_handler)
+app.add_middleware(SlowAPIMiddleware)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=['*'],
@@ -72,7 +82,8 @@ def root():
         "version": "2.0.0",
         "docs": "/docs",
         "client_endpoints": "/auth, /accounts, /cards, /loans, /processes, /transactions, /profile",
-        "admin_endpoints": "/admin/auth, /roles, /branches, /employees, /admin/processes, /admin/clients"
+        "admin_endpoints": "/admin/auth, /roles, /branches, /employees, /admin/processes, /admin/clients",
+        "rate_limiting": "Enabled (100 req/min global)"  # ← Добавил инфо
     }
 
 
