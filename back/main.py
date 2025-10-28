@@ -53,7 +53,7 @@ app.add_middleware(
     allow_origins=[
         'https://nextbank-ar13.onrender.com',
         'http://localhost:5173',
-        'https://*.netlify.app',
+        'https://visionary-cocada-e5805c.netlify.app',
     ],
     allow_credentials=True,
     allow_methods=['*'],
