@@ -161,8 +161,3 @@ def create_client(data: ClientCreateSchema, db: Session = Depends(database.get_d
         'message': 'Регистрация прошла успешно'
     }
 
-
-@router.get('/allusers', summary='Получить всех юзеров')
-def get_users(db: Session = Depends(database.get_db)):
-    users = db.query(models.Client).all()
-    return users
