@@ -49,7 +49,7 @@ NextBank - это комплексная система интернет-бан�
 <summary>📸 Посмотреть интерфейс</summary>
 
 ### Страница входа
-![Login Page](https://i.imgur.com/login.png)
+![login](https://github.com/user-attachments/assets/1af8c881-aa30-4947-8e53-ed7a0a62d4fd)
 
 ### Дашборд клиента
 ![Client Dashboard](https://i.imgur.com/dashboard.png)
@@ -310,8 +310,7 @@ NextBank/
 
 ### ⭐ Если проект понравился - поставьте звезду!
 
-https://github.com/user-attachments/assets/9535dd0c-7dad-42a9-88a5-5359afa51107
+![document_5188555527063373065](https://github.com/user-attachments/assets/17eb930e-4d2b-4a48-82cb-23e7ec271df6)
 
-![Views](https://komarev.com/ghpvc/?username=nextbank&label=Project%20Views&color=blueviolet&style=flat)
 
 </div>
