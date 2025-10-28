@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 # 🔒 Rate Limiting (добавить эти строки)
-from rate_limit import limiter, rate_limit_exceeded_handler  
+from rate_limit import limiter, rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
 
@@ -50,7 +50,11 @@ app.add_middleware(SlowAPIMiddleware)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=['*'],
+    allow_origins=[
+        'https://nextbank-ar13.onrender.com',
+        'http://localhost:5173',
+        'https://*.netlify.app',
+    ],
     allow_credentials=True,
     allow_methods=['*'],
     allow_headers=['*']
@@ -83,6 +87,5 @@ def root():
         "docs": "/docs",
         "client_endpoints": "/auth, /accounts, /cards, /loans, /processes, /transactions, /profile",
         "admin_endpoints": "/admin/auth, /roles, /branches, /employees, /admin/processes, /admin/clients",
-        "rate_limiting": "Enabled (100 req/min global)"  
+        "rate_limiting": "Enabled (100 req/min global)"
     }
-
