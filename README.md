@@ -253,8 +253,7 @@ npm run dev
 ### Тестовые аккаунты:
 
 **SuperAdmin:**
-- Email: `superadmin@nextbank.ru`
-- Password: `SuperAdmin123!`
+- Для доступа пишите в телеграм
 
 **Клиент:** Зарегистрируйтесь сами! 😊
 
@@ -295,7 +294,7 @@ NextBank/
 ## 🤝 Контакты
 
 **Автор:** Владислав Александрович  
-**Email:** vlaoserov727@mail.ru  
+**Email:** vladoserov727@mail.ru  
 **Telegram:** [@swslt1616](https://t.me/swslt1616)  
 **GitHub:** [github.com/peklos](https://github.com/peklos)
 
@@ -311,7 +310,7 @@ NextBank/
 
 ### ⭐ Если проект понравился - поставьте звезду!
 
-**Made with ❤️ and lots of ☕**
+https://github.com/user-attachments/assets/9535dd0c-7dad-42a9-88a5-5359afa51107
 
 ![Views](https://komarev.com/ghpvc/?username=nextbank&label=Project%20Views&color=blueviolet&style=flat)
 
