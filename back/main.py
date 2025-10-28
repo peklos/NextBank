@@ -83,11 +83,6 @@ def root():
         "docs": "/docs",
         "client_endpoints": "/auth, /accounts, /cards, /loans, /processes, /transactions, /profile",
         "admin_endpoints": "/admin/auth, /roles, /branches, /employees, /admin/processes, /admin/clients",
-        "rate_limiting": "Enabled (100 req/min global)"  # ← Добавил инфо
+        "rate_limiting": "Enabled (100 req/min global)"  
     }
 
-
-# uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-# http://172.18.0.1:8000/docs
-# http://192.168.1.135:8000/docs
-# psycopg2-binary
