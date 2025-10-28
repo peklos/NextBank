@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-# 🔒 Rate Limiting (добавить эти строки)
+# 🔒 Rate Limiting 
 from rate_limit import limiter, rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.middleware import SlowAPIMiddleware
@@ -43,7 +43,7 @@ try:
 finally:
     db.close()
 
-# 🔒 Rate Limiter (добавить эти 2 строки!)
+# 🔒 Rate Limiter 
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, rate_limit_exceeded_handler)
 app.add_middleware(SlowAPIMiddleware)
