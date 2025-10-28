@@ -89,3 +89,8 @@ def root():
         "admin_endpoints": "/admin/auth, /roles, /branches, /employees, /admin/processes, /admin/clients",
         "rate_limiting": "Enabled (100 req/min global)"
     }
+
+@app.get("/health", tags=["Health"])
+@app.head("/health")
+def health_check():
+    return {"status": "ok"}
