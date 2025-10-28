@@ -52,16 +52,16 @@ NextBank - это комплексная система интернет-бан�
 ![login](https://github.com/user-attachments/assets/1af8c881-aa30-4947-8e53-ed7a0a62d4fd)
 
 ### Дашборд клиента
-![Client Dashboard](https://i.imgur.com/dashboard.png)
+![dashboard](https://github.com/user-attachments/assets/272cfa4f-72e9-49da-b248-70768b378a5d)
 
 ### Управление кредитами
-![Loans Page](https://i.imgur.com/loans.png)
+![loans](https://github.com/user-attachments/assets/5a862181-6637-4dbb-bca2-840a353dc880)
 
 ### Профиль пользователя
-![Profile Page](https://i.imgur.com/profile.png)
+![profile](https://github.com/user-attachments/assets/128a250c-c0ce-42ab-b50c-b06fd9e9aee8)
 
 ### Административная панель
-![Admin Panel](https://i.imgur.com/admin.png)
+![admin](https://github.com/user-attachments/assets/3e6220ef-bae5-4e59-9522-e733e64785fd)
 
 </details>
 
