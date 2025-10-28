@@ -27,3 +27,6 @@ ENV/
 # Logs
 *.log
 logs/
+
+__pycache__/
+*.pyc
