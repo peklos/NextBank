@@ -74,9 +74,9 @@
 
 /* Карточка входа */
 .loginCard {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(15, 23, 42, 0.95);
     backdrop-filter: blur(30px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 24px;
     padding: 3rem 3rem;
     box-shadow:
@@ -137,7 +137,7 @@
 }
 
 .loginSubtitle {
-    color: #64748b;
+    color: #cbd5e1;
     font-size: 1.125rem;
     font-weight: 500;
     margin: 0;
@@ -155,7 +155,7 @@
 .formLabel {
     display: block;
     margin-bottom: 0.5rem;
-    color: #374151;
+    color: #cbd5e1;
     font-weight: 600;
     font-size: 0.875rem;
     text-transform: uppercase;
@@ -169,12 +169,12 @@
 .formInput {
     width: 100%;
     padding: 1rem 1rem 1rem 3rem;
-    border: 2px solid #e2e8f0;
+    border: 2px solid #334155;
     border-radius: 12px;
     font-size: 1rem;
     transition: all 0.3s ease;
-    background: white;
-    color: #1f2937;
+    background: #1e293b;
+    color: #f1f5f9;
     height: 52px;
     box-sizing: border-box;
 }
@@ -245,7 +245,7 @@
 }
 
 .checkboxText {
-    color: #374151;
+    color: #cbd5e1; 
     font-size: 0.875rem;
     font-weight: 500;
 }
@@ -442,36 +442,6 @@
     }
 }
 
-/* Темная тема поддержка */
-@media (prefers-color-scheme: dark) {
-    .loginCard {
-        background: rgba(15, 23, 42, 0.95);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        color: white;
-    }
-
-    .formInput {
-        background: #1e293b;
-        border-color: #334155;
-        color: white;
-    }
-
-    .formLabel {
-        color: #cbd5e1;
-    }
-
-    .checkboxText {
-        color: #cbd5e1;
-    }
-
-    .footerText {
-        color: #94a3b8;
-    }
-
-    .loginSubtitle {
-        color: #cbd5e1;
-    }
-}
 
 /* Блок ошибки */
 .errorContainer {

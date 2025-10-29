@@ -33,7 +33,6 @@
     background: linear-gradient(45deg, #3b82f6, #06b6d4);
     top: 10%;
     left: 5%;
-    animation-delay: 0s;
 }
 
 .gradientBlob:nth-child(2) {
@@ -240,25 +239,63 @@
     background-clip: text;
 }
 
+/* УЛУЧШЕННАЯ СТАТИСТИКА БАЛАНСА */
 .balanceStats {
     display: flex;
-    gap: 1rem;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .balanceStat {
     display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    flex: 1;
-    padding: 0.75rem;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem;
     background: rgba(255, 255, 255, 0.03);
-    border-radius: 12px;
+    border-radius: 14px;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.balanceStat::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #3b82f6, #06b6d4);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.balanceStat:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(4px);
+}
+
+.balanceStat:hover::before {
+    opacity: 1;
+}
+
+.balanceStat:nth-child(1)::before {
+    background: linear-gradient(180deg, #10b981, #059669);
+}
+
+.balanceStat:nth-child(2)::before {
+    background: linear-gradient(180deg, #f59e0b, #d97706);
+}
+
+.balanceStat:nth-child(3)::before {
+    background: linear-gradient(180deg, #8b5cf6, #6366f1);
 }
 
 .statLabel {
     color: #94a3b8;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -266,12 +303,18 @@
 
 .statValue {
     color: #f1f5f9;
-    font-size: 1rem;
+    font-size: 1.15rem;
     font-weight: 700;
+    background: linear-gradient(135deg, #ffffff, #cbd5e1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 /* Стили для карт */
-.addCardButton {
+.addCardButton,
+.viewAllButton,
+.transferButton {
     padding: 0.5rem 1rem;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -285,10 +328,27 @@
     display: inline-block;
 }
 
-.addCardButton:hover {
+.addCardButton:hover,
+.viewAllButton:hover {
     background: rgba(255, 255, 255, 0.1);
     color: white;
     transform: translateY(-1px);
+}
+
+.transferButton {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.transferButton:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transform: translateY(-1px);
+    border-color: rgba(255, 255, 255, 0.15);
 }
 
 .cardsContainer {
@@ -401,13 +461,15 @@
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.emptyCards {
+.emptyCards,
+.emptyTransactions {
     text-align: center;
     padding: 2rem;
     color: #94a3b8;
 }
 
-.emptyCards p {
+.emptyCards p,
+.emptyTransactions p {
     margin-bottom: 1rem;
 }
 
@@ -439,19 +501,24 @@
     transform: translateY(-2px);
 }
 
-.actionIcon {
-    font-size: 1.5rem;
+.actionIcon,
+.transactionIcon,
+.paymentIcon {
     width: 40px;
     height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+    font-size: 1.25rem;
+    flex-shrink: 0;
     transition: all 0.3s ease;
 }
 
-.actionButton:hover .actionIcon {
+.actionButton:hover .actionIcon,
+.transactionItem:hover .transactionIcon,
+.paymentItem:hover .paymentIcon {
     transform: scale(1.1);
 }
 
@@ -474,22 +541,6 @@
 }
 
 /* Стили для кредитов */
-.quickTransfer {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    padding: 2rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-}
-
-.quickTransfer:hover {
-    border-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.3);
-}
-
 .transferCard {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.05);
@@ -497,10 +548,12 @@
     padding: 1.5rem;
 }
 
-.loanItem {
+.loanItem,
+.transactionItem,
+.paymentItem {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 1rem;
     padding: 1rem;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.05);
@@ -509,31 +562,41 @@
     transition: all 0.3s ease;
 }
 
-.loanItem:hover {
+.loanItem:hover,
+.transactionItem:hover,
+.paymentItem:hover {
     background: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
 }
 
-.loanInfo {
+.loanInfo,
+.transactionInfo,
+.paymentInfo {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
     flex: 1;
 }
 
-.loanName {
+.loanName,
+.transactionName,
+.paymentName {
     color: #f1f5f9;
     font-size: 0.9rem;
     font-weight: 600;
 }
 
-.loanStatus {
+.loanStatus,
+.transactionTime,
+.paymentDate {
     color: #94a3b8;
     font-size: 0.8rem;
     font-weight: 500;
 }
 
-.loanAction {
+.loanAction,
+.paymentAction {
     padding: 0.5rem;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -548,35 +611,11 @@
     height: 32px;
 }
 
-.loanAction:hover {
+.loanAction:hover,
+.paymentAction:hover {
     background: rgba(255, 255, 255, 0.1);
     color: white;
     transform: translateX(2px);
-}
-
-/* Стили для кнопки "Все кредиты" */
-.transferButton {
-    width: 100%;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    color: #cbd5e1;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: block;
-    text-align: center;
-    margin-top: 1rem;
-}
-
-.transferButton:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    transform: translateY(-1px);
-    border-color: rgba(255, 255, 255, 0.15);
 }
 
 /* Статистика */
@@ -608,14 +647,6 @@
     margin-bottom: 0.5rem;
 }
 
-.statLabel {
-    color: #94a3b8;
-    font-size: 0.8rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
 .statChange {
     font-size: 0.8rem;
     font-weight: 600;
@@ -631,13 +662,6 @@
 .statChange.down {
     background: rgba(239, 68, 68, 0.2);
     color: #ef4444;
-}
-
-.statValue {
-    color: #f1f5f9;
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
 }
 
 .statChart {
@@ -658,83 +682,11 @@
 }
 
 /* Транзакции */
-.viewAllButton {
-    padding: 0.5rem 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    color: #cbd5e1;
-    font-size: 0.85rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-block;
-}
-
-.viewAllButton:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    transform: translateX(2px);
-}
-
-.transactionsList {
+.transactionsList,
+.paymentsList {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-}
-
-.transactionItem {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    transition: all 0.3s ease;
-}
-
-.transactionItem:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.1);
-    transform: translateY(-1px);
-}
-
-.transactionIcon {
-    width: 40px;
-    height: 40px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem;
-    flex-shrink: 0;
-    transition: all 0.3s ease;
-}
-
-.transactionItem:hover .transactionIcon {
-    transform: scale(1.1);
-}
-
-.transactionInfo {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
-
-.transactionName {
-    color: #f1f5f9;
-    font-size: 0.9rem;
-    font-weight: 600;
-}
-
-.transactionTime {
-    color: #94a3b8;
-    font-size: 0.8rem;
-    font-weight: 500;
 }
 
 .transactionAmount {
@@ -755,91 +707,227 @@
     color: #ef4444;
 }
 
-.emptyTransactions {
-    text-align: center;
+/* Справочник */
+.guideButton {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
     padding: 2rem;
-    color: #94a3b8;
-}
-
-/* Быстрая информация */
-.paymentsList {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.paymentItem {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
+    gap: 1.5rem;
+    cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.paymentItem:hover {
+.guideButton:hover {
     background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.1);
-    transform: translateY(-1px);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px -12px rgba(0, 0, 0, 0.3);
 }
 
-.paymentIcon {
-    width: 40px;
-    height: 40px;
+.guideIcon {
+    width: 48px;
+    height: 48px;
     background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.25rem;
+    font-size: 24px;
     flex-shrink: 0;
-    transition: all 0.3s ease;
 }
 
-.paymentItem:hover .paymentIcon {
-    transform: scale(1.1);
-}
-
-.paymentInfo {
+.guideInfo {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
+    text-align: left;
 }
 
-.paymentName {
+.guideTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
     color: #f1f5f9;
-    font-size: 0.9rem;
-    font-weight: 600;
+    margin: 0 0 0.5rem 0;
 }
 
-.paymentDate {
+.guideDescription {
+    font-size: 0.9rem;
     color: #94a3b8;
-    font-size: 0.8rem;
+    margin: 0;
+    line-height: 1.4;
     font-weight: 500;
 }
 
-.paymentAction {
-    padding: 0.5rem;
+.guideArrow {
+    font-size: 1.5rem;
+    color: #cbd5e1;
+    font-weight: 400;
+    transition: transform 0.3s ease;
+}
+
+.guideButton:hover .guideArrow {
+    color: #f1f5f9;
+}
+
+/* Модальное окно справочника */
+.guideOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.guideModal {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    max-width: 1200px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    animation: slideUp 0.4s ease;
+}
+
+.guideHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 40px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: sticky;
+    top: 0;
+    background: rgba(30, 41, 59, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 24px 24px 0 0;
+    z-index: 10;
+}
+
+.guideHeader h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin: 0;
+    background: linear-gradient(135deg, #ffffff, #cbd5e1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.guideHeader button {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
     color: #cbd5e1;
-    text-decoration: none;
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    line-height: 1;
 }
 
-.paymentAction:hover {
+.guideHeader button:hover {
     background: rgba(255, 255, 255, 0.1);
-    color: white;
-    transform: translateX(2px);
+    color: #f1f5f9;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.guideContent {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    padding: 40px;
+}
+
+.guideSection {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+}
+
+.guideSection:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+.guideSection h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin: 0 0 16px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.guideSection p {
+    font-size: 14px;
+    color: #94a3b8;
+    margin: 8px 0;
+    line-height: 1.6;
+}
+
+.guideSection p strong {
+    color: #cbd5e1;
+    font-weight: 600;
+}
+
+.guideFooter {
+    padding: 24px 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(20px);
+    border-radius: 0 0 24px 24px;
+}
+
+.guideFooter p {
+    margin: 0;
+    font-size: 16px;
+    color: #94a3b8;
+    text-align: center;
+    font-weight: 500;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 /* Адаптивность */
@@ -900,17 +988,9 @@
         font-size: 1.75rem;
     }
 
-    .actionsGrid {
-        grid-template-columns: 1fr;
-    }
-
+    .actionsGrid,
     .statsGrid {
         grid-template-columns: 1fr;
-    }
-
-    .balanceStats {
-        flex-direction: column;
-        gap: 0.75rem;
     }
 
     .balanceCard,
@@ -929,6 +1009,69 @@
 
     .cardNumber {
         font-size: 1.1rem;
+    }
+
+    .guideContent {
+        grid-template-columns: 1fr;
+        padding: 24px;
+        gap: 20px;
+    }
+
+    .guideHeader {
+        padding: 20px 24px;
+    }
+
+    .guideHeader h2 {
+        font-size: 22px;
+    }
+
+    .guideHeader button {
+        width: 36px;
+        height: 36px;
+        font-size: 22px;
+    }
+
+    .guideFooter {
+        padding: 16px 24px;
+    }
+
+    .guideFooter p {
+        font-size: 14px;
+    }
+
+    .guideSection {
+        padding: 20px;
+    }
+
+    .guideSection h3 {
+        font-size: 18px;
+    }
+
+    .guideSection p {
+        font-size: 13px;
+    }
+
+    .guideButton {
+        padding: 1.5rem;
+        gap: 1rem;
+    }
+
+    .guideIcon {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .guideTitle {
+        font-size: 1.1rem;
+    }
+
+    .guideDescription {
+        font-size: 0.85rem;
+    }
+
+    .guideArrow {
+        font-size: 1.25rem;
     }
 }
 
@@ -990,23 +1133,64 @@
         font-size: 1.25rem;
         padding: 0.4rem;
     }
+
+    .guideOverlay {
+        padding: 10px;
+    }
+
+    .guideModal {
+        border-radius: 20px;
+    }
+
+    .guideContent {
+        padding: 20px;
+        gap: 16px;
+    }
+
+    .guideHeader {
+        padding: 16px 20px;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .guideHeader h2 {
+        font-size: 20px;
+    }
+
+    .guideHeader button {
+        width: 34px;
+        height: 34px;
+        font-size: 20px;
+    }
+
+    .guideSection {
+        padding: 16px;
+    }
+
+    .guideFooter {
+        padding: 14px 20px;
+        border-radius: 0 0 20px 20px;
+    }
 }
 
 /* Кастомный скроллбар */
-.transactionsList::-webkit-scrollbar {
+.transactionsList::-webkit-scrollbar,
+.guideModal::-webkit-scrollbar {
     width: 4px;
 }
 
-.transactionsList::-webkit-scrollbar-track {
+.transactionsList::-webkit-scrollbar-track,
+.guideModal::-webkit-scrollbar-track {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 2px;
 }
 
-.transactionsList::-webkit-scrollbar-thumb {
+.transactionsList::-webkit-scrollbar-thumb,
+.guideModal::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.2);
     border-radius: 2px;
 }
 
-.transactionsList::-webkit-scrollbar-thumb:hover {
+.transactionsList::-webkit-scrollbar-thumb:hover,
+.guideModal::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.3);
 }

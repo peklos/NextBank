@@ -6,6 +6,7 @@ import styles from '../styles/dashboard.module.css';
 const Dashboard = () => {
     const [quickAmount, setQuickAmount] = useState('');
     const [selectedCardIndex, setSelectedCardIndex] = useState(0);
+    const [showGuideModal, setShowGuideModal] = useState(false);
 
     // Получаем данные из Redux
     const user = useSelector(state => state.auth);
@@ -297,6 +298,7 @@ const Dashboard = () => {
                                     )}
                                 </div>
                             </section>
+
                         </div>
 
                         {/* Центральная колонка - Быстрые действия и статистика */}
@@ -351,6 +353,22 @@ const Dashboard = () => {
                                     </div>
                                 </section>
                             )}
+
+                            <section className={styles.guideCard}>
+                                <button
+                                    className={styles.guideButton}
+                                    onClick={() => setShowGuideModal(true)}
+                                >
+                                    <div className={styles.guideIcon}>📖</div>
+                                    <div className={styles.guideInfo}>
+                                        <h3 className={styles.guideTitle}>Справочник</h3>
+                                        <p className={styles.guideDescription}>
+                                            Полное руководство по использованию банка
+                                        </p>
+                                    </div>
+                                    <div className={styles.guideArrow}>→</div>
+                                </button>
+                            </section>
                         </div>
 
                         {/* Правая колонка - Статистика и транзакции */}
@@ -462,6 +480,46 @@ const Dashboard = () => {
                     </div>
                 </main>
             </div>
+
+            {showGuideModal && (
+                <div className={styles.guideOverlay} onClick={() => setShowGuideModal(false)}>
+                    <div className={styles.guideModal} onClick={(e) => e.stopPropagation()}>
+                        <div className={styles.guideHeader}>
+                            <h2>Справочник банка</h2>
+                            <button onClick={() => setShowGuideModal(false)}>×</button>
+                        </div>
+                        <div className={styles.guideContent}>
+                            <div className={styles.guideSection}>
+                                <h3>💳 Счета и карты</h3>
+                                <p><strong>Создание счета:</strong> Перейдите в раздел "Счета" → "Открыть счет"</p>
+                                <p><strong>Добавление карты:</strong> Выберите счет → "Заказать карту"</p>
+                                <p><strong>Пополнение:</strong> Используйте функцию "Пополнить" в разделе счетов</p>
+                            </div>
+                            <div className={styles.guideSection}>
+                                <h3>💸 Переводы</h3>
+                                <p><strong>Между своими счетами:</strong> Раздел "Переводы" → выберите счета</p>
+                                <p><strong>Другому пользователю:</strong> Укажите номер карты получателя</p>
+                                <p><strong>История:</strong> Все операции сохраняются в разделе "Переводы"</p>
+                            </div>
+                            <div className={styles.guideSection}>
+                                <h3>🏦 Кредиты</h3>
+                                <p><strong>Оформление:</strong> Раздел "Кредиты" → "Оформить кредит"</p>
+                                <p><strong>Погашение:</strong> Выберите кредит → "Погасить"</p>
+                                <p><strong>Досрочное погашение:</strong> Доступно без комиссий</p>
+                            </div>
+                            <div className={styles.guideSection}>
+                                <h3>📊 Статистика</h3>
+                                <p><strong>Дашборд:</strong> Общий обзор финансов и баланса</p>
+                                <p><strong>Аналитика:</strong> Графики доходов и расходов</p>
+                                <p><strong>Экспорт данных:</strong> Скачивание истории операций</p>
+                            </div>
+                        </div>
+                        <div className={styles.guideFooter}>
+                            <p>Нужна помощь? Обратитесь в службу поддержки (Telegram @swslt1616)</p>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

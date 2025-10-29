@@ -414,28 +414,6 @@ body {
     }
 }
 
-/* Темная тема поддержка */
-@media (prefers-color-scheme: dark) {
-    .header {
-        background: rgba(15, 23, 42, 0.95);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .navLink {
-        color: #cbd5e1;
-    }
-
-    .navLink:hover {
-        color: white;
-        background: rgba(255, 255, 255, 0.1);
-    }
-
-    .navActive {
-        color: white !important;
-        border: 1px solid rgba(59, 130, 246, 0.3) !important;
-    }
-}
-
 /* Поддержка reduced-motion для доступности */
 @media (prefers-reduced-motion: reduce) {
 
