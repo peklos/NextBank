@@ -239,3 +239,58 @@ def transfer_between_cards(
     )
 
     return result
+
+
+@router.patch("/{card_id}/deactivate", summary="Деактивировать карту")
+def deactivate_card(
+    card_id: int,
+    db: Session = Depends(get_db),
+    current_client=Depends(get_current_user)
+):
+    """Деактивация карты (установка is_active = False)"""
+    card = db.query(models.Card).filter(
+        models.Card.id == card_id,
+        models.Card.client_id == current_client.id
+    ).first()
+
+    if not card:
+        raise HTTPException(
+            status_code=404, detail="Карта не найдена или не принадлежит вам")
+
+    if not card.is_active:
+        raise HTTPException(
+            status_code=400, detail="Карта уже деактивирована")
+
+    card.is_active = False
+    db.commit()
+    db.refresh(card)
+
+    return {
+        "message": "Карта успешно деактивирована",
+        "card": card
+    }
+
+
+@router.delete("/{card_id}", summary="Удалить карту")
+def delete_card(
+    card_id: int,
+    db: Session = Depends(get_db),
+    current_client=Depends(get_current_user)
+):
+    """Удаление карты"""
+    card = db.query(models.Card).filter(
+        models.Card.id == card_id,
+        models.Card.client_id == current_client.id
+    ).first()
+
+    if not card:
+        raise HTTPException(
+            status_code=404, detail="Карта не найдена или не принадлежит вам")
+
+    db.delete(card)
+    db.commit()
+
+    return {
+        "message": "Карта успешно удалена",
+        "deleted_card_id": card_id
+    }
