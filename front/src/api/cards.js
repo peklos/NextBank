@@ -29,6 +29,7 @@ export const deactivateClientCard = async (card_id) => {
         return { data: res.data, error: null };
     } catch (err) {
         const detail = err.response?.data?.detail || 'Не удалось деактивировать карту';
+        console.error('❌ Ошибка деактивации:', err);
         return { data: null, error: detail };
     }
 };
@@ -40,6 +41,7 @@ export const deleteClientCard = async (card_id) => {
         return { data: res.data, error: null };
     } catch (err) {
         const detail = err.response?.data?.detail || 'Не удалось удалить карту';
+        console.error('❌ Ошибка удаления:', err);
         return { data: null, error: detail };
     }
 };

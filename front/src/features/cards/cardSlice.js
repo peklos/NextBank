@@ -19,11 +19,16 @@ const cardSlice = createSlice({
             const updated = action.payload;
             const idx = state.cards.findIndex(card => card.id === updated.id);
             if (idx !== -1) {
-                state.cards[idx] = { ...state.cards[idx], ...updated };
+                // ✅ ПОЛНОСТЬЮ заменяем карту новыми данными
+                state.cards[idx] = updated;
+                console.log('✅ Redux: карта обновлена');
+            } else {
+                console.warn('⚠️ Redux: карта не найдена для обновления');
             }
         },
         removeCard: (state, action) => {
-            state.cards = state.cards.filter(card => card.id !== action.payload);
+            const cardId = action.payload;
+            state.cards = state.cards.filter(card => card.id !== cardId);
         },
         setCardError: (state, action) => {
             state.error = action.payload;

@@ -34,15 +34,27 @@ const CardItem = ({ card, user, showCardNumber, onToggleVisibility, onCopyNumber
 
     const handleDeactivateCard = async () => {
         const res = await deactivateClientCard(card.id);
-        if (res.data) {
-            dispatch(updateCard(res.data));
+        if (res.data && res.data.card) {
+            // ✅ Обновляем карту в Redux с новым статусом
+            dispatch(updateCard(res.data.card));
+            console.log('✅ Карта деактивирована:', res.data.card);
+        } else if (res.error) {
+            console.error('❌ Ошибка деактивации:', res.error);
         }
     };
 
     const handleDeleteCard = async () => {
+        if (!window.confirm('Вы уверены, что хотите удалить эту карту?')) {
+            return;
+        }
+
         const res = await deleteClientCard(card.id);
         if (res.data) {
+            // ✅ Удаляем карту из Redux
             dispatch(removeCard(card.id));
+            console.log('✅ Карта удалена:', card.id);
+        } else if (res.error) {
+            console.error('❌ Ошибка удаления:', res.error);
         }
     };
 
