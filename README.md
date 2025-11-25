@@ -1,5 +1,4 @@
 # 🏦 NextBank - Интернет-банкинг
-(Render: Suspended by Free Tier Usage Exceeded)
 
 <div align="center">
 
@@ -7,9 +6,9 @@
 
 **Полнофункциональная система интернет-банкинга с административной панелью**
 
-[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-success?style=for-the-badge)](https://visionary-cocada-e5805c.netlify.app)
-[![API Docs](https://img.shields.io/badge/📚_API-Documentation-blue?style=for-the-badge)](https://nextbank-ar13.onrender.com/docs)
-[![Backend](https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&logo=fastapi)](https://nextbank-ar13.onrender.com)
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Site-success?style=for-the-badge)](https://nextbank123.netlify.app)
+[![API Docs](https://img.shields.io/badge/📚_API-Documentation-blue?style=for-the-badge)](https://test1-140f.onrender.com/docs)
+[![Backend](https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&logo=fastapi)](https://test1-140f.onrender.com)
 
 </div>
 
@@ -247,9 +246,9 @@ npm run dev
 
 ## 🌐 Live Demo
 
-**Frontend:** https://visionary-cocada-e5805c.netlify.app  
-**Backend API:** https://nextbank-ar13.onrender.com  
-**API Docs:** https://nextbank-ar13.onrender.com/docs
+**Frontend:** https://nextbank123.netlify.app
+**Backend API:** https://test1-140f.onrender.com
+**API Docs:** https://test1-140f.onrender.com/docs
 
 ### Тестовые аккаунты:
 
