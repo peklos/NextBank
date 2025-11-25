@@ -51,9 +51,9 @@ app.add_middleware(SlowAPIMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        'https://nextbank-ar13.onrender.com',
+        'https://test1-140f.onrender.com',
         'http://localhost:5173',
-        'https://visionary-cocada-e5805c.netlify.app',
+        'https://nextbank123.netlify.app',
     ],
     allow_credentials=True,
     allow_methods=['*'],
